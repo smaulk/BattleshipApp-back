@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services;
+namespace App\Services;
 
 use App\Dto\LoginDto;
 use App\Exceptions\HttpException;
