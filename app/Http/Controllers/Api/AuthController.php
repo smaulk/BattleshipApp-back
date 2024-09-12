@@ -1,10 +1,13 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RefreshRequest;
 use App\Services\LoginService;
+use App\Services\RefreshService;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
@@ -12,13 +15,23 @@ class AuthController extends Controller
 
     public function login(LoginRequest $request): JsonResponse
     {
-        $dto = $request->toDto();
-        $data = (new LoginService())->login($dto);
-        return response()->json($data);
+        [$accessToken, $refreshToken] = (new LoginService())
+            ->run($request->toDto());
+
+        return $this->json([
+            'accessToken' => $accessToken,
+            'refreshToken' => $refreshToken,
+        ]);
     }
 
-//    public function refresh(Request $request): JsonResponse
-//    {
-//
-//    }
+    public function refresh(RefreshRequest $request): JsonResponse
+    {
+        [$accessToken, $refreshToken] = (new RefreshService())
+            ->run($request->toDto());
+
+        return $this->json([
+            'accessToken' => $accessToken,
+            'refreshToken' => $refreshToken,
+        ]);
+    }
 }

@@ -1,10 +1,14 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Exceptions\HttpException;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 /**
  * @property string $ulid
@@ -18,5 +22,31 @@ use Illuminate\Database\Eloquent\Model;
  */
 final class RefreshToken extends Model
 {
-    use HasFactory;
+    protected $primaryKey = 'ulid';
+
+    public $incrementing = false;
+
+    public const UPDATED_AT = null;
+
+    protected function casts(): array
+    {
+        return [
+            'is_blocked' => 'boolean',
+            'expired_in' => 'datetime',
+        ];
+    }
+
+    /**
+     * Блокирировка токена
+     */
+    public function block(): void
+    {
+        try {
+            $this->is_blocked = true;
+            $this->saveOrFail();
+        } catch (Throwable $exception) {
+            Log::error($exception);
+            throw new HttpException(500);
+        }
+    }
 }

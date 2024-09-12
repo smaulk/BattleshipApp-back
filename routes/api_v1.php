@@ -9,6 +9,7 @@ Route::get('/', function () {
 });
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/refresh', [AuthController::class, 'refresh']);
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('/test', [TestController::class, 'getUser']);
