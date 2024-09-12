@@ -7,7 +7,7 @@ use App\Http\Requests\LoginRequest;
 
 final readonly class LoginDto extends Dto
 {
-    public string $nickname;
+    public string $email;
     public string $password;
     public ?string $ipAddress;
     public ?string $userAgent;
@@ -15,7 +15,7 @@ final readonly class LoginDto extends Dto
     public static function fromRequest(LoginRequest $request): self
     {
         $dto = new self();
-        $dto->nickname = $request->validated('nickname');
+        $dto->email = $request->validated('email');
         $dto->password = $request->validated('password');
         $dto->ipAddress = $request->ip();
         $dto->userAgent = $request->userAgent();

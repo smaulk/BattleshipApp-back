@@ -18,7 +18,7 @@ class LoginService
         try {
             $refreshToken = (new CreateRefreshTokenService())
                 ->run(new CreateRefreshTokenDto(
-                    null, Auth::id(), $dto->ipAddress,  $dto->userAgent
+                    null, Auth::id(), $dto->ipAddress, $dto->userAgent
                 ));
         } catch (Throwable $exception) {
             Log::error($exception);
@@ -33,7 +33,7 @@ class LoginService
     {
         /** @var string|false $accessToken */
         $accessToken = Auth::attempt([
-            'nickname' => $dto->nickname,
+            'email' => $dto->email,
             'password' => $dto->password
         ]);
 
