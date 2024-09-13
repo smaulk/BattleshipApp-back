@@ -57,7 +57,7 @@ class RefreshTest extends TestCase
             ])
             ->assertDatabaseCount(RefreshToken::class, 2);
 
-        // Пробуем сделать рефреш старым рефреш токеном
+        // Делаем обновление старым рефреш токеном, в результате блокируется вся цепочка
         $response = $this->postJson('api/v1/refresh', [
             'refreshToken' => $refreshToken,
         ]);
