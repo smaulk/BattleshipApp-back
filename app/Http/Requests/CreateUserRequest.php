@@ -6,7 +6,7 @@ use App\Dto\CreateUserDto;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
-class CreateUserRequest extends FormRequest
+class CreateUserRequest extends Request
 {
     /**
      * Get the validation rules that apply to the request.
@@ -16,8 +16,8 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nickname' => ['required', 'string', 'min:3', 'max:18', 'unique:users'],
-            'email' => ['required', 'email', 'max:255', 'unique:users'],
+            'nickname' => ['required', 'string', 'min:3', 'max:24'],
+            'email' => ['required', 'email', 'max:255'],
             'password' => ['required', 'string', 'confirmed',
                 Password::min(8)
                 ->letters()
