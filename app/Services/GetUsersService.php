@@ -4,11 +4,21 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Dto\GetUsersDto;
+use App\Models\User;
+use Illuminate\Support\Collection;
 
-class GetUsersService
+final class GetUsersService extends Service
 {
-    public function run(GetUsersDto $dto)
+    public function run(GetUsersDto $dto): Collection
     {
-
+        return User::query()
+            ->select([
+                'id',
+                'nickname',
+            ])
+            ->whereNot('id', $dto->userId)
+            ->where('nickname', 'like', "$dto->nickname%")
+            ->orderByDesc('id')
+            ->get();
     }
 }

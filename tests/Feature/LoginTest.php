@@ -15,16 +15,16 @@ final class LoginTest extends TestCase
         // Создаем пользователя
         User::factory()->create([
             'nickname' => Str::random(),
-            'email' => $email = Str::random() . '@example.com',
+            'email'    => $email = Str::random() . '@example.com',
             'password' => $password = Str::password(),
         ]);
 
         // Делаем вход с некорректными данными
         $this
             ->postJson('api/v1/login', [
-            'email' => $email,
-            'password' => $password . 'error',
-        ])
+                'email'    => $email,
+                'password' => $password . 'error',
+            ])
             ->assertUnauthorized()
             ->assertJson([
                 'message' => 'Некорректные данные для входа'
@@ -33,7 +33,7 @@ final class LoginTest extends TestCase
         // Делаем вход с корректными данными
         $this
             ->postJson('api/v1/login', [
-                'email' => $email,
+                'email'    => $email,
                 'password' => $password,
             ])
             ->assertOk()

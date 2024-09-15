@@ -37,12 +37,18 @@ class JwtGuard implements StatefulGuard
         ]);
     }
 
+    /**
+     * Проверка наличия пользователя и валидности введенных данных
+     */
     public function validate(array $credentials = []): bool
     {
         $this->last_attempted = $user = $this->provider->retrieveByCredentials($credentials);
         return $this->hasValidCredentials($user, $credentials);
     }
 
+    /**
+     * Выполняет вход в аккаунт, возвращает Access Token при успешном входе
+     */
     public function attempt(array $credentials = [], $remember = false): string|false
     {
         $this->last_attempted = $user = $this->provider->retrieveByCredentials($credentials);
@@ -62,6 +68,9 @@ class JwtGuard implements StatefulGuard
         return false;
     }
 
+    /**
+     * Устанавливает пользователя, возвращает новый Access Token
+     */
     public function login(Authenticatable $user, $remember = false): string
     {
         $this->setUser($user);
@@ -96,6 +105,9 @@ class JwtGuard implements StatefulGuard
         $this->user = null;
     }
 
+    /**
+     * Проверка на валидность введенных данных
+     */
     public function hasValidCredentials(?Authenticatable $user, array $credentials): bool
     {
         return $user !== null && $this->provider->validateCredentials($user, $credentials);

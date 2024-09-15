@@ -9,7 +9,7 @@ use App\Services\LoginService;
 use App\Services\RefreshService;
 use Illuminate\Http\JsonResponse;
 
-class AuthController extends Controller
+final class AuthController extends Controller
 {
 
     public function login(LoginRequest $request): JsonResponse
@@ -18,7 +18,7 @@ class AuthController extends Controller
             ->run($request->toDto());
 
         return $this->json([
-            'accessToken' => $accessToken,
+            'accessToken'  => $accessToken,
             'refreshToken' => $refreshToken,
         ]);
     }
@@ -29,7 +29,7 @@ class AuthController extends Controller
             ->run($request->toDto());
 
         return $this->json([
-            'accessToken' => $accessToken,
+            'accessToken'  => $accessToken,
             'refreshToken' => $refreshToken,
         ]);
     }

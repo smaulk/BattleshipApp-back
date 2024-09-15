@@ -10,8 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class LoginService
+final class LoginService extends Service
 {
+    /**
+     *  Авторизация пользователя по учетным данным, возвращает токен доступа и обновления
+     */
     public function run(LoginDto $dto): array
     {
         $accessToken = $this->login($dto);
@@ -28,12 +31,14 @@ class LoginService
         return [$accessToken, $refreshToken->ulid];
     }
 
-
+    /**
+     * Авторизация по данным из DTO
+     */
     private function login(LoginDto $dto): string
     {
         /** @var string|false $accessToken */
         $accessToken = Auth::attempt([
-            'email' => $dto->email,
+            'email'    => $dto->email,
             'password' => $dto->password
         ]);
 

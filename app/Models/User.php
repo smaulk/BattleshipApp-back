@@ -7,12 +7,15 @@ namespace App\Models;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * @property int $id
  * @property string $nickname
  * @property string $email
+ * @property string|null $avatar_filename
  * @property string $password
  * @property DateTimeInterface $created_at
  * @property DateTimeInterface $updated_at
@@ -51,7 +54,8 @@ final class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
         ];
     }
+
 }

@@ -2,19 +2,19 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use App\Dto\GetUsersDto;
 
-class GetUsersRequest extends FormRequest
+final class GetUsersRequest extends Request
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            //
+            'nickname' => ['required', 'string', 'min:1', 'max:28']
         ];
+    }
+
+    public function toDto(): GetUsersDto
+    {
+        return GetUsersDto::fromRequest($this);
     }
 }

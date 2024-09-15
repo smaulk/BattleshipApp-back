@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class CreateUserService
+final class CreateUserService extends Service
 {
+    /**
+     * Создает нового пользователя
+     */
     public function run(CreateUserDto $dto): User
     {
         $this->validate($dto);
@@ -26,6 +29,7 @@ class CreateUserService
     }
 
     /**
+     * Создает нового пользователя
      * @throws Throwable
      */
     private function createUser(CreateUserDto $dto): User
@@ -39,6 +43,9 @@ class CreateUserService
         return $user;
     }
 
+    /**
+     * Проверяет данные DTO на корректность
+     */
     private function validate(CreateUserDto $dto): void
     {
         $users = $this->getUserDataMatches($dto);
@@ -50,6 +57,9 @@ class CreateUserService
         }
     }
 
+    /**
+     * Возвращает пользователей, у которых совпадают nickname или email с данными из DTO
+     */
     private function getUserDataMatches(CreateUserDto $dto): Collection
     {
         return User::query()

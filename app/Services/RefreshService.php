@@ -11,9 +11,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class RefreshService
+final class RefreshService extends Service
 {
-
+    /**
+     * Обновляет Refresh и Access Token, возвращает новые
+     */
     public function run(RefreshDto $dto): array
     {
         $refreshToken = $this->getRefreshTokenModel($dto->ulid);
@@ -43,6 +45,9 @@ class RefreshService
         return RefreshToken::query()->find($ulid);
     }
 
+    /**
+     * Проверяет Refresh Token на существование, время жизни и блокировку
+     */
     private function validate(?RefreshToken $refreshToken): void
     {
         if (is_null($refreshToken)) {
@@ -58,6 +63,9 @@ class RefreshService
         }
     }
 
+    /**
+     * Блокирует всю цепочку Refresh токена
+     */
     private function blockTokenChain(string $chain): void
     {
         RefreshToken::query()

@@ -3,25 +3,19 @@
 namespace App\Http\Requests;
 
 use App\Dto\CreateUserDto;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
-class CreateUserRequest extends Request
+final class CreateUserRequest extends Request
 {
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
-     */
     public function rules(): array
     {
         return [
-            'nickname' => ['required', 'string', 'min:3', 'max:24'],
-            'email' => ['required', 'email', 'max:255'],
+            'nickname' => ['required', 'string', 'min:3', 'max:28'],
+            'email'    => ['required', 'email', 'max:255'],
             'password' => ['required', 'string', 'confirmed',
                 Password::min(8)
-                ->letters()
-                ->numbers(),
+                    ->letters()
+                    ->numbers(),
             ],
         ];
     }

@@ -20,6 +20,9 @@ class Jwt
         $this->signature = new JwtSignature();
     }
 
+    /**
+     * Создание jwt токена из объекта Authenticatable
+     */
     public function createToken(Authenticatable $user): string
     {
         $this->header->setDecodedHeader([
@@ -27,20 +30,24 @@ class Jwt
             'type' => 'JWT'
         ]);
         $this->payload->setDecodedPayload([
-            'id' => $user->getAuthIdentifier(),
+            'id'       => $user->getAuthIdentifier(),
             'nickname' => $user->nickname,
-            'exp' => time() + env('ACCESS_TOKEN_LIFETIME', 900),
+            'exp'      => time() + env('ACCESS_TOKEN_LIFETIME', 900),
         ]);
 
         $key = $this->getKey();
         return $this->signature->create($this->header, $this->payload, $key);
     }
 
+
     private function getKey(): string
     {
         return env('JWT_KEY', '');
     }
 
+    /**
+     * Устанавливает данный токен в класс
+     */
     public function setToken(string $token): self
     {
         $token = $this->getTokenAsArray($token);
@@ -59,6 +66,9 @@ class Jwt
         return explode('.', $token);
     }
 
+    /**
+     * Проверяет валидность токена
+     */
     public function validate(): bool
     {
         if (!$this->header->validated() || !$this->payload->validated()) {
@@ -70,8 +80,7 @@ class Jwt
     }
 
     /**
-     * Возвращает полезную нагрузку при успешной проверке валидности токена, иначе выбрасывает ошибку.
-     * @return array
+     * Возвращает полезную нагрузку при успешной проверке валидности токена, иначе выбрасывает ошибку
      */
     public function getPayload(): array
     {

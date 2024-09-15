@@ -12,6 +12,9 @@ class JwtSignature
         $this->signature = $signature;
     }
 
+    /**
+     * Проверка валидности подписи
+     */
     public function check(JwtHeader $header, JwtPayload $payload, string $key): bool
     {
         $algo = $header->getAlgo();
@@ -21,6 +24,9 @@ class JwtSignature
         return hash_hmac($algo, "$header.$payload", $key) === $this->signature;
     }
 
+    /**
+     * Создание jwt токена
+     */
     public function create(JwtHeader $header, JwtPayload $payload, string $key): string
     {
         $algo = $header->getAlgo();

@@ -8,9 +8,10 @@ use App\Models\RefreshToken;
 use Illuminate\Support\Str;
 use Throwable;
 
-class CreateRefreshTokenService
+final class CreateRefreshTokenService extends Service
 {
     /**
+     * Создает новый Refresh Token
      * @throws Throwable
      */
     public function run(CreateRefreshTokenDto $dto): RefreshToken
