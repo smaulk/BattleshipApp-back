@@ -20,7 +20,8 @@ class UserResource extends JsonResource
 
         return [
             'id'       => $user->id,
-            'nickname' => $user->nickname
+            'nickname' => $user->nickname,
+            'avatar_url'   => $this->whenAppended('avatar_url'),
         ];
     }
 }

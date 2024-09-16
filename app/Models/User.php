@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Classes\AvatarManager;
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\UploadedFile;
@@ -42,7 +44,10 @@ final class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
+    ];
+
+    protected $appends = [
+        'avatar_url',
     ];
 
     /**
@@ -58,4 +63,15 @@ final class User extends Authenticatable
         ];
     }
 
+
+    protected function avatarUrl(): Attribute
+    {
+        $getter = function () {
+            return $this->avatar_filename
+                ? (new AvatarManager())->getUrl($this->avatar_filename)
+                : null;
+        };
+
+        return new Attribute(get: $getter);
+    }
 }

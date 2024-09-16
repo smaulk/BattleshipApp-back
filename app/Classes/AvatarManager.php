@@ -16,22 +16,24 @@ class AvatarManager
 {
     public const SIZE = 150;
 
-    private ImageManager $manager;
     private Filesystem $disk;
-
 
     public function __construct(string $disk = 'userAvatars')
     {
-        $this->manager = new ImageManager(new Driver());
         $this->disk = Storage::disk($disk);
     }
 
+    /**
+     * Сохраняет изображение на диске, изменяя его размер
+     */
     public function save(UploadedFile $file, int $size = self::SIZE): string
     {
+        $manager = new ImageManager(new Driver());
+
         $filename = $file->hashName();
         try {
             $path = $this->disk->path($filename);
-            $image = $this->manager->read($file);
+            $image = $manager->read($file);
             $image
                 ->resize($size, $size)
                 ->save($path);
@@ -43,8 +45,22 @@ class AvatarManager
         return $filename;
     }
 
+    /**
+     * Удаляет файл с диска
+     */
     public function delete(?string $filename): bool
     {
         return !is_null($filename) && $this->disk->delete($filename);
+    }
+
+    /**
+     * Возвращает URL к файлу.
+     * Если файла не существует, возвращает NULL
+     */
+    public function getUrl(string $filename): ?string
+    {
+        return $this->disk->exists($filename)
+            ? $this->disk->url($filename)
+            : null;
     }
 }

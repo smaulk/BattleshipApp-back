@@ -15,6 +15,7 @@ final class GetUsersService extends Service
             ->select([
                 'id',
                 'nickname',
+                'avatar_filename'
             ])
             ->whereNot('id', $dto->userId)
             ->where('nickname', 'like', "$dto->nickname%")
