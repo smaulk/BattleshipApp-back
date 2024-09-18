@@ -29,8 +29,9 @@ final class UserController extends Controller
 
     public function find(Request $request): JsonResponse
     {
-        $user = (new FindUserService())
-            ->run((int)$request->route('userId'));
+        $user = (new FindUserService())->run(
+            (int)$request->route('userId')
+        );
 
         return $this
             ->resource($user, UserResource::class)

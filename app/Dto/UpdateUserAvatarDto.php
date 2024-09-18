@@ -6,7 +6,7 @@ namespace App\Dto;
 use App\Http\Requests\UpdateUserAvatarRequest;
 use Illuminate\Http\UploadedFile;
 
-class UpdateUserAvatarDto
+final readonly class UpdateUserAvatarDto extends Dto
 {
     public int $userId;
     public UploadedFile $avatar;
