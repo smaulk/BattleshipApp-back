@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RefreshRequest;
+use App\Parents\Controller;
 use App\Services\LoginService;
 use App\Services\RefreshService;
 use Illuminate\Http\JsonResponse;

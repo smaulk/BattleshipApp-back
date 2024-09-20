@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use App\Dto\LoginDto;
+use App\Parents\Request;
 
 final class LoginRequest extends Request
 {

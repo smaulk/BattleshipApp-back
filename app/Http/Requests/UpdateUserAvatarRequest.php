@@ -5,13 +5,8 @@ namespace App\Http\Requests;
 
 use App\Dto\UpdateUserAvatarDto;
 
-final class UpdateUserAvatarRequest extends Request
+final class UpdateUserAvatarRequest extends AuthorizedRequest
 {
-    public function authorize(): bool
-    {
-        return $this->user()?->getAuthIdentifier() === (int) $this->route('userId');
-    }
-
     public function rules(): array
     {
         return [

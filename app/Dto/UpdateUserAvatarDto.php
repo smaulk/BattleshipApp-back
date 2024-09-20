@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Dto;
 
 use App\Http\Requests\UpdateUserAvatarRequest;
+use App\Parents\Dto;
 use Illuminate\Http\UploadedFile;
 
 final readonly class UpdateUserAvatarDto extends Dto

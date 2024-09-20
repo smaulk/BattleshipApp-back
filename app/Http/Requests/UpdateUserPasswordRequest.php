@@ -6,12 +6,8 @@ namespace App\Http\Requests;
 use App\Dto\UpdateUserPasswordDto;
 use Illuminate\Validation\Rules\Password;
 
-final class UpdateUserPasswordRequest extends Request
+final class UpdateUserPasswordRequest extends AuthorizedRequest
 {
-    public function authorize(): bool
-    {
-        return $this->user()?->getAuthIdentifier() === (int) $this->route('userId');
-    }
 
     public function rules(): array
     {

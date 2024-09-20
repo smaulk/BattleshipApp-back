@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Parents\Test;
 use Illuminate\Support\Str;
 use Illuminate\Testing\Fluent\AssertableJson;
-use Tests\TestCase;
 
-class CreateUserTest extends TestCase
+final class CreateUserTest extends Test
 {
     public function testCreateUser(): void
     {

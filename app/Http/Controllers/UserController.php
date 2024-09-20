@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\GetUsersRequest;
-use App\Http\Requests\Request;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Parents\Controller;
+use App\Parents\Request;
 use App\Services\CreateUserService;
 use App\Services\FindUserService;
 use App\Services\GetUsersService;

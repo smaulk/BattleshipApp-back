@@ -5,18 +5,12 @@ namespace App\Http\Requests;
 
 use App\Dto\UpdateUserDto;
 
-final class UpdateUserRequest extends Request
+final class UpdateUserRequest extends AuthorizedRequest
 {
-    public function authorize(): bool
-    {
-        // Проверяем, что id авторизованного пользователя совпадает с переданным id пользователя
-        return $this->user()?->getAuthIdentifier() === (int)$this->route('userId');
-    }
-
     public function rules(): array
     {
         return [
-            'nickname' => ['required', 'string', 'min:3', 'max:28'],
+            'nickname' => ['required', 'string', 'min:3', 'max:18'],
             'email'    => ['required', 'email', 'max:255'],
         ];
     }

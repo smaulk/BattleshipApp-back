@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Dto;
 
 use App\Http\Requests\LoginRequest;
+use App\Parents\Dto;
 
 final readonly class LoginDto extends Dto
 {

@@ -6,26 +6,23 @@ namespace App\Services;
 use App\Dto\CreateUserDto;
 use App\Exceptions\HttpException;
 use App\Models\User;
+use App\Parents\Service;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Throwable;
 
 final class CreateUserService extends Service
 {
     /**
      * Создает нового пользователя
+     * @throws Throwable
      */
     public function run(CreateUserDto $dto): User
     {
         $this->validate($dto);
 
-        try {
-            return $this->createUser($dto);
-        } catch (Throwable $exception) {
-            Log::error($exception);
-            throw new HttpException(500);
-        }
+        return $this->createUser($dto);
     }
 
     /**

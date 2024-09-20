@@ -7,6 +7,7 @@ use App\Dto\CreateRefreshTokenDto;
 use App\Dto\RefreshDto;
 use App\Exceptions\HttpException;
 use App\Models\RefreshToken;
+use App\Parents\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Throwable;

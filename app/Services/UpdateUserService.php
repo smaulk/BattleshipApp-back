@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Classes\AvatarManager;
 use App\Dto\UpdateUserDto;
 use App\Exceptions\HttpException;
 use App\Models\User;
+use App\Parents\Service;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
@@ -15,20 +17,13 @@ final class UpdateUserService extends Service
 {
     /**
      * Обновляет данные пользователя
+     * @throws Throwable
      */
     public function run(UpdateUserDto $dto): User
     {
         $this->validate($dto);
-
-        try {
-            $user = $this->getUserById($dto->id);
-            $this->updateUser($user, $dto);
-        } catch (ModelNotFoundException) {
-            throw new HttpException(404, 'Пользователь не найден');
-        } catch (Throwable $exception) {
-            Log::error($exception);
-            throw new HttpException(500);
-        }
+        $user = User::query()->findOrFail($dto->userId);
+        $this->updateUser($user, $dto);
 
         return $user;
     }
@@ -62,7 +57,7 @@ final class UpdateUserService extends Service
                 'nickname',
                 'email',
             ])
-            ->whereNot('id', $dto->id)
+            ->whereNot('id', $dto->userId)
             ->where(function ($query) use ($dto) {
                 $query->where('nickname', $dto->nickname)
                     ->orWhere('email', $dto->email);
@@ -70,13 +65,5 @@ final class UpdateUserService extends Service
             ->get();
     }
 
-    /**
-     * Получить пользователя по id
-     * @throws ModelNotFoundException
-     */
-    private function getUserById(int $userId): User
-    {
-        /** @var User */
-        return User::query()->findOrFail($userId);
-    }
+
 }

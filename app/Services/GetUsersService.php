@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Dto\GetUsersDto;
 use App\Models\User;
+use App\Parents\Service;
 use Illuminate\Support\Collection;
 
 final class GetUsersService extends Service

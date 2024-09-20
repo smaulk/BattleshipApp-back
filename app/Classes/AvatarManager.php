@@ -12,7 +12,7 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
 use Throwable;
 
-class AvatarManager
+final class AvatarManager
 {
     public const SIZE = 150;
 

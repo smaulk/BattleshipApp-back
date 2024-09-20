@@ -5,10 +5,10 @@ namespace Tests\Feature;
 
 use App\Models\RefreshToken;
 use App\Models\User;
+use App\Parents\Test;
 use Illuminate\Support\Str;
-use Tests\TestCase;
 
-final class LoginTest extends TestCase
+final class LoginTest extends Test
 {
     public function testLogin(): void
     {

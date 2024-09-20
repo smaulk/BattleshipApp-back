@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Exceptions\HttpException;
+use App\Parents\Model;
 use DateTimeInterface;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 

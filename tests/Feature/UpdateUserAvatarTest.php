@@ -3,13 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Parents\Test;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Tests\TestCase;
 
-class UpdateUserAvatarTest extends TestCase
+final class UpdateUserAvatarTest extends Test
 {
     public function testUpdateUserAvatar()
     {

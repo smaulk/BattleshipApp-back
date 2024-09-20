@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Dto\CreateRefreshTokenDto;
 use App\Dto\LoginDto;
 use App\Exceptions\HttpException;
+use App\Parents\Service;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Throwable;
