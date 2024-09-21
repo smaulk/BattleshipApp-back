@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Dto\CreateRefreshTokenDto;
 use App\Models\RefreshToken;
 use App\Parents\Service;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Throwable;
 
@@ -23,9 +24,14 @@ final class CreateRefreshTokenService extends Service
         $refresh->user_id = $dto->userId;
         $refresh->ip_address = $dto->ipAddress;
         $refresh->user_agent = $dto->userAgent;
-        $refresh->expired_in = time() + env('REFRESH_TOKEN_LIFETIME', 2592000);
+        $refresh->expired_in = Carbon::now()->addDays($this->getRefreshTtl());
         $refresh->saveOrFail();
 
         return $refresh;
+    }
+
+    private function getRefreshTtl(): int
+    {
+        return (int)config('auth.jwt.refresh.ttl');
     }
 }

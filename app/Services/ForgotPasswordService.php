@@ -10,22 +10,19 @@ use Illuminate\Support\Facades\Password;
 
 final class ForgotPasswordService extends Service
 {
+    /**
+     * Отправляет письмо для сброса пароля, на указанную почту
+     */
     public function run(string $email): void
     {
-        if (!$this->isExistsUser($email)) {
-            throw new HttpException(404, 'Пользователь с такой электронной почтой не найден');
-        }
-
+        // Создает новый токен для сброса пароля и отправляет письмо с ссылкой на почту
         $status = Password::sendResetLink(['email' => $email]);
-        if ($status !== Password::RESET_LINK_SENT) {
-            throw new HttpException(500);
-        }
-    }
 
-    private function isExistsUser(string $email): bool
-    {
-        return User::query()
-            ->where('email', $email)
-            ->exists();
+        if ($status === Password::INVALID_USER) {
+            throw new HttpException(404, 'Пользователь с данной электронной почтой не найден');
+        }
+        if($status === Password::RESET_THROTTLED){
+            throw new HttpException(429, 'Слишком много запросов на сброс пароля');
+        }
     }
 }

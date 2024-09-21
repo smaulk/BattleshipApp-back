@@ -9,7 +9,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @method Authenticatable|null user($guard = null)
  */
-abstract class Request extends FormRequest
+class Request extends FormRequest
 {
     //
 }

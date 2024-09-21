@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Password;
 
 final class ResetPasswordService extends Service
 {
+    /**
+     * Обновляет пароль пользователя и блокирует все сессии
+     */
     public function run(ResetPasswordDto $dto): void
     {
         $status = Password::reset($dto->toArray(), function (User $user, string $password) {
@@ -23,8 +26,12 @@ final class ResetPasswordService extends Service
             $this->blockUserSessions($user->id);
         });
 
-        if ($status !== Password::PASSWORD_RESET) {
-            throw new HttpException(500);
+        if ($status === Password::INVALID_USER) {
+            throw new HttpException(404, 'Пользователь с данной электронной почтой не найден');
+        }
+        if ($status === Password::INVALID_TOKEN) {
+            // Либо токен не найден, либо его срок действия истек
+            throw new HttpException(400, 'Неверный или истекший токен сброса пароля');
         }
     }
 

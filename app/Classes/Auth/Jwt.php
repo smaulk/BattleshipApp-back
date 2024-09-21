@@ -5,6 +5,7 @@ namespace App\Classes\Auth;
 
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Carbon;
 
 class Jwt
 {
@@ -32,17 +33,21 @@ class Jwt
         $this->payload->setDecodedPayload([
             'id'       => $user->getAuthIdentifier(),
             'nickname' => $user->nickname,
-            'exp'      => time() + env('ACCESS_TOKEN_LIFETIME', 900),
+            'exp'      => Carbon::now()->addMinutes($this->getTtl()),
         ]);
 
-        $key = $this->getKey();
+        $key = $this->getSecret();
         return $this->signature->create($this->header, $this->payload, $key);
     }
 
-
-    private function getKey(): string
+    private function getTtl(): int
     {
-        return env('JWT_KEY', '');
+        return (int)config('auth.jwt.ttl');
+    }
+
+    private function getSecret(): string
+    {
+        return config('auth.jwt.secret');
     }
 
     /**
@@ -74,7 +79,7 @@ class Jwt
         if (!$this->header->validated() || !$this->payload->validated()) {
             return false;
         }
-        $key = $this->getKey();
+        $key = $this->getSecret();
 
         return $this->authorized = $this->signature->check($this->header, $this->payload, $key);
     }

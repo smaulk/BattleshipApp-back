@@ -12,7 +12,7 @@ final class CreateUserTest extends Test
 {
     public function testCreateUser(): void
     {
-        //Создаем нового пользователя
+        // Создаем нового пользователя
         $this
             ->postJson('api/v1/users', [
                 'nickname'              => $nickname = Str::random(),
@@ -24,31 +24,40 @@ final class CreateUserTest extends Test
             ->assertJsonStructure([
                 'data' => [
                     'id',
-                    'nickname'
-                ]
+                    'nickname',
+                    'avatar_url'
+                ],
             ])
             ->assertJson(fn(AssertableJson $json) => $json
                 ->has('data.id')
                 ->where('data.nickname', $nickname)
+                ->where('data.avatar_url', null)
             );
 
         $this->assertDatabaseHas(User::class, [
-            'nickname'  => $nickname,
-            'email' => $email,
+            'nickname' => $nickname,
+            'email'    => $email,
         ]);
 
-        //Пробуем создать пользователя с такими же данными
+
+    }
+
+    public function testCreateUserWithNonUniqueData()
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+
+        // Пробуем создать пользователя с такими же данными
         $this
             ->postJson('api/v1/users', [
-                'nickname'              => $nickname ,
-                'email'                 => $email,
-                'password'              => $password,
+                'nickname'              => $user->nickname,
+                'email'                 => $user->email,
+                'password'              => $password = Str::password(10),
                 'password_confirmation' => $password,
             ])
             ->assertUnprocessable()
             ->assertJson([
                 'message' => 'Имя пользователя уже используется'
-            ])
-        ;
+            ]);
     }
 }

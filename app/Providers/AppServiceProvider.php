@@ -24,9 +24,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->registerObservers();
-
+        //Переопределение Handler для обработки ошибок
         $this->app->singleton(ExceptionHandler::class, Handler::class);
+
+        $this->registerObservers();
     }
 
     private function registerObservers(): void
