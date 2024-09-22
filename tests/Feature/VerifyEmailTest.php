@@ -28,4 +28,25 @@ final class VerifyEmailTest extends Test
         // Проверяем, что почта подтверждена
         $this->assertNotNull($user->fresh()?->email_verified_at);
     }
+
+    public function testVerifyEmailWithWrongData(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->unverified()->create();
+        $accessToken = $this->jwt->createToken($user);
+        // Проверяем, что почта не подтверждена
+        $this->assertNull($user->email_verified_at);
+
+        // Отправляем запрос на подтверждение почты с некорректными данными
+        $this->postJson("/api/v1/users/$user->id/email-verification", [
+            'id'   => '111',
+            'hash' => 'wrong-hash',
+        ], [
+            'Authorization' => 'Bearer ' . $accessToken,
+        ])
+            ->assertForbidden()
+            ->assertJson([
+                'message' => 'Неверные данные для верификации'
+            ]);
+    }
 }

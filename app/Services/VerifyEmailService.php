@@ -19,7 +19,7 @@ final class VerifyEmailService extends Service
             !$this->isIdValid($user, $dto->id) ||
             !$this->isHashValid($user, $dto->hash)
         ) {
-            throw new HttpException(403, 'Некорректные данные для верификации');
+            throw new HttpException(403, 'Неверные данные для верификации');
         }
 
         // Подтверждаем почту

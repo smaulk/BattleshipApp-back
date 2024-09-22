@@ -26,9 +26,9 @@ abstract class Test extends BaseTestCase
      */
     protected function fakeEventWithModel(): void
     {
-        Notification::fake();
         $dispatcher = Event::getFacadeRoot();
         Event::fake();
         Model::setEventDispatcher($dispatcher);
+        Notification::fake();
     }
 }

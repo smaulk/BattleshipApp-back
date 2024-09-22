@@ -7,9 +7,9 @@ use App\Models\User;
 use App\Parents\Test;
 use Illuminate\Support\Facades\Hash;
 
-final class UpdateUserPasswordTest extends Test
+final class UpdatePasswordTest extends Test
 {
-    public function testUpdateUserPassword(): void
+    public function testUpdatePassword(): void
     {
         $pass1 = 'password1';
         $pass2 = 'password2';
@@ -34,7 +34,7 @@ final class UpdateUserPasswordTest extends Test
         $this->assertTrue(Hash::check($pass2, $user->fresh()?->password));
     }
 
-    public function testUpdateUserPasswordWithError(): void
+    public function testUpdatePasswordWithWrongData(): void
     {
         /** @var User $user */
         $pass = 'password1';

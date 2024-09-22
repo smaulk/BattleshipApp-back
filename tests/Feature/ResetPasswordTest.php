@@ -21,16 +21,52 @@ final class ResetPasswordTest extends Test
         $token = Password::createToken($user);
         $this->assertDatabaseCount('password_reset_tokens', 1);
 
-        $password = 'newPassword123';
-        $this->postJson('/api/v1/password/reset', [
-            'token' => $token,
-            'email' => $user->email,
-            'password' => $password,
-            'password_confirmation' => $password,
-        ])
+        $password = 'password123';
+        $this
+            ->postJson('/api/v1/password/reset', [
+                'token'                 => $token,
+                'email'                 => $user->email,
+                'password'              => $password,
+                'password_confirmation' => $password,
+            ])
             ->assertNoContent();
 
         $this->assertTrue(Hash::check($password, $user->fresh()?->password));
+    }
 
+    public function testResetPasswordWithWrongEmail(): void
+    {
+        $password = 'password123';
+        // Отправлям запрос с не существующей почтой
+        $this
+            ->postJson('/api/v1/password/reset', [
+                'token'                 => 'token',
+                'email'                 => 'wrong@mail.ru',
+                'password'              => $password,
+                'password_confirmation' => $password,
+            ])
+            ->assertNotFound()
+            ->assertJson([
+                'message' => 'Пользователь с данной электронной почтой не найден'
+            ]);
+    }
+
+    public function testResetPasswordWithWrongToken(): void
+    {
+        /** @var User $user */
+        $user = User::factory()->create();
+        $password = 'password123';
+        // Отправялем запрос с неверным токеном
+        $this
+            ->postJson('/api/v1/password/reset', [
+                'token'                 => 'token',
+                'email'                 => $user->email,
+                'password'              => $password,
+                'password_confirmation' => $password,
+            ])
+            ->assertBadRequest()
+            ->assertJson([
+                'message' => 'Неверный или истекший токен сброса пароля'
+            ]);
     }
 }
