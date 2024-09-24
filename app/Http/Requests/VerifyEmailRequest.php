@@ -10,9 +10,9 @@ class VerifyEmailRequest extends Request
     public function rules(): array
     {
         return [
-            'hash'      => 'required|string',
-            'expiresAt' => 'required|int',
-            'signature' => 'required|string',
+            'hash'       => 'required|string',
+            'expiration' => 'required|int',
+            'signature'  => 'required|string',
         ];
     }
 
