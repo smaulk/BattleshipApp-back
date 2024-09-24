@@ -17,7 +17,7 @@ final class VerifyEmailService extends Service
     public function run(VerifyEmailDto $dto): void
     {
         if ($dto->exp < time()) {
-            throw new HttpException(403, 'Срок действия верификации истек');
+            throw new HttpException(403, 'Срок для верификации истек');
         }
 
         $user = User::query()->findOrFail($dto->userId);

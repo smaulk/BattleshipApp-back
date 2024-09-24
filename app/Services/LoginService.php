@@ -44,7 +44,7 @@ final class LoginService extends Service
         ]);
 
         if ($accessToken === false) {
-            throw new HttpException(401, 'Некорректные данные для входа');
+            throw new HttpException(401, 'Недействительные данные для входа');
         }
 
         return $accessToken;

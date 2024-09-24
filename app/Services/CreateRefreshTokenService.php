@@ -24,7 +24,7 @@ final class CreateRefreshTokenService extends Service
         $refresh->user_id = $dto->userId;
         $refresh->ip_address = $dto->ipAddress;
         $refresh->user_agent = $dto->userAgent;
-        $refresh->expired_in = Timestamp::now()->addDays($this->getRefreshTtl())->get();
+        $refresh->expires_at = Timestamp::now()->addDays($this->getRefreshTtl())->get();
         $refresh->saveOrFail();
 
         return $refresh;

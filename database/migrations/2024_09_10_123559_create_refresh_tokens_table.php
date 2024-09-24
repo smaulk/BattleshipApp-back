@@ -19,7 +19,7 @@ return new class extends Migration
             $table->ipAddress()->nullable();
             $table->text('user_agent')->nullable();
             $table->timestamp('created_at');
-            $table->timestamp('expired_in');
+            $table->timestamp('expires_at');
         });
     }
 

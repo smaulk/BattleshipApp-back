@@ -27,7 +27,7 @@ final class ResetPasswordTest extends Test
                 'token'                 => $token,
                 'email'                 => $user->email,
                 'password'              => $password,
-                'password_confirmation' => $password,
+                'passwordConfirmation' => $password,
             ])
             ->assertNoContent();
 
@@ -43,7 +43,7 @@ final class ResetPasswordTest extends Test
                 'token'                 => 'token',
                 'email'                 => 'wrong@mail.ru',
                 'password'              => $password,
-                'password_confirmation' => $password,
+                'passwordConfirmation' => $password,
             ])
             ->assertNotFound()
             ->assertJson([
@@ -62,7 +62,7 @@ final class ResetPasswordTest extends Test
                 'token'                 => 'token',
                 'email'                 => $user->email,
                 'password'              => $password,
-                'password_confirmation' => $password,
+                'passwordConfirmation' => $password,
             ])
             ->assertBadRequest()
             ->assertJson([

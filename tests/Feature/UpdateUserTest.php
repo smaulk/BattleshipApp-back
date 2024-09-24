@@ -32,13 +32,13 @@ final class UpdateUserTest extends Test
                 'data' => [
                     'id',
                     'nickname',
-                    'avatar_url'
+                    'avatarUrl'
                 ],
             ])
             ->assertJson(fn(AssertableJson $json) => $json
                 ->where('data.id', $user->id)
                 ->where('data.nickname', $nickname)
-                ->where('data.avatar_url', null)
+                ->where('data.avatarUrl', null)
             );
 
         // Проверяем, что данные пользователя обновлись, а почта стала "не подтвержденной"

@@ -11,7 +11,7 @@ class VerifyEmailRequest extends Request
     {
         return [
             'hash' => 'required|string',
-            'exp' => 'required|int',
+            'expiresAt' => 'required|int',
             'signature' => 'required|string',
         ];
     }

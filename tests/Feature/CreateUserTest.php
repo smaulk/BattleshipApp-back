@@ -18,20 +18,20 @@ final class CreateUserTest extends Test
                 'nickname'              => $nickname = Str::random(),
                 'email'                 => $email = Str::random() . '@example.com',
                 'password'              => $password = Str::password(10),
-                'password_confirmation' => $password,
+                'passwordConfirmation' => $password,
             ])
             ->assertCreated()
             ->assertJsonStructure([
                 'data' => [
                     'id',
                     'nickname',
-                    'avatar_url'
+                    'avatarUrl'
                 ],
             ])
             ->assertJson(fn(AssertableJson $json) => $json
                 ->has('data.id')
                 ->where('data.nickname', $nickname)
-                ->where('data.avatar_url', null)
+                ->where('data.avatarUrl', null)
             );
 
         $this->assertDatabaseHas(User::class, [
@@ -53,7 +53,7 @@ final class CreateUserTest extends Test
                 'nickname'              => $user->nickname,
                 'email'                 => $user->email,
                 'password'              => $password = Str::password(10),
-                'password_confirmation' => $password,
+                'passwordConfirmation' => $password,
             ])
             ->assertUnprocessable()
             ->assertJson([

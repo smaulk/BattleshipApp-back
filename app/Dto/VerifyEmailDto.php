@@ -18,7 +18,7 @@ final readonly class VerifyEmailDto extends Dto
         $dto = new self();
         $dto->userId = (int)$request->route('userId');
         $dto->hash = (string)$request->validated('hash');
-        $dto->exp = (int)$request->validated('exp');
+        $dto->exp = (int)$request->validated('expiresAt');
         $dto->signature = (string)$request->validated('signature');
         return $dto;
     }

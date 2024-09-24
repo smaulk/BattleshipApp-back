@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 
 use App\Dto\CreateUserDto;
 use App\Parents\Request;
+use App\Rules\Confirmed;
 use Illuminate\Validation\Rules\Password;
 
 final class CreateUserRequest extends Request
@@ -14,7 +15,7 @@ final class CreateUserRequest extends Request
         return [
             'nickname' => ['required', 'string', 'min:3', 'max:18'],
             'email'    => ['required', 'email', 'max:255'],
-            'password' => ['required', 'string', 'confirmed',
+            'password' => ['required', 'string', new Confirmed,
                 Password::min(8)
                     ->letters()
                     ->numbers(),

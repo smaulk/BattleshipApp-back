@@ -27,7 +27,7 @@ final class LoginTest extends Test
             ])
             ->assertUnauthorized()
             ->assertJson([
-                'message' => 'Некорректные данные для входа'
+                'message' => 'Недействительные данные для входа'
             ]);
 
         // Делаем вход с корректными данными

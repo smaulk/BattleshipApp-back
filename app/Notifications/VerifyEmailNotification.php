@@ -37,7 +37,7 @@ class VerifyEmailNotification extends Notification implements ShouldQueue
         $signature = $manager->createSign($data);
 
         $query = http_build_query([
-            'exp'       => $exp,
+            'expires'   => $exp,
             'signature' => $signature,
         ]);
 

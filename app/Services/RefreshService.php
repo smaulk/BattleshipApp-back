@@ -58,7 +58,7 @@ final class RefreshService extends Service
             $this->blockTokenChain($refreshToken->chain);
             throw new HttpException(401, 'Сессия была заблокирована');
         }
-        if ($refreshToken->expired_in < now()) {
+        if ($refreshToken->expires_at < now()) {
             $refreshToken->block();
             throw new HttpException(401, 'Срок действия токена истек');
         }

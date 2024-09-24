@@ -17,7 +17,7 @@ use Throwable;
  * @property string|null $ip_address
  * @property string|null $user_agent
  * @property DateTimeInterface $created_at
- * @property DateTimeInterface $expired_in
+ * @property DateTimeInterface $expires_at
  */
 final class RefreshToken extends Model
 {
@@ -31,7 +31,7 @@ final class RefreshToken extends Model
     {
         return [
             'is_blocked' => 'boolean',
-            'expired_in' => 'datetime',
+            'expires_at' => 'datetime',
         ];
     }
 

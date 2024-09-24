@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use App\Dto\UpdateUserPasswordDto;
+use App\Rules\Confirmed;
 use Illuminate\Validation\Rules\Password;
 
 final class UpdateUserPasswordRequest extends AuthorizedRequest
@@ -12,8 +13,8 @@ final class UpdateUserPasswordRequest extends AuthorizedRequest
     public function rules(): array
     {
         return [
-            'current_password' => ['required', 'string'],
-            'new_password' => ['required', 'string', 'confirmed',
+            'currentPassword' => ['required', 'string'],
+            'newPassword' => ['required', 'string', new Confirmed,
                 Password::min(8)
                     ->letters()
                     ->numbers(),

@@ -21,13 +21,13 @@ final class FindUserTest extends Test
                 'data' => [
                     'id',
                     'nickname',
-                    'avatar_url'
+                    'avatarUrl'
                 ],
             ])
             ->assertJson(fn(AssertableJson $json) => $json
                 ->where('data.id', $user->id)
                 ->where('data.nickname', $user->nickname)
-                ->where('data.avatar_url', null)
+                ->where('data.avatarUrl', null)
             );
     }
 

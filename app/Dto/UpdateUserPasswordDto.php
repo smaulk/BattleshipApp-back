@@ -18,8 +18,8 @@ final readonly class UpdateUserPasswordDto extends Dto
     {
         $dto = new self();
         $dto->userId = (int)$request->route('userId');
-        $dto->currentPassword = $request->validated('current_password');
-        $dto->newPassword = $request->validated('new_password');
+        $dto->currentPassword = $request->validated('currentPassword');
+        $dto->newPassword = $request->validated('newPassword');
         $dto->ipAddress = $request->ip();
         $dto->userAgent = $request->userAgent();
         return $dto;

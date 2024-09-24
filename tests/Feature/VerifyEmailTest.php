@@ -26,9 +26,9 @@ final class VerifyEmailTest extends Test
 
         // Отправляем запрос на подтверждение почты
         $this->putJson("/api/v1/users/$id/email-verification", [
-            'hash'      => $hash,
-            'exp'       => $exp,
-            'signature' => $signature,
+            'hash'       => $hash,
+            'expiresAt' => $exp,
+            'signature'  => $signature,
         ])
             ->assertNoContent();
 
@@ -45,20 +45,20 @@ final class VerifyEmailTest extends Test
 
         // Отправляем запрос на подтверждение почты с истекшими данными
         $this->putJson("/api/v1/users/$user->id/email-verification", [
-            'hash'      => 'wrong-hash',
-            'exp'       => 1000,
-            'signature' => 'wrong-signature',
+            'hash'       => 'wrong-hash',
+            'expiresAt' => 1000,
+            'signature'  => 'wrong-signature',
         ])
             ->assertForbidden()
             ->assertJson([
-                'message' => 'Срок действия верификации истек'
+                'message' => 'Срок для верификации истек'
             ]);
 
         // Отправляем запрос на подтверждение почты с некорректными данными
         $this->putJson("/api/v1/users/$user->id/email-verification", [
-            'hash'      => 'wrong-hash',
-            'exp'       => time() + 1000,
-            'signature' => 'wrong-signature',
+            'hash'       => 'wrong-hash',
+            'expiresAt' => time() + 1000,
+            'signature'  => 'wrong-signature',
         ])
             ->assertBadRequest()
             ->assertJson([
@@ -68,9 +68,9 @@ final class VerifyEmailTest extends Test
         // Отправляем запрос на подтверждение почты с несуществующим id
         $wrongId = $user->id + 1;
         $this->putJson("/api/v1/users/$wrongId/email-verification", [
-            'hash'      => 'wrong-hash',
-            'exp'       => time() + 1000,
-            'signature' => 'wrong-signature',
+            'hash'       => 'wrong-hash',
+            'expiresAt' => time() + 1000,
+            'signature'  => 'wrong-signature',
         ])
             ->assertNotFound()
             ->assertJson([
