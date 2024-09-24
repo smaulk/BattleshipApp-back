@@ -20,7 +20,8 @@ Route::put('/users/{userId}/email-verification', [EmailVerificationController::c
 
 Route::group(['middleware' => 'auth:api'], function () {
 
-    Route::post('/users/{userId}/email-verification/send', [EmailVerificationController::class, 'resend']);
+    Route::post('/users/{userId}/email-verification/send', [EmailVerificationController::class, 'resend'])
+        ->middleware('throttle:2,1'); // Не более 2 запросов в минуту
 
     Route::get('/users', [UserController::class, 'get']);
     Route::put('/users/{userId}', [UserController::class, 'update']);
