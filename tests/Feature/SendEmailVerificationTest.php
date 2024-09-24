@@ -47,7 +47,7 @@ final class SendEmailVerificationTest extends Test
             ])
             ->assertUnprocessable()
             ->assertJson([
-                'message' => 'Электронная почта уже является подтвержденной'
+                'message' => 'Электронная почта уже подтверждена'
             ]);
 
         // Проверка, что ничего не было отправлено

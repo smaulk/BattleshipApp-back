@@ -16,7 +16,7 @@ final class SendEmailVerificationService extends Service
     {
         $user = User::query()->findOrFail($userId);
         if ($user->hasVerifiedEmail()) {
-            throw new HttpException(422, 'Электронная почта уже является подтвержденной');
+            throw new HttpException(422, 'Электронная почта уже подтверждена');
         }
 
         $user->sendEmailVerificationNotification();
