@@ -22,8 +22,8 @@ final class UpdatePasswordTest extends Test
         // Обновляем пароль
         $this
             ->putJson("api/v1/users/$user->id/password", [
-                'currentPassword'          => $pass1,
-                'newPassword'              => $pass2,
+                'currentPassword'         => $pass1,
+                'newPassword'             => $pass2,
                 'newPasswordConfirmation' => $pass2,
             ], [
                 'Authorization' => "Bearer $accessToken",
@@ -46,8 +46,8 @@ final class UpdatePasswordTest extends Test
         // Обновляем пароль, вводя неверный текущий пароль
         $this
             ->putJson("api/v1/users/$user->id/password", [
-                'currentPassword'          => 'wrong-password111',
-                'newPassword'              => 'password2',
+                'currentPassword'         => 'wrong-password111',
+                'newPassword'             => 'password2',
                 'newPasswordConfirmation' => 'password2',
             ], [
                 'Authorization' => "Bearer $accessToken",
@@ -60,8 +60,8 @@ final class UpdatePasswordTest extends Test
         // Обновляем пароль, вводя такой же новый пароль
         $this
             ->putJson("api/v1/users/$user->id/password", [
-                'currentPassword'          => $pass,
-                'newPassword'              => $pass,
+                'currentPassword'         => $pass,
+                'newPassword'             => $pass,
                 'newPasswordConfirmation' => $pass,
             ], [
                 'Authorization' => "Bearer $accessToken",

@@ -24,9 +24,9 @@ final class ResetPasswordTest extends Test
         $password = 'password123';
         $this
             ->postJson('/api/v1/password/reset', [
-                'token'                 => $token,
-                'email'                 => $user->email,
-                'password'              => $password,
+                'token'                => $token,
+                'email'                => $user->email,
+                'password'             => $password,
                 'passwordConfirmation' => $password,
             ])
             ->assertNoContent();
@@ -40,9 +40,9 @@ final class ResetPasswordTest extends Test
         // Отправлям запрос с не существующей почтой
         $this
             ->postJson('/api/v1/password/reset', [
-                'token'                 => 'token',
-                'email'                 => 'wrong@mail.ru',
-                'password'              => $password,
+                'token'                => 'token',
+                'email'                => 'wrong@mail.ru',
+                'password'             => $password,
                 'passwordConfirmation' => $password,
             ])
             ->assertNotFound()
@@ -59,9 +59,9 @@ final class ResetPasswordTest extends Test
         // Отправялем запрос с неверным токеном
         $this
             ->postJson('/api/v1/password/reset', [
-                'token'                 => 'token',
-                'email'                 => $user->email,
-                'password'              => $password,
+                'token'                => 'token',
+                'email'                => $user->email,
+                'password'             => $password,
                 'passwordConfirmation' => $password,
             ])
             ->assertBadRequest()

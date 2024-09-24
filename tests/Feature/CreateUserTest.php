@@ -15,9 +15,9 @@ final class CreateUserTest extends Test
         // Создаем нового пользователя
         $this
             ->postJson('api/v1/users', [
-                'nickname'              => $nickname = Str::random(),
-                'email'                 => $email = Str::random() . '@example.com',
-                'password'              => $password = Str::password(10),
+                'nickname'             => $nickname = Str::random(),
+                'email'                => $email = Str::random() . '@example.com',
+                'password'             => $password = Str::password(10),
                 'passwordConfirmation' => $password,
             ])
             ->assertCreated()
@@ -50,9 +50,9 @@ final class CreateUserTest extends Test
         // Пробуем создать пользователя с такими же данными
         $this
             ->postJson('api/v1/users', [
-                'nickname'              => $user->nickname,
-                'email'                 => $user->email,
-                'password'              => $password = Str::password(10),
+                'nickname'             => $user->nickname,
+                'email'                => $user->email,
+                'password'             => $password = Str::password(10),
                 'passwordConfirmation' => $password,
             ])
             ->assertUnprocessable()

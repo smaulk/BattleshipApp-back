@@ -13,8 +13,8 @@ final class ResetPasswordRequest extends Request
     public function rules(): array
     {
         return [
-            'token' => ['required'],
-            'email' => ['required', 'email'],
+            'token'    => ['required'],
+            'email'    => ['required', 'email'],
             'password' => ['required', 'string', new Confirmed,
                 Password::min(8)
                     ->letters()

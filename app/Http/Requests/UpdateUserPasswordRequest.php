@@ -14,7 +14,7 @@ final class UpdateUserPasswordRequest extends AuthorizedRequest
     {
         return [
             'currentPassword' => ['required', 'string'],
-            'newPassword' => ['required', 'string', new Confirmed,
+            'newPassword'     => ['required', 'string', new Confirmed,
                 Password::min(8)
                     ->letters()
                     ->numbers(),

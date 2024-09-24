@@ -14,7 +14,7 @@ class Confirmed implements DataAwareRule, ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $confirmField = $attribute . 'Confirmation';
-        if(Arr::get($this->data, $confirmField) !== $value) {
+        if (Arr::get($this->data, $confirmField) !== $value) {
             $fail('validation.confirmed')->translate();
         }
     }

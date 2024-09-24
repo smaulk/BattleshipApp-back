@@ -21,7 +21,7 @@ final class DeleteUserAvatarTest extends Test
         // Обновяем аватар
         $this
             ->putJson("/api/v1/users/$user->id/avatar", [
-                'avatar' =>  UploadedFile::fake()->image('avatar1.jpg'),
+                'avatar' => UploadedFile::fake()->image('avatar1.jpg'),
             ], [
                 'Authorization' => "Bearer $accessToken",
             ])

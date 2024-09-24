@@ -19,9 +19,9 @@ class UserResource extends JsonResource
         $user = $this->resource;
 
         return [
-            'id'       => $user->id,
-            'nickname' => $user->nickname,
-            'avatarUrl'   => $this->whenAppended('avatar_url'),
+            'id'        => $user->id,
+            'nickname'  => $user->nickname,
+            'avatarUrl' => $this->whenAppended('avatar_url'),
         ];
     }
 }
