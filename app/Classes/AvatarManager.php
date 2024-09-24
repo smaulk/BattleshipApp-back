@@ -8,34 +8,37 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManager;
+use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Imagick\Driver;
+use Intervention\Image\ImageManager;
 use Throwable;
 
 final class AvatarManager
 {
     public const SIZE = 150;
+    public const DISK_NAME = 'userAvatars';
 
     private Filesystem $disk;
 
-    public function __construct(string $disk = 'userAvatars')
+    public function __construct(string $disk = self::DISK_NAME)
     {
         $this->disk = Storage::disk($disk);
     }
 
     /**
-     * Сохраняет изображение на диске, изменяя его размер
+     * Сохраняет изображение на диске, изменяя его размер и кодирует в JPEG
      */
     public function save(UploadedFile $file, int $size = self::SIZE): string
     {
         $manager = new ImageManager(new Driver());
 
-        $filename = $file->hashName();
+        $filename = $this->getRandomFilename();
         try {
             $path = $this->disk->path($filename);
             $image = $manager->read($file);
             $image
                 ->resize($size, $size)
+                ->toJpeg(progressive: true)
                 ->save($path);
         } catch (Throwable $exception) {
             Log::error($exception);
@@ -43,6 +46,14 @@ final class AvatarManager
         }
 
         return $filename;
+    }
+
+    /**
+     * Возвращает случайное название файла
+     */
+    private function getRandomFilename(): string
+    {
+        return Str::ulid()->toBase32() . '.jpg';
     }
 
     /**

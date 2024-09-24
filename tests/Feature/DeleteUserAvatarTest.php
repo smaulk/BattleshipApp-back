@@ -21,14 +21,15 @@ final class DeleteUserAvatarTest extends Test
         // Обновяем аватар
         $this
             ->putJson("/api/v1/users/$user->id/avatar", [
-                'avatar' => $avatarFile1 = UploadedFile::fake()->image('avatar1.jpg'),
+                'avatar' =>  UploadedFile::fake()->image('avatar1.jpg'),
             ], [
                 'Authorization' => "Bearer $accessToken",
             ])
             ->assertNoContent();
 
-        // Проверяем наличие файла
-        $disk->assertExists($avatarFile1->hashName());
+        // Проверяем наличие файла и его запись в БД
+        $this->assertNotNull($filename = $user->fresh()?->avatar_filename);
+        $disk->assertExists($filename);
 
         // Проверяем удаление аватара
         $this
@@ -37,6 +38,7 @@ final class DeleteUserAvatarTest extends Test
             ])
             ->assertNoContent();
 
-        $disk->assertMissing($avatarFile1->hashName());
+        $disk->assertMissing($filename);
+        $this->assertNull($user->fresh()?->avatar_filename);
     }
 }

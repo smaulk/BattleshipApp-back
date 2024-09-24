@@ -18,6 +18,8 @@ final class SendEmailVerificationTest extends Test
         $accessToken = $this->jwt->createToken($user);
         Notification::fake();
 
+        // Проверяем, что почта не подтверждена
+        $this->assertNull($user->email_verified_at);
         // Отправляем запрос, на отправку письма для подтверждения почты
         $this
             ->post("/api/v1/users/$user->id/email-verification/send", [], [
@@ -45,7 +47,7 @@ final class SendEmailVerificationTest extends Test
             ])
             ->assertUnprocessable()
             ->assertJson([
-                'message' => 'Электронная почта уже была подтверждена'
+                'message' => 'Электронная почта уже является подтвержденной'
             ]);
 
         // Проверка, что ничего не было отправлено

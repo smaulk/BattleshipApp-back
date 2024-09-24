@@ -32,13 +32,12 @@ class ResetPasswordNotification extends Notification
     protected function resetUrl($notifiable): string
     {
         $query = http_build_query([
-            'token' => $this->token,
             'email' => $notifiable->getEmailForPasswordReset(),
         ]);
 
-        return env('APP_FRONT_URL')
-            . self::ROUTE . '?'
-            . $query;
+        return config('app.frontend_url')
+            . self::ROUTE
+            . "/$this->token?$query";
     }
 
     protected function buildMailMessage(string $url): MailMessage

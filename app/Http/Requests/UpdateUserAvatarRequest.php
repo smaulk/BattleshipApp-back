@@ -10,7 +10,7 @@ final class UpdateUserAvatarRequest extends AuthorizedRequest
     public function rules(): array
     {
         return [
-            'avatar' => 'required|image|mimes:jpeg,png,jpg,svg',
+            'avatar' => 'required|image',
         ];
     }
 

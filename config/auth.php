@@ -98,9 +98,13 @@ return [
         'users' => [
             'provider' => 'users',
             'table'    => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
-            'expire'   => 60, // Ожидание, для создания нового токена сброса пароля (в секундах)
-            'throttle' => 60, // Срок жизни токена для сброса пароля (в минутах)
+            'expire'   => 60, // Срок жизни токена для сброса пароля (в минутах)
+            'throttle' => 60, // Ожидание, для создания нового токена сброса пароля (в секундах)
         ],
+    ],
+
+    'verification' => [
+        'expire' => 60, // Срок действия ссылки на подтверждение почты
     ],
 
     /*
@@ -120,9 +124,9 @@ return [
     /*
      | Авторизация по JWT и REFRESH TOKEN
      */
-    'jwt' => [
-        'secret' => env('JWT_SECRET', ''),
-        'ttl' => env('JWT_TTL', 15), // Время жизни jwt токена (в минутах)
+    'jwt'              => [
+        'secret'  => env('JWT_SECRET', ''),
+        'ttl'     => env('JWT_TTL', 15), // Время жизни jwt токена (в минутах)
         'refresh' => [
             'ttl' => env('REFRESH_TTL', 30), // Время жизни refresh токена (в днях)
         ]

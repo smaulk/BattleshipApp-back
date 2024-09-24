@@ -20,8 +20,9 @@ class JwtSignature
         $algo = $header->getAlgo();
         $header = $header->getHeader();
         $payload = $payload->getPayload();
+        $signature = hash_hmac($algo, "$header.$payload", $key);
 
-        return hash_hmac($algo, "$header.$payload", $key) === $this->signature;
+        return hash_equals($signature, $this->signature);
     }
 
     /**

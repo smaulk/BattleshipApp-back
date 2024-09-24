@@ -7,9 +7,7 @@ use App\Dto\CreateUserDto;
 use App\Exceptions\HttpException;
 use App\Models\User;
 use App\Parents\Service;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Hash;
 use Throwable;
 
 final class CreateUserService extends Service
@@ -23,21 +21,6 @@ final class CreateUserService extends Service
         $this->validate($dto);
 
         return $this->createUser($dto);
-    }
-
-    /**
-     * Создает нового пользователя
-     * @throws Throwable
-     */
-    private function createUser(CreateUserDto $dto): User
-    {
-        $user = new User();
-        $user->nickname = $dto->nickname;
-        $user->email = $dto->email;
-        $user->password = Hash::make($dto->password);
-        $user->saveOrFail();
-
-        return $user;
     }
 
     /**
@@ -67,5 +50,20 @@ final class CreateUserService extends Service
             ->where('nickname', $dto->nickname)
             ->orWhere('email', $dto->email)
             ->get();
+    }
+
+    /**
+     * Создает нового пользователя
+     * @throws Throwable
+     */
+    private function createUser(CreateUserDto $dto): User
+    {
+        $user = new User();
+        $user->nickname = $dto->nickname;
+        $user->email = $dto->email;
+        $user->password = $dto->password;
+        $user->saveOrFail();
+
+        return $user;
     }
 }

@@ -8,8 +8,6 @@ use App\Exceptions\HttpException;
 use App\Models\RefreshToken;
 use App\Models\User;
 use App\Parents\Service;
-use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
 final class ResetPasswordService extends Service
@@ -20,7 +18,7 @@ final class ResetPasswordService extends Service
     public function run(ResetPasswordDto $dto): void
     {
         $status = Password::reset($dto->toArray(), function (User $user, string $password) {
-            $user->password = Hash::make($password);
+            $user->password = $password;
             $user->saveOrFail();
 
             $this->blockUserSessions($user->id);
@@ -31,7 +29,7 @@ final class ResetPasswordService extends Service
         }
         if ($status === Password::INVALID_TOKEN) {
             // Либо токен не найден, либо его срок действия истек
-            throw new HttpException(400, 'Неверный или истекший токен сброса пароля');
+            throw new HttpException(400, 'Недействительный токен сброса пароля');
         }
     }
 

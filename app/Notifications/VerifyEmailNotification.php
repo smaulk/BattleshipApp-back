@@ -2,15 +2,12 @@
 
 namespace App\Notifications;
 
-use Illuminate\Auth\Notifications\VerifyEmail;
+use App\Classes\Timestamp;
+use App\Classes\VerificationManager;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\URL;
 
 class VerifyEmailNotification extends Notification implements ShouldQueue
 {
@@ -32,16 +29,21 @@ class VerifyEmailNotification extends Notification implements ShouldQueue
 
     protected function verificationUrl($notifiable): string
     {
+        $manager = new VerificationManager();
         $id = $notifiable->getKey();
-        $hash = sha1($notifiable->getEmailForVerification());
+        $hash = $manager->hashString($notifiable->getEmailForVerification());
+        $exp = $manager->getNewExp();
+        $data = $manager->createData($id, $hash, $exp);
+        $signature = $manager->createSign($data);
+
         $query = http_build_query([
-            'id' => $id,
-            'hash' => $hash,
+            'exp'       => $exp,
+            'signature' => $signature,
         ]);
 
-        return env('APP_FRONT_URL')
-            . self::ROUTE . '?'
-            . $query;
+        return config('app.frontend_url')
+            . self::ROUTE
+            . "/$id/$hash?$query";
     }
 
     protected function buildMailMessage($url): MailMessage

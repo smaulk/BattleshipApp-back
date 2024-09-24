@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Classes\VerificationManager;
 use App\Dto\VerifyEmailDto;
 use App\Exceptions\HttpException;
 use App\Models\User;
@@ -10,34 +11,39 @@ use App\Parents\Service;
 
 final class VerifyEmailService extends Service
 {
+    /**
+     * Подтверждает почту пользователя
+     */
     public function run(VerifyEmailDto $dto): void
     {
+        if ($dto->exp < time()) {
+            throw new HttpException(403, 'Срок действия верификации истек');
+        }
+
         $user = User::query()->findOrFail($dto->userId);
+        $this->validate($user, $dto);
 
-        // Проверка, что данные корректные
-        if (
-            !$this->isIdValid($user, $dto->id) ||
-            !$this->isHashValid($user, $dto->hash)
-        ) {
-            throw new HttpException(403, 'Неверные данные для верификации');
+        if ($user->hasVerifiedEmail()) {
+            return;
         }
-
         // Подтверждаем почту
-        if (!$user->hasVerifiedEmail()) {
-            if (!$user->markEmailAsVerified()) {
-                throw new HttpException(500);
-            }
+        if (!$user->markEmailAsVerified()) {
+            throw new HttpException(500);
         }
     }
 
-
-    protected function isIdValid(User $user, string $id): bool
+    private function validate(User $user, VerifyEmailDto $dto): void
     {
-        return hash_equals((string)$user->getKey(), $id);
-    }
+        $manager = new VerificationManager();
+        $hash = $manager->hashString($user->getEmailForVerification());
+        $data = $manager->createData($user->getKey(), $hash, $dto->exp);
 
-    protected function isHashValid(User $user, string $hash): bool
-    {
-        return hash_equals(sha1($user->getEmailForVerification()), $hash);
+        // Проверка данных
+        if (
+            !hash_equals($hash, $dto->hash) ||
+            !$manager->checkSign($data, $dto->signature)
+        ) {
+            throw new HttpException(400, 'Недействительные данные для верификации');
+        }
     }
 }

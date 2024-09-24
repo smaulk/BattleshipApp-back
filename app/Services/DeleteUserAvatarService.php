@@ -12,7 +12,6 @@ use Throwable;
 
 final class DeleteUserAvatarService extends Service
 {
-
     /**
      * @throws Throwable
      */

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace App\Classes\Auth;
 
+use App\Classes\Timestamp;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Carbon;
 
 class Jwt
 {
@@ -33,7 +33,7 @@ class Jwt
         $this->payload->setDecodedPayload([
             'id'       => $user->getAuthIdentifier(),
             'nickname' => $user->nickname,
-            'exp'      => Carbon::now()->addMinutes($this->getTtl()),
+            'exp'      => Timestamp::now()->addMinutes($this->getTtl())->get(),
         ]);
 
         $key = $this->getSecret();

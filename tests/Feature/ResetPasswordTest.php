@@ -66,7 +66,7 @@ final class ResetPasswordTest extends Test
             ])
             ->assertBadRequest()
             ->assertJson([
-                'message' => 'Неверный или истекший токен сброса пароля'
+                'message' => 'Недействительный токен сброса пароля'
             ]);
     }
 }

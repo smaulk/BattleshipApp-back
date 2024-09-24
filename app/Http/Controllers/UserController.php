@@ -16,7 +16,6 @@ use Illuminate\Http\JsonResponse;
 
 final class UserController extends Controller
 {
-
     public function get(GetUsersRequest $request): JsonResponse
     {
         $users = (new GetUsersService())->run(

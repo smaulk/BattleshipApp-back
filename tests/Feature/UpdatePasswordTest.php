@@ -15,7 +15,7 @@ final class UpdatePasswordTest extends Test
         $pass2 = 'password2';
         /** @var User $user */
         $user = User::factory()->create([
-            'password' => Hash::make($pass1),
+            'password' => $pass1,
         ]);
         $accessToken = $this->jwt->createToken($user);
 
@@ -39,7 +39,7 @@ final class UpdatePasswordTest extends Test
         /** @var User $user */
         $pass = 'password1';
         $user = User::factory()->create([
-            'password' => Hash::make($pass),
+            'password' => $pass,
         ]);
         $accessToken = $this->jwt->createToken($user);
 

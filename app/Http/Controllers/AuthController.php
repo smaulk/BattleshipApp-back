@@ -12,7 +12,6 @@ use Illuminate\Http\JsonResponse;
 
 final class AuthController extends Controller
 {
-
     public function login(LoginRequest $request): JsonResponse
     {
         [$accessToken, $refreshToken] = (new LoginService())

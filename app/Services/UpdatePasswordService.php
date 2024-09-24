@@ -28,7 +28,7 @@ final class UpdatePasswordService extends Service
             throw new HttpException(422, 'Новый пароль не должен совпадать с текущим');
         }
 
-        $user->password = Hash::make($dto->newPassword);
+        $user->password = $dto->newPassword;
         $user->saveOrFail();
         $this->blockUserSessions($dto->userId);
     }

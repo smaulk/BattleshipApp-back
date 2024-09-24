@@ -9,11 +9,14 @@ use App\Parents\Service;
 
 final class SendEmailVerificationService extends Service
 {
+    /**
+     * Отправляет письмо на почту пользователя с ссылкой на подтверждение почты
+     */
     public function run(int $userId): void
     {
         $user = User::query()->findOrFail($userId);
         if ($user->hasVerifiedEmail()) {
-            throw new HttpException(422, 'Электронная почта уже была подтверждена');
+            throw new HttpException(422, 'Электронная почта уже является подтвержденной');
         }
 
         $user->sendEmailVerificationNotification();
