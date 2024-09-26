@@ -9,7 +9,7 @@ final class UserObserver extends Observer
 {
     public function created(User $user): void
     {
-        //  Отправка письма подтверждения почты
+        // Отправка письма для подтверждения почты
         if (!$user->hasVerifiedEmail()) {
             $user->sendEmailVerificationNotification();
         }
@@ -17,6 +17,7 @@ final class UserObserver extends Observer
 
     public function updating(User $user): void
     {
+        // Если изменился email, убираем время подтверждения почты
         if ($user->isDirty('email')) {
             $user->email_verified_at = null;
         }
@@ -24,6 +25,7 @@ final class UserObserver extends Observer
 
     public function updated(User $user): void
     {
+        // Если изменился email, отправляем новое письмо для подтверждения
         if ($user->isDirty('email')) {
             $user->sendEmailVerificationNotification();
         }

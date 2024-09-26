@@ -18,7 +18,7 @@ final class UserAvatarController extends Controller
             $request->toDto()
         );
 
-        return $this->json([], 204);
+        return $this->json(status: 204);
     }
 
     public function delete(AuthorizedRequest $request): JsonResponse
@@ -27,6 +27,6 @@ final class UserAvatarController extends Controller
             (int)$request->route('userId')
         );
 
-        return $this->json([], 204);
+        return $this->json(status: 204);
     }
 }

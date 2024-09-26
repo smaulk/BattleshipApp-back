@@ -19,7 +19,7 @@ final class PasswordController extends Controller
             $request->toDto()
         );
 
-        return $this->json([], 204);
+        return $this->json(status: 204);
     }
 
     public function forgot(ForgotPasswordRequest $request): JsonResponse
@@ -28,7 +28,7 @@ final class PasswordController extends Controller
             $request->validated('email')
         );
 
-        return $this->json([], 204);
+        return $this->json(status: 204);
     }
 
     public function reset(ResetPasswordRequest $request): JsonResponse
@@ -37,6 +37,6 @@ final class PasswordController extends Controller
             $request->toDto()
         );
 
-        return $this->json([], 204);
+        return $this->json(status: 204);
     }
 }

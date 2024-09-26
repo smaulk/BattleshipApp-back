@@ -18,7 +18,7 @@ final class EmailVerificationController extends Controller
             $request->toDto()
         );
 
-        return response()->json([], 204);
+        return $this->json(status: 204);
     }
 
     public function resend(AuthorizedRequest $request): JsonResponse
@@ -27,6 +27,6 @@ final class EmailVerificationController extends Controller
             (int)$request->route('userId')
         );
 
-        return $this->json([], 204);
+        return $this->json(status: 204);
     }
 }

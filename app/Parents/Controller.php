@@ -43,11 +43,6 @@ abstract class Controller
      */
     protected function collection(iterable $items, string $resource): AnonymousResourceCollection
     {
-        $resources = [];
-        foreach ($items as $item) {
-            $resources[] = new $resource($item);
-        }
-
-        return $resource::collection($resources);
+        return $resource::collection($items);
     }
 }

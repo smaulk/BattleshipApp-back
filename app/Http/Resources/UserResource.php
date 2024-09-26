@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Resources;
 
@@ -17,11 +18,17 @@ class UserResource extends JsonResource
     {
         /** @var User $user */
         $user = $this->resource;
+        // Если пользователь совпадает с авторизованным
+        $isCurrentUser = $request->user()?->getKey() === $user->getKey();
 
         return [
             'id'        => $user->id,
             'nickname'  => $user->nickname,
             'avatarUrl' => $this->whenAppended('avatar_url'),
+            $this->mergeWhen($isCurrentUser, [
+                'email'       => $user->email,
+                'isVerified' => $user->hasVerifiedEmail(),
+            ]),
         ];
     }
 }
