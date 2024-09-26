@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -16,7 +17,7 @@ class DatabaseSeeder extends Seeder
 
         User::factory()->unverified()->create([
             'nickname' => 'user',
-            'email' => 'user@mail.ru',
+            'email'    => 'user@mail.ru',
             'password' => 'user12345'
         ]);
 

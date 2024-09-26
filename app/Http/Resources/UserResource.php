@@ -26,7 +26,7 @@ class UserResource extends JsonResource
             'nickname'  => $user->nickname,
             'avatarUrl' => $this->whenAppended('avatar_url'),
             $this->mergeWhen($isCurrentUser, [
-                'email'       => $user->email,
+                'email'      => $user->email,
                 'isVerified' => $user->hasVerifiedEmail(),
             ]),
         ];
