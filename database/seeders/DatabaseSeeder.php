@@ -6,6 +6,7 @@ use App\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Notification;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,6 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        Notification::fake();
 
         User::factory()->unverified()->create([
             'nickname' => 'user',
