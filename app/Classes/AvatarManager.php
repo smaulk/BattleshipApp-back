@@ -27,6 +27,7 @@ final class AvatarManager
 
     /**
      * Сохраняет изображение на диске, изменяя его размер и кодирует в JPEG
+     * @return string Название сохраненного файла
      */
     public function save(UploadedFile $file, int $size = self::SIZE): string
     {

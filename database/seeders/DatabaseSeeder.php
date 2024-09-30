@@ -17,13 +17,9 @@ class DatabaseSeeder extends Seeder
     {
         Notification::fake();
 
-        User::factory()->unverified()->create([
-            'nickname' => 'user',
-            'email'    => 'user@mail.ru',
-            'password' => 'user12345'
+        $this->call([
+            UserSeeder::class,
+            FriendshipSeeder::class,
         ]);
-
-        User::factory(5)->unverified()->create();
-        User::factory(5)->create();
     }
 }

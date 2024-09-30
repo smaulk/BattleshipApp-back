@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Classes\AvatarManager;
+use App\Enums\FriendshipStatus;
+use App\Enums\FriendshipType;
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
 use App\Parents\Model;
@@ -15,8 +17,12 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 
 /**
  * @property int $id
@@ -97,4 +103,33 @@ final class User extends Model implements
     {
         return 'Пользователь не найден';
     }
+
+    /**
+     * Дружеские отношение авторизованного пользователя по отношению к данному
+     * @param int $userId авторизованный пользователь
+     */
+    public function friendshipType(int $userId): FriendshipType|null
+    {
+        [$minId, $maxId] = sort_nums($this->id, $userId);
+        $friendship = DB::table('friendships')
+            ->select('status')
+            ->where('uid1', $minId)
+            ->where('uid2', $maxId)
+            ->first();
+
+        if (is_null($friendship)) {
+            return null;
+        }
+
+        $status = $friendship->status;
+        $isRequester = $minId === $userId; // Флаг, указывающий, кто является инициатором
+
+        return match ($status) {
+            FriendshipStatus::REQ_UID1->name => $isRequester ? FriendshipType::OUTGOING : FriendshipType::INCOMING,
+            FriendshipStatus::REQ_UID2->name => $isRequester ? FriendshipType::INCOMING : FriendshipType::OUTGOING,
+            FriendshipStatus::FRIEND->name   => FriendshipType::FRIEND,
+            default                          => null,
+        };
+    }
+
 }
