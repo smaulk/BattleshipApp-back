@@ -9,16 +9,21 @@ use Illuminate\Support\Collection;
 
 abstract class PaginateService extends Service
 {
-    /**
-     * Указывается в виде LIMIT + 1,
-     * т.к. необходимо выполнить проверку, на наличие оставшихся элементов в таблице
-     */
-    protected const LIMIT = 51;
+    private const LIMIT = 50;
 
     /**
      * Возвращает имя поля, которое будет использоваться для получения идентификатора для пагинации.
      */
     abstract protected function getPaginateId(): string;
+
+    /**
+     * Указывается в виде LIMIT + 1,
+     * т.к. необходимо выполнить проверку, на наличие оставшихся элементов в таблице
+     */
+    protected function getLimit(): int
+    {
+        return self::LIMIT + 1;
+    }
 
     /**
      * Пагинация элементов коллекции
@@ -31,7 +36,7 @@ abstract class PaginateService extends Service
         }
 
         // Проверка, что элементы в таблице еще остались
-        $hasMore = $items->count() > self::LIMIT - 1;
+        $hasMore = $items->count() > self::LIMIT;
         // Если есть больше данных, убираем последний элемент (он был для проверки)
         if ($hasMore) {
             $items->pop();

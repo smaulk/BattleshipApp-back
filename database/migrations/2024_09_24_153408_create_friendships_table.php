@@ -22,8 +22,7 @@ return new class extends Migration {
                 ->index()
                 ->constrained('users')
                 ->cascadeOnDelete();;
-            $table->enum('status', FriendshipStatus::names())
-                ->index();
+            $table->enum('status', FriendshipStatus::names());
             $table->timestamps();
 
             $table->unique(['uid1', 'uid2']);

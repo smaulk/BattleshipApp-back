@@ -33,7 +33,7 @@ final class GetUsersService extends PaginateService
             )
             ->where('nickname', 'like', "$dto->nickname%")
             ->orderBy('id')
-            ->limit(self::LIMIT)
+            ->limit($this->getLimit())
             ->get();
     }
 

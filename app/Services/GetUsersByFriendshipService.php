@@ -78,7 +78,7 @@ final class GetUsersByFriendshipService extends PaginateService
                 }
             )
             ->orderByDesc('friendships.id')
-            ->limit(self::LIMIT) // Ограничиваем количество записей
+            ->limit($this->getLimit()) // Ограничиваем количество записей
             ->get(); // Добавляем 1 для проверки наличия следующих записей
     }
 

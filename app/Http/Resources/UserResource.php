@@ -21,6 +21,7 @@ class UserResource extends JsonResource
         // Если пользователь совпадает с авторизованным
         $currentUserId = $request->user()?->getKey();
         $isCurrentUser = $currentUserId === $user->id;
+        $isUsersRoute = $request->is('*/users/*');
 
         return [
             'id'        => $user->id,
@@ -32,8 +33,10 @@ class UserResource extends JsonResource
             ]),
 
             'friendshipType' => $this->when(
-                !$isCurrentUser && !is_null($currentUserId),
-                function () use($user, $currentUserId) {
+                !$isUsersRoute
+                && !$isCurrentUser
+                && !is_null($currentUserId),
+                function () use ($user, $currentUserId) {
                     $type = $user->friendshipType((int)$currentUserId);
                     return $type?->name;
                 },

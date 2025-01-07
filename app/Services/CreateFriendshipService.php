@@ -3,33 +3,21 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Dto\CreateFriendshipDto;
+use App\Dto\FriendshipDto;
 use App\Enums\FriendshipStatus;
 use App\Exceptions\HttpException;
-use App\Models\User;
-use App\Parents\Service;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
 
-final class CreateFriendshipService extends Service
+final class CreateFriendshipService extends FriendshipService
 {
-    public function run(CreateFriendshipDto $dto)
+    public function run(FriendshipDto $dto): void
     {
-        if ($dto->userId === $dto->friendId) {
-            throw new HttpException(400, 'Идентификаторы пользователей совпадают');
-        }
-
-        if (
-            !User::query()->where('id', $dto->userId)->exists() ||
-            !User::query()->where('id', $dto->friendId)->exists()
-        ) {
-            throw new HttpException(400, User::getNotFoundMessage());
-        }
+        $this->checkIds($dto->userId, $dto->friendId);
 
         if ($this->isExistsFriendship($dto->userId, $dto->friendId)) {
             throw new HttpException(400, 'Запись уже существует');
         }
-
         if (!$this->createFriendRequest($dto->userId, $dto->friendId)) {
             throw new HttpException(500);
         }

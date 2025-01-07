@@ -46,5 +46,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/users/{userId}/friends', [FriendshipsController::class, 'getFriends']);
     Route::get('/users/{userId}/out-requests', [FriendshipsController::class, 'getOutgoing']);
     Route::get('/users/{userId}/in-requests', [FriendshipsController::class, 'getIncoming']);
-    Route::post('/friend-requests', [FriendshipsController::class, 'create']);
+    Route::post('/friendships', [FriendshipsController::class, 'create']);
+    Route::put('/friendships/{friendId}', [FriendshipsController::class, 'accept']);
+    Route::delete('/friendships/{friendId}', [FriendshipsController::class, 'delete']);
 });

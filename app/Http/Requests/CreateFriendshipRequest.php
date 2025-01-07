@@ -2,12 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Dto\CreateFriendshipDto;
+use App\Dto\FriendshipDto;
 use App\Parents\Request;
 
 class CreateFriendshipRequest extends Request
 {
-
     public function rules(): array
     {
         return [
@@ -15,8 +14,8 @@ class CreateFriendshipRequest extends Request
         ];
     }
 
-    public function toDto(): CreateFriendshipDto
+    public function toDto(): FriendshipDto
     {
-        return CreateFriendshipDto::fromRequest($this);
+        return FriendshipDto::fromCreateRequest($this);
     }
 }
