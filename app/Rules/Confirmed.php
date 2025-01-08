@@ -13,6 +13,7 @@ class Confirmed implements DataAwareRule, ValidationRule
 
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        // Чтобы поле в запросе было в camelCase
         $confirmField = $attribute . 'Confirmation';
         if (Arr::get($this->data, $confirmField) !== $value) {
             $fail('validation.confirmed')->translate();

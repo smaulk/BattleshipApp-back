@@ -23,11 +23,9 @@ final class GetFriendshipTypeService extends Service
         if (is_null($friendship)) {
             return null;
         }
-
-        $status = $friendship->status;
         $isRequester = $minId === $dto->friendId; // Флаг, указывающий, кто является инициатором
 
-        return match ($status) {
+        return match ($friendship->status) {
             FriendshipStatus::REQ_UID1->name => $isRequester ? FriendshipType::OUTGOING : FriendshipType::INCOMING,
             FriendshipStatus::REQ_UID2->name => $isRequester ? FriendshipType::INCOMING : FriendshipType::OUTGOING,
             FriendshipStatus::FRIEND->name   => FriendshipType::FRIEND,

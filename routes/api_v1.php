@@ -33,15 +33,7 @@ Route::group(['middleware' => 'auth:api'], function () {
         ->middleware('throttle:2,1'); // Не более 2 запросов в минуту
 });
 // endregion
-
-/*
- * GET /users/{userId}/friends получить друзей пользователя
- * DELETE /users/{userId}/friends/{friendId} удалить друга
- * POST /friend-requests создать запрос в друзья
- * PUT /friend-requests/{requestId} принять запрос в друзья
- * DELETE /friend-requests/{requestId} отклонить(отменить) запрос в друзья
- */
-
+// region Friendship
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/users/{userId}/friends', [FriendshipsController::class, 'getFriends']);
     Route::get('/users/{userId}/out-requests', [FriendshipsController::class, 'getOutgoing']);
@@ -50,3 +42,4 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('/friendships/{friendId}', [FriendshipsController::class, 'accept']);
     Route::delete('/friendships/{friendId}', [FriendshipsController::class, 'delete']);
 });
+// endregion

@@ -5,9 +5,6 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Parents\Test;
-use App\Services\ForgotPasswordService;
-use Illuminate\Auth\Passwords\PasswordBrokerManager;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 

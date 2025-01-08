@@ -22,6 +22,7 @@ final class AcceptFriendshipService extends FriendshipService
             ? FriendshipStatus::REQ_UID2
             : FriendshipStatus::REQ_UID1;
 
+        // Если такая запись существует, обновляем статус
         DB::table('friendships')
             ->where('uid1', $minId)
             ->where('uid2', $maxId)
