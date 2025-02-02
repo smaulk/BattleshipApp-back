@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Dto\FriendshipDto;
 use App\Enums\FriendshipStatus;
 use App\Enums\FriendshipType;
+use App\Models\Friendship;
 use App\Parents\Service;
 use Illuminate\Support\Facades\DB;
 
@@ -13,17 +14,16 @@ final class GetFriendshipTypeService extends Service
 {
     public function run(FriendshipDto $dto): FriendshipType|null
     {
-        [$minId, $maxId] = sort_nums($dto->userId, $dto->friendId);
-        $friendship = DB::table('friendships')
+        $friendship = Friendship::query()
             ->select('status')
-            ->where('uid1', $minId)
-            ->where('uid2', $maxId)
+            ->findByUsers($dto->userId, $dto->friendId)
             ->first();
 
-        if (is_null($friendship)) {
+        if (!$friendship) {
             return null;
         }
-        $isRequester = $minId === $dto->friendId; // Флаг, указывающий, кто является инициатором
+        // Флаг, указывающий, кто является инициатором
+        $isRequester = $dto->userId > $dto->friendId;
 
         return match ($friendship->status) {
             FriendshipStatus::REQ_UID1->name => $isRequester ? FriendshipType::OUTGOING : FriendshipType::INCOMING,

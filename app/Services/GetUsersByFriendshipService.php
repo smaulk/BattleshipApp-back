@@ -8,7 +8,6 @@ use App\Dto\PaginateDto;
 use App\Enums\FriendshipStatus;
 use App\Enums\FriendshipType;
 use App\Models\User;
-use App\Parents\Service;
 use Illuminate\Database\Eloquent\Collection;
 
 final class GetUsersByFriendshipService extends PaginateService
@@ -65,18 +64,12 @@ final class GetUsersByFriendshipService extends PaginateService
                             }
                         );
                 })
-            ->when(
-                $dto->startId !== null,
-                function ($query) use ($dto) {
+            ->when(!empty($dto->startId), function ($query) use ($dto) {
                     $query->where('friendships.id', '<', $dto->startId); // Фильтруем по ID в friendships
-                }
-            )
-            ->when(
-                $dto->nickname !== null,
-                function ($query) use ($dto) {
+            })
+            ->when(!empty($dto->nickname), function ($query) use ($dto) {
                     $query->where('users.nickname', 'like', "$dto->nickname%");
-                }
-            )
+            })
             ->orderByDesc('friendships.id')
             ->limit($this->getLimit()) // Ограничиваем количество записей
             ->get(); // Добавляем 1 для проверки наличия следующих записей

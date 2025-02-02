@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Enums\FriendshipStatus;
+use App\Models\Friendship;
 use App\Models\User;
 use App\Parents\Test;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,7 @@ final class DeleteFriendshipTest extends Test
         $user2 = User::factory()->create();
         $accessToken2 = $this->jwt->createToken($user2);
         // Создаем дружбу между пользователями
-        DB::table('friendships')->insert([
+        Friendship::create([
             'uid1' => $user1->id,
             'uid2' => $user2->id,
             'status' => FriendshipStatus::REQ_UID1,
@@ -43,7 +44,7 @@ final class DeleteFriendshipTest extends Test
         $user2 = User::factory()->create();
 
         // Создаем дружбу между пользователями
-        DB::table('friendships')->insert([
+        Friendship::create([
             'uid1' => $user1->id,
             'uid2' => $user2->id,
             'status' => FriendshipStatus::REQ_UID1,
@@ -69,7 +70,7 @@ final class DeleteFriendshipTest extends Test
         $user2 = User::factory()->create();
 
         // Создаем дружбу между пользователями
-        DB::table('friendships')->insert([
+        Friendship::create([
             'uid1' => $user1->id,
             'uid2' => $user2->id,
             'status' => FriendshipStatus::FRIEND,

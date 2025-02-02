@@ -5,7 +5,8 @@ namespace App\Services;
 
 use App\Dto\FriendshipDto;
 use App\Enums\FriendshipStatus;
-use Illuminate\Support\Facades\DB;
+use App\Exceptions\HttpException;
+use App\Models\Friendship;
 
 final class AcceptFriendshipService extends FriendshipService
 {
@@ -15,18 +16,31 @@ final class AcceptFriendshipService extends FriendshipService
         $this->acceptFriendship($dto->userId, $dto->friendId);
     }
 
-    private function acceptFriendship(int $uid1, int $uid2): void
+    private function acceptFriendship(int $userId, int $friendId): void
     {
-        [$minId, $maxId] = sort_nums($uid1, $uid2);
-        $status = $minId === $uid1
+        $friendship = $this->getFriendship($userId, $friendId);
+        if ($friendship->status === FriendshipStatus::FRIEND) {
+            return;
+        }
+        if (!$this->canAcceptFriendship($friendship, $userId, $friendId)) {
+            throw new HttpException(400, "Нельзя принять отправленную заявку");
+        }
+
+        $friendship->status = FriendshipStatus::FRIEND;
+        $friendship->saveOrFail();
+    }
+
+    private function getFriendship(int $userId, int $friendId): Friendship
+    {
+        return Friendship::findByUsers($userId, $friendId)->firstOrFail();
+    }
+
+    private function canAcceptFriendship(Friendship $friendship, int $userId, int $friendId): bool
+    {
+        $expectedStatus = $userId < $friendId
             ? FriendshipStatus::REQ_UID2
             : FriendshipStatus::REQ_UID1;
 
-        // Если такая запись существует, обновляем статус
-        DB::table('friendships')
-            ->where('uid1', $minId)
-            ->where('uid2', $maxId)
-            ->where('status', $status)
-            ->update(['status' => FriendshipStatus::FRIEND]);
+        return $friendship->status === $expectedStatus;
     }
 }

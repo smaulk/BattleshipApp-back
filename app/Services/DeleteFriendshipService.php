@@ -4,23 +4,27 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Dto\FriendshipDto;
-use Illuminate\Support\Facades\DB;
+use App\Exceptions\HttpException;
+use App\Models\Friendship;
 
 final class DeleteFriendshipService extends FriendshipService
 {
     public function run(FriendshipDto $dto): void
     {
         $this->checkIds($dto->userId, $dto->friendId);
-        $this->deleteFriendship($dto->userId, $dto->friendId);
+        if (!$this->deleteFriendship($dto->userId, $dto->friendId)) {
+            throw new HttpException(500);
+        }
     }
 
-    private function deleteFriendship(int $uid1, int $uid2): void
+    private function deleteFriendship(int $userId, int $friendId): bool
     {
-        [$minId, $maxId] = sort_nums($uid1, $uid2);
+        $friendship = Friendship::findByUsers($userId, $friendId)->first();
+        // Если записи нет, возвращаем true, так как ошибок не возникло
+        if (!$friendship) {
+            return true;
+        }
 
-        DB::table('friendships')
-            ->where('uid1', $minId)
-            ->where('uid2', $maxId)
-            ->delete();
+        return $friendship->delete();
     }
 }

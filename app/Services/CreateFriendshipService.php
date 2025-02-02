@@ -6,50 +6,36 @@ namespace App\Services;
 use App\Dto\FriendshipDto;
 use App\Enums\FriendshipStatus;
 use App\Exceptions\HttpException;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Friendship;
 
 final class CreateFriendshipService extends FriendshipService
 {
     public function run(FriendshipDto $dto): void
     {
         $this->checkIds($dto->userId, $dto->friendId);
-
         if ($this->isExistsFriendship($dto->userId, $dto->friendId)) {
             throw new HttpException(400, 'Запись уже существует');
         }
-        if (!$this->createFriendRequest($dto->userId, $dto->friendId)) {
-            throw new HttpException(500);
-        }
+
+        $this->createFriendRequest($dto->userId, $dto->friendId);
     }
 
     private function isExistsFriendship(int $uid1, int $uid2): bool
     {
-        return $this->findFriendship($uid1, $uid2)->exists();
+        return Friendship::findByUsers($uid1, $uid2)->exists();
     }
 
-    private function findFriendship(int $uid1, int $uid2): Builder
+    private function createFriendRequest(int $userId, int $friendId): void
     {
-        [$minId, $maxId] = sort_nums($uid1, $uid2);
-        return DB::table('friendships')
-            ->where('uid1', $minId)
-            ->where('uid2', $maxId);
-    }
-
-    private function createFriendRequest(int $uid1, int $uid2): bool
-    {
-        [$minId, $maxId] = sort_nums($uid1, $uid2);
-        $status = $minId === $uid1
+        [$minId, $maxId] = sort_nums($userId, $friendId);
+        $status = $minId === $userId
             ? FriendshipStatus::REQ_UID1
             : FriendshipStatus::REQ_UID2;
 
-        return DB::table('friendships')
-            ->insert([
-                'uid1'       => $minId,
-                'uid2'       => $maxId,
-                'status'     => $status,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+        $friendship = new Friendship();
+        $friendship->uid1 = $minId;
+        $friendship->uid2 = $maxId;
+        $friendship->status = $status;
+        $friendship->saveOrFail();
     }
 }

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\FriendshipStatus;
+use App\Models\Friendship;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -46,21 +47,14 @@ class FriendshipSeeder extends Seeder
     {
         [$minId, $maxId] = sort_nums($uid1, $uid2);
 
-        if (
-            DB::table('friendships')
-                ->where('uid1', $minId)
-                ->where('uid2', $maxId)
-                ->exists()
-        ) {
+        if (Friendship::query()->findByUsers($uid1, $uid2)->exists()) {
             return;
         }
 
-        DB::table('friendships')->insert([
+        Friendship::query()->create([
             'uid1'       => $minId,
             'uid2'       => $maxId,
             'status'     => $this->statuses[array_rand($this->statuses)],
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
     }
 }

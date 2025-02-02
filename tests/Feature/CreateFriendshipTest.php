@@ -59,7 +59,7 @@ final class CreateFriendshipTest extends Test
             ], [
                 'Authorization' => "Bearer $accessToken",
             ])
-            ->assertBadRequest()
+            ->assertNotFound()
             ->assertJson([
                 'message' => 'Пользователь не найден'
             ]);
