@@ -20,6 +20,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 
 /**
@@ -37,7 +38,7 @@ final class User extends Model implements
     CanResetPasswordContract,
     MustVerifyEmailContract
 {
-    use Authenticatable, Notifiable, HasFactory, CanResetPassword, MustVerifyEmail;
+    use Authenticatable, Notifiable, HasFactory, CanResetPassword, MustVerifyEmail, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

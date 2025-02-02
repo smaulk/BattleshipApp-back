@@ -20,7 +20,6 @@ class FriendshipSeeder extends Seeder
     public function run(): void
     {
         $this->statuses = FriendshipStatus::names();
-
         $count = User::query()->count();
 
         // Создаем случайные связи 1 пользователя с остальными
@@ -45,13 +44,12 @@ class FriendshipSeeder extends Seeder
      */
     private function createFriendship(int $uid1, int $uid2): void
     {
-        [$minId, $maxId] = sort_nums($uid1, $uid2);
-
-        if (Friendship::query()->findByUsers($uid1, $uid2)->exists()) {
+        if (Friendship::findByUsers($uid1, $uid2)->exists()) {
             return;
         }
 
-        Friendship::query()->create([
+        [$minId, $maxId] = sort_nums($uid1, $uid2);
+        Friendship::create([
             'uid1'       => $minId,
             'uid2'       => $maxId,
             'status'     => $this->statuses[array_rand($this->statuses)],

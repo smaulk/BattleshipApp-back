@@ -24,6 +24,7 @@ return new class extends Migration {
                 ->cascadeOnDelete();;
             $table->enum('status', FriendshipStatus::names());
             $table->timestamps();
+            $table->softDeletes();
 
             $table->unique(['uid1', 'uid2']);
         });

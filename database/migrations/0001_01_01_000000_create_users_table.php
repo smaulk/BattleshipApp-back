@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('avatar_filename', 63)->nullable();
             $table->string('password');
             $table->timestamps();
+            $table->softDeletes();
         });
 
        Schema::create('password_reset_tokens', function (Blueprint $table) {

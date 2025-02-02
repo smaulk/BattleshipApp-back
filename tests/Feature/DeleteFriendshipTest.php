@@ -32,7 +32,7 @@ final class DeleteFriendshipTest extends Test
             ])
             ->assertNoContent();
         // Проверяем, что запись удалена
-        $this->assertDatabaseEmpty('friendships');
+        $this->assertEmpty(Friendship::all());
     }
 
     public function testDeleteFriendshipFromOut(): void
@@ -58,7 +58,7 @@ final class DeleteFriendshipTest extends Test
             ])
             ->assertNoContent();
         // Проверяем, что запись удалена
-        $this->assertDatabaseEmpty('friendships');
+        $this->assertEmpty(Friendship::all());
     }
 
     public function testDeleteFriendshipFromFriends(): void
@@ -84,6 +84,6 @@ final class DeleteFriendshipTest extends Test
             ])
             ->assertNoContent();
         // Проверяем, что запись удалена
-        $this->assertDatabaseEmpty('friendships');
+        $this->assertEmpty(Friendship::all());
     }
 }
