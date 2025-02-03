@@ -7,7 +7,6 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Parents\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -32,9 +31,12 @@ final class Friendship extends Model
         'status'
     ];
 
-    protected $casts = [
-        'status' => FriendshipStatus::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'status' => FriendshipStatus::class,
+        ];
+    }
 
     public static function getNotFoundMessage(): string
     {
