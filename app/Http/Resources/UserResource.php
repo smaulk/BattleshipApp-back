@@ -9,11 +9,6 @@ use Illuminate\Http\Request;
 
 class UserResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         /** @var User $user */
@@ -21,7 +16,9 @@ class UserResource extends JsonResource
         // Если пользователь совпадает с авторизованным
         $currentUserId = $request->user()?->getKey();
         $isCurrentUser = $currentUserId === $user->id;
-        $isUsersRoute = $request->is('*/users/*');
+        $isFriendshipRoute = $request->is('*/users/*/friends')
+            || $request->is('*/users/*/out-requests')
+            || $request->is('*/users/*/in-requests');
 
         return [
             'id'        => $user->id,
@@ -33,7 +30,7 @@ class UserResource extends JsonResource
             ]),
 
             'friendshipType' => $this->when(
-                !$isUsersRoute
+                !$isFriendshipRoute
                 && !$isCurrentUser
                 && !is_null($currentUserId),
                 function () use ($user, $currentUserId) {

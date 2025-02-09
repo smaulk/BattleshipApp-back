@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\FriendshipsController;
+use App\Http\Controllers\GameController;
 use App\Http\Controllers\UserAvatarController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordController;
@@ -31,6 +32,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('/users/{userId}/email-verification/send', [EmailVerificationController::class, 'resend'])
         ->middleware('throttle:2,1'); // Не более 2 запросов в минуту
+
 });
 // endregion
 // region Friendship
@@ -43,3 +45,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::delete('/friendships/{friendId}', [FriendshipsController::class, 'delete']);
 });
 // endregion
+
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::post('/games', [GameController::class, 'create']);
+
+    Route::get('/users/{userId}/games', [GameController::class, 'get']);
+});

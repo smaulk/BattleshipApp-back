@@ -20,6 +20,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 
@@ -89,7 +90,7 @@ final class User extends Model implements
     }
 
     /**
-     * Дружеские отношение авторизованного пользователя по отношению к данному
+     * Дружеское отношение авторизованного пользователя по отношению к данному
      * @param int $userId авторизованный пользователь
      */
     public function friendshipType(int $userId): FriendshipType|null

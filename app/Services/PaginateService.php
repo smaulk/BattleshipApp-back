@@ -12,7 +12,7 @@ abstract class PaginateService extends Service
     private const LIMIT = 50;
 
     /**
-     * Возвращает имя поля, которое будет использоваться для получения идентификатора для пагинации.
+     * Возвращает имя поля, которое будет использоваться для получения идентификатора для пагинации
      */
     abstract protected function getPaginateId(): string;
 

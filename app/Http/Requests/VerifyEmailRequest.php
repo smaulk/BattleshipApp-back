@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Dto\VerifyEmailDto;
 use App\Parents\Request;
 
-class VerifyEmailRequest extends Request
+final class VerifyEmailRequest extends Request
 {
     public function rules(): array
     {

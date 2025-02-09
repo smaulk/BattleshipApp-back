@@ -14,22 +14,12 @@ final class GetFriendshipTypeService extends Service
 {
     public function run(FriendshipDto $dto): FriendshipType|null
     {
+        /** @var Friendship $friendship */
         $friendship = Friendship::query()
-            ->select('status')
+            ->select(['id', 'uid1', 'uid2', 'status'])
             ->findByUsers($dto->userId, $dto->friendId)
             ->first();
 
-        if (!$friendship) {
-            return null;
-        }
-        // Флаг, указывающий, кто является инициатором
-        $isRequester = $dto->userId > $dto->friendId;
-
-        return match ($friendship->status) {
-            FriendshipStatus::REQ_UID1->name => $isRequester ? FriendshipType::OUTGOING : FriendshipType::INCOMING,
-            FriendshipStatus::REQ_UID2->name => $isRequester ? FriendshipType::INCOMING : FriendshipType::OUTGOING,
-            FriendshipStatus::FRIEND->name   => FriendshipType::FRIEND,
-            default                          => null,
-        };
+        return $friendship?->status->toType($friendship->uid1 === $dto->friendId);
     }
 }

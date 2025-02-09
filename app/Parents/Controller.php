@@ -37,7 +37,7 @@ abstract class Controller
     }
 
     /**
-     * Вовзращает коллекцию ресурсов из объектов
+     * Возвращает коллекцию ресурсов из объектов
      *
      * @param iterable $items
      * @param class-string<JsonResource> $resource

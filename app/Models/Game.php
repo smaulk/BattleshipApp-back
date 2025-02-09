@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\GameStatusCast;
 use App\Enums\GameStatus;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -34,7 +35,7 @@ class Game extends Model
     protected function casts(): array
     {
         return [
-            'status'   => GameStatus::class,
+            'status'   => GameStatusCast::class,
             'ended_at' => 'datetime',
         ];
     }

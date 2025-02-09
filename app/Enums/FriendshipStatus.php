@@ -13,4 +13,17 @@ enum FriendshipStatus
     {
         return array_map(fn($status) => $status->name, self::cases());
     }
+
+    /**
+     * @param bool $isUid1 текущий пользователь является uid1
+     * @return FriendshipType
+     */
+    public function toType(bool $isUid1): FriendshipType
+    {
+        return match ($this) {
+            self::REQ_UID1 => $isUid1 ? FriendshipType::OUTGOING : FriendshipType::INCOMING,
+            self::REQ_UID2 => $isUid1 ? FriendshipType::INCOMING : FriendshipType::OUTGOING,
+            self::FRIEND   => FriendshipType::FRIEND,
+        };
+    }
 }

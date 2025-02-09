@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Dto\FriendshipDto;
 use App\Parents\Request;
 
-class CreateFriendshipRequest extends Request
+final class CreateFriendshipRequest extends Request
 {
     public function rules(): array
     {

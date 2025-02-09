@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 
 final class Handler extends ExceptionHandler
@@ -19,14 +21,24 @@ final class Handler extends ExceptionHandler
             $model = $e->getModel();
             $message = is_subclass_of($model, Model::class)
                 ? $model::getNotFoundMessage()
-                : 'Данные не найдены';
+                : Model::getNotFoundMessage();
             return $this->json(404, $message);
         }
 
         if($e instanceof HttpResponseException) {
             return parent::render($request, $e);
         }
+        if($e instanceof AccessDeniedHttpException){
+            return $this->json(403, 'Доступ запрещен');
+        }
+        if($e instanceof ValidationException){
+            return response()->json([
+                'message' => "Ошибка валидации данных",
+                'errors' => $e->errors()
+            ], 422);
+        }
 
+        //return parent::render($request, $e);
         return $this->json(500, 'Ошибка сервера');
     }
 
