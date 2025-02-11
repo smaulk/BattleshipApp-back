@@ -3,23 +3,17 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
+use App\Traits\BaseEnumTrait;
+
 enum GameStatus: int
 {
+    use BaseEnumTrait;
+
     case CREATED   = 1; // Игра создана
     case ABANDONED = 2; // Игра прервана
     case WIN_UID1  = 3; // Победил 1 игрок
     case WIN_UID2  = 4; // Победил 2 игрок
     case DRAW      = 5; // Ничья
-
-    public static function names(): array
-    {
-        return array_map(fn($status) => $status->name, self::cases());
-    }
-
-    public static function fromName(string $name): self
-    {
-        return constant("self::$name");
-    }
 
     /**
      * @param bool $isUid1 текущий пользователь является uid1

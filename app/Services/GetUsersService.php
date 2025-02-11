@@ -20,19 +20,18 @@ final class GetUsersService extends PaginateService
     {
         return User::query()
             ->select([
-                'id',
-                'nickname',
-                'avatar_filename'
+                'users.id',
+                'users.nickname',
+                'users.avatar_filename',
+                'friendships.status'
             ])
-            ->whereNot('id', $dto->userId)
-            ->when(
-                $dto->startId !== null,
-                function ($query) use ($dto) {
-                    $query->where('id', '>', $dto->startId); // Фильтруем по ID
-                }
-            )
-            ->where('nickname', 'like', "$dto->nickname%")
-            ->orderBy('id')
+            ->joinFriendships($dto->userId)
+            ->whereNot('users.id', $dto->userId)
+            ->when(!empty($dto->startId), function ($query) use ($dto) {
+                $query->where('users.id', '>', $dto->startId); // Фильтруем по ID
+            })
+            ->where('users.nickname', 'like', "$dto->nickname%")
+            ->orderBy($this->getPaginateId())
             ->limit($this->getLimit())
             ->get();
     }

@@ -4,9 +4,10 @@ namespace App\Observers;
 
 use App\Enums\GameStatus;
 use App\Models\Game;
+use App\Parents\Observer;
 use Carbon\Carbon;
 
-class GameObserver
+final class GameObserver extends Observer
 {
     public function creating(Game $game): void
     {

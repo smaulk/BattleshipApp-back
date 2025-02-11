@@ -4,12 +4,9 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Classes\AvatarManager;
-use App\Dto\FriendshipDto;
-use App\Enums\FriendshipType;
 use App\Notifications\ResetPasswordNotification;
 use App\Notifications\VerifyEmailNotification;
 use App\Parents\Model;
-use App\Services\GetFriendshipTypeService;
 use DateTimeInterface;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\MustVerifyEmail;
@@ -17,11 +14,13 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Notifications\Notifiable;
 
 /**
@@ -89,14 +88,15 @@ final class User extends Model implements
         return 'Пользователь не найден';
     }
 
-    /**
-     * Дружеское отношение авторизованного пользователя по отношению к данному
-     * @param int $userId авторизованный пользователь
-     */
-    public function friendshipType(int $userId): FriendshipType|null
+    public static function scopeJoinFriendships(Builder $query, int $userId): Builder
     {
-        return (new GetFriendshipTypeService())->run(
-            new FriendshipDto($this->id, $userId)
-        );
+        return $query->leftJoin('friendships', function (JoinClause $join) use ($userId) {
+            $join->on('users.id', '=', 'friendships.uid2')
+                ->where('friendships.uid1', $userId)
+                ->orWhere(function (JoinClause $join) use ($userId) {
+                    $join->on('users.id', '=', 'friendships.uid1')
+                        ->where('friendships.uid2', $userId);
+                });
+        });
     }
 }

@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
+use App\Enums\FriendshipStatus;
 use App\Models\User;
 use App\Parents\JsonResource;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class UserResource extends JsonResource
 {
@@ -16,9 +18,7 @@ class UserResource extends JsonResource
         // Если пользователь совпадает с авторизованным
         $currentUserId = $request->user()?->getKey();
         $isCurrentUser = $currentUserId === $user->id;
-        $isFriendshipRoute = $request->is('*/users/*/friends')
-            || $request->is('*/users/*/out-requests')
-            || $request->is('*/users/*/in-requests');
+        $isFriendshipRoute = Str::contains($request->path(), ['/friends', '/out-requests', '/in-requests']);
 
         return [
             'id'        => $user->id,
@@ -30,13 +30,10 @@ class UserResource extends JsonResource
             ]),
 
             'friendshipType' => $this->when(
-                !$isFriendshipRoute
-                && !$isCurrentUser
-                && !is_null($currentUserId),
-                function () use ($user, $currentUserId) {
-                    $type = $user->friendshipType((int)$currentUserId);
-                    return $type?->name;
-                },
+                !$isFriendshipRoute && !$isCurrentUser && $currentUserId,
+                fn() => $user->status ?
+                    FriendshipStatus::fromName($user->status)->toType($currentUserId < $user->id)
+                    : null,
             ),
         ];
     }

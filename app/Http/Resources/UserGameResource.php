@@ -14,12 +14,12 @@ class UserGameResource extends JsonResource
         $game = $this->resource;
 
         return [
-            'id'         => $game->id,
-            'type'       => $game->status->toType($game->uid1 !== $game->rivalId),
-            'rivalId'    => $game->rivalId,
-            'nickname'   => $game->nickname,
-            'created_at' => $game->created_at,
-            'ended_at'   => $game->ended_at,
+            'id'            => $game->id,
+            'type'          => $game->status->toType($game->uid1 !== $game->rivalId),
+            'rivalId'       => $game->rivalId,
+            'rivalNickname' => $game->nickname,
+            'created_at'    => $game->created_at,
+            'ended_at'      => $game->ended_at,
         ];
     }
 }

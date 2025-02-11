@@ -34,26 +34,24 @@ final class GetUsersByFriendshipService extends PaginateService
                 'users.nickname',
                 'users.avatar_filename',
                 "friendships.id as {$this->getPaginateId()}"
-            ]) // Выбираем поля из таблицы users и id записи friendship
-            ->join(
-                'friendships',
-                function (JoinClause $join) use ($dto, $status1, $status2) {
-                    $join->on('users.id', '=', 'friendships.uid2')
-                        ->where('friendships.uid1', $dto->userId)
-                        ->where('friendships.status', $status1)
-                        ->orWhere(
-                            function (JoinClause $join) use ($dto, $status2) {
-                                $join->on('users.id', '=', 'friendships.uid1')
-                                    ->where('friendships.uid2', $dto->userId)
-                                    ->where('friendships.status', $status2);
-                            }
-                        );
-                })
+            ]) // Выбираем поля из таблицы users и id записи friendships
+            ->join('friendships', function (JoinClause $join) use ($dto, $status1, $status2) {
+                $join->on('users.id', '=', 'friendships.uid2')
+                    ->where('friendships.uid1', $dto->userId)
+                    ->where('friendships.status', $status1)
+                    ->orWhere(
+                        function (JoinClause $join) use ($dto, $status2) {
+                            $join->on('users.id', '=', 'friendships.uid1')
+                                ->where('friendships.uid2', $dto->userId)
+                                ->where('friendships.status', $status2);
+                        }
+                    );
+            })
             ->when(!empty($dto->startId), function ($query) use ($dto) {
-                    $query->where('friendships.id', '<', $dto->startId); // Фильтруем по ID в friendships
+                $query->where('friendships.id', '<', $dto->startId); // Фильтруем по ID в friendships
             })
             ->when(!empty($dto->nickname), function ($query) use ($dto) {
-                    $query->where('users.nickname', 'like', "$dto->nickname%");
+                $query->where('users.nickname', 'like', "$dto->nickname%");
             })
             ->orderByDesc($this->getPaginateId())
             ->limit($this->getLimit())

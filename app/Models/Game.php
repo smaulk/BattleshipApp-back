@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property DateTimeInterface $created_at
  * @property DateTimeInterface $ended_at
  */
-class Game extends Model
+final class Game extends Model
 {
     use HasFactory, SoftDeletes;
 

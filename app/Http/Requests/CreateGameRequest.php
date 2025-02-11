@@ -6,7 +6,7 @@ namespace App\Http\Requests;
 use App\Dto\CreateGameDto;
 use App\Parents\Request;
 
-class CreateGameRequest extends Request
+final class CreateGameRequest extends Request
 {
     public function rules(): array
     {

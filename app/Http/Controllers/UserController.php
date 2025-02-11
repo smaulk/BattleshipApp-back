@@ -6,10 +6,10 @@ use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\GetUsersRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
-use App\Models\User;
 use App\Parents\Controller;
 use App\Parents\Request;
 use App\Services\CreateUserService;
+use App\Services\FindUserService;
 use App\Services\GetUsersService;
 use App\Services\UpdateUserService;
 use Illuminate\Http\JsonResponse;
@@ -29,8 +29,9 @@ final class UserController extends Controller
 
     public function find(Request $request): JsonResponse
     {
-        $user = User::query()->findOrFail(
-            (int)$request->route('userId')
+        $user = (new FindUserService())->run(
+            (int)$request->route('userId'),
+            $request->user()?->getAuthIdentifier()
         );
 
         return $this

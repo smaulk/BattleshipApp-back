@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-enum FriendshipType
+enum FriendshipType: int
 {
-    case FRIEND; // Друзья
-    case OUTGOING; // Исходящий запрос в друзья
-    case INCOMING; // Входящий запрос в друзья
+    case OUTGOING = 1; // Исходящий запрос в друзья
+    case INCOMING = 2; // Входящий запрос в друзья
+    case FRIEND   = 3; // Друзья
 
     /**
      * Возвращает пару FriendshipStatus

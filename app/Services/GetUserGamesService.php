@@ -31,23 +31,20 @@ final class GetUserGamesService extends PaginateService
                 'users.id as rivalId',
                 'users.nickname'
             ])
-            ->join(
-                'users',
-                function (JoinClause $join) use ($dto, $status1, $status2) {
-                    $join->on('games.uid2', '=', 'users.id')
-                        ->where('games.uid1', $dto->userId)
-                        ->when(!empty($status1), function ($query) use ($status1) {
-                            $query->where('games.status', $status1);
-                        })
-                        ->orWhere(function (JoinClause $join) use ($dto, $status2) {
-                            $join->on('games.uid1', '=', 'users.id')
-                                ->where('games.uid2', $dto->userId)
-                                ->when(!empty($status2), function ($query) use ($status2) {
-                                    $query->where('games.status', $status2);
-                                });
-                        });
-                }
-            )
+            ->join('users', function (JoinClause $join) use ($dto, $status1, $status2) {
+                $join->on('games.uid2', '=', 'users.id')
+                    ->where('games.uid1', $dto->userId)
+                    ->when(!empty($status1), function ($query) use ($status1) {
+                        $query->where('games.status', $status1);
+                    })
+                    ->orWhere(function (JoinClause $join) use ($dto, $status2) {
+                        $join->on('games.uid1', '=', 'users.id')
+                            ->where('games.uid2', $dto->userId)
+                            ->when(!empty($status2), function ($query) use ($status2) {
+                                $query->where('games.status', $status2);
+                            });
+                    });
+            })
             ->when(!empty($dto->startId), function ($query) use ($dto) {
                 $query->where('games.id', '<', $dto->startId);
             })

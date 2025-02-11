@@ -3,16 +3,15 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
+use App\Traits\BaseEnumTrait;
+
 enum FriendshipStatus
 {
+    use BaseEnumTrait;
+
     case REQ_UID1; // Запрос в друзья от UID1
     case REQ_UID2; // Запрос в друзья от UID2
     case FRIEND; // Друзья
-
-    public static function names(): array
-    {
-        return array_map(fn($status) => $status->name, self::cases());
-    }
 
     /**
      * @param bool $isUid1 текущий пользователь является uid1
