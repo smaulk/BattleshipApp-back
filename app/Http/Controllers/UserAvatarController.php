@@ -24,7 +24,7 @@ final class UserAvatarController extends Controller
     public function delete(AuthorizedRequest $request): JsonResponse
     {
         (new DeleteUserAvatarService())->run(
-            (int)$request->route('userId')
+            $request->getUserId()
         );
 
         return $this->json(status: 204);

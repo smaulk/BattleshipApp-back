@@ -8,7 +8,28 @@
       "secret": "app-secret",
       "authEndpoint": "/broadcasting/auth",
       "enable_statistics": false,
-      "enableClientMessages": true
+      "enableClientMessages": true,
+      "webhooks": [
+        {
+          "url": "http://backend:80/broadcasting/webhook-online",
+          "event_types": [
+            "channel_vacated"
+          ],
+          "filter": {
+            "channel_name_starts_with": "private-users",
+            "channel_name_ends_with": "online"
+          }
+        },
+        {
+          "url": "http://backend:80/broadcasting/webhook-game",
+          "event_types": [
+            "member_removed"
+          ],
+          "filter": {
+            "channel_name_starts_with": "presence-games"
+          }
+        }
+      ]
     }
   ]
 }

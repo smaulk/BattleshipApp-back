@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
@@ -24,7 +25,7 @@ final class EmailVerificationController extends Controller
     public function resend(AuthorizedRequest $request): JsonResponse
     {
         (new SendEmailVerificationService())->run(
-            (int)$request->route('userId')
+            $request->getUserId()
         );
 
         return $this->json(status: 204);

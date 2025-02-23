@@ -6,20 +6,20 @@ namespace App\Services;
 use App\Dto\FriendshipDto;
 use App\Exceptions\HttpException;
 use App\Models\Friendship;
+use App\Services\Abstract\FriendshipService;
 
 final class DeleteFriendshipService extends FriendshipService
 {
     public function run(FriendshipDto $dto): void
     {
-        $this->checkIds($dto->userId, $dto->friendId);
-        if (!$this->deleteFriendship($dto->userId, $dto->friendId)) {
+        if (!$this->deleteFriendship($dto)) {
             throw new HttpException(500);
         }
     }
 
-    private function deleteFriendship(int $userId, int $friendId): bool
+    private function deleteFriendship(FriendshipDto $dto): bool
     {
-        $friendship = Friendship::findByUsers($userId, $friendId)->first();
+        $friendship = Friendship::findByUsers($dto->userId, $dto->friendId)->first();
         // Если записи нет, возвращаем true, так как ошибок не возникло
         if (!$friendship) {
             return true;

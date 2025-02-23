@@ -20,7 +20,7 @@ final readonly class GetUsersByFriendshipDto extends Dto
         $startId = $request->validated('startId');
 
         $dto = new self();
-        $dto->userId = (int)$request->route('userId');
+        $dto->userId = $request->getUserId();
         $dto->type = $type;
         $dto->startId = $startId ? (int)$startId : null;
         $dto->nickname = $request->validated('nickname');

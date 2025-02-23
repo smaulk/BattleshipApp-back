@@ -13,6 +13,7 @@ final class UserObserver extends Observer
         if (!$user->hasVerifiedEmail()) {
             $user->sendEmailVerificationNotification();
         }
+        $user->statistic()->create();
     }
 
     public function updating(User $user): void
@@ -33,16 +34,11 @@ final class UserObserver extends Observer
 
     public function deleted(User $user): void
     {
-        //
+        $user->statistic->delete();
     }
 
     public function restored(User $user): void
     {
-        //
-    }
-
-    public function forceDeleted(User $user): void
-    {
-        //
+        $user->statistic->restore();
     }
 }

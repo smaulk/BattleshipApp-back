@@ -4,9 +4,12 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\FriendshipsController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\GameInvitationController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserAvatarController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\UserStatisticController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -19,6 +22,9 @@ Route::post('/password/reset', [PasswordController::class, 'reset']);
 Route::post('/users', [UserController::class, 'create']);
 Route::get('/users/{userId}', [UserController::class, 'find']);
 Route::put('/users/{userId}/email-verification', [EmailVerificationController::class, 'verify']);
+
+Route::get('/users/{userId}/statistic', [UserStatisticController::class, 'get']);
+Route::get('/leaderboard', [UserStatisticController::class, 'getLeaderBoard']);
 
 Route::group(['middleware' => 'auth:api'], function () {
 
@@ -46,8 +52,22 @@ Route::group(['middleware' => 'auth:api'], function () {
 });
 // endregion
 
+// region Gameplay
 Route::group(['middleware' => 'auth:api'], function () {
-    Route::post('/games', [GameController::class, 'create']);
-
     Route::get('/users/{userId}/games', [GameController::class, 'get']);
+
+    Route::get('/users/{userId}/out-invites', [GameInvitationController::class, 'getOutgoing']);
+    Route::get('/users/{userId}/in-invites', [GameInvitationController::class, 'getIncoming']);
+    Route::post('/invites', [GameInvitationController::class, 'create']);
+    Route::put('/invites/{friendId}', [GameInvitationController::class, 'accept']);
+    Route::delete('/invites/{friendId}', [GameInvitationController::class, 'delete']);
+
+    Route::put('/games/{gameId}', [GameController::class, 'finish']);
+    Route::put('/rooms/{roomId}', [GameController::class, 'start']);
+
+    Route::post('/rooms', [RoomController::class, 'create']);
+    Route::post('/rooms/{roomId}/join', [RoomController::class, 'join']);
+    Route::post('/rooms/search', [RoomController::class, 'startSearch']);
+    Route::delete('/rooms/search', [RoomController::class, 'stopSearch']);
 });
+// endregion

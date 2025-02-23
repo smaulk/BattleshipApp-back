@@ -15,7 +15,7 @@ final readonly class UpdateUserDto extends Dto
     public static function fromRequest(UpdateUserRequest $request): UpdateUserDto
     {
         $dto = new self();
-        $dto->userId = (int)$request->route('userId');
+        $dto->userId = $request->getUserId();
         $dto->nickname = $request->validated('nickname');
         $dto->email = $request->validated('email');
         return $dto;

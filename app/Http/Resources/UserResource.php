@@ -28,6 +28,10 @@ class UserResource extends JsonResource
                 'email'      => $user->email,
                 'isVerified' => $user->hasVerifiedEmail(),
             ]),
+            'is_online' => $this->when(
+                !$isCurrentUser && isset($user->is_online),
+                $user->is_online
+            ),
 
             'friendshipType' => $this->when(
                 !$isFriendshipRoute && !$isCurrentUser && $currentUserId,
@@ -35,6 +39,15 @@ class UserResource extends JsonResource
                     FriendshipStatus::fromName($user->status)->toType($currentUserId < $user->id)
                     : null,
             ),
+
+            'statistic' => $this->whenLoaded('statistic', fn() => [
+                'games'        => $user->statistic->games,
+                'wins'         => $user->statistic->wins,
+                'losses'       => $user->statistic->losses,
+                'draws'        => $user->statistic->draws,
+                'abandonments' => $user->statistic->abandonments,
+                'points'       => $user->statistic->points,
+            ]),
         ];
     }
 }

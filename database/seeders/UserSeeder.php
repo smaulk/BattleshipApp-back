@@ -18,6 +18,17 @@ class UserSeeder extends Seeder
             'email'    => 'user@mail.ru',
             'password' => 'user12345'
         ]);
+        User::factory()->unverified()->create([
+            'nickname' => 'user2',
+            'email'    => 'user2@mail.ru',
+            'password' => 'user12345'
+        ]);
+        User::factory()->unverified()->create([
+            'nickname' => 'user3',
+            'email'    => 'user3@mail.ru',
+            'password' => 'user12345'
+        ]);
+
 
         $this->createRandomUsers(100);
     }

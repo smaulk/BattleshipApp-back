@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Services\Abstract;
 
 use App\Dto\PaginateDto;
 use App\Parents\Service;

@@ -7,12 +7,13 @@ use App\Dto\FriendshipDto;
 use App\Enums\FriendshipStatus;
 use App\Exceptions\HttpException;
 use App\Models\Friendship;
+use App\Services\Abstract\FriendshipService;
 
 final class AcceptFriendshipService extends FriendshipService
 {
     public function run(FriendshipDto $dto): void
     {
-        $this->checkIds($dto->userId, $dto->friendId);
+        $this->validateUsers($dto->userId, $dto->friendId);
         $this->acceptFriendship($dto->userId, $dto->friendId);
     }
 

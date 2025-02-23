@@ -18,7 +18,7 @@ final readonly class GetUserGamesDto extends Dto
         $type = $request->validated('type');
 
         $dto = new self();
-        $dto->userId = (int)$request->route('userId');
+        $dto->userId = $request->getUserId();
         $dto->startId = (int)$request->validated('startId');
         $dto->type = $type ? GameType::from((int)$type): null;
 

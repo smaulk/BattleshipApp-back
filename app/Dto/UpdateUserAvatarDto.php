@@ -15,7 +15,7 @@ final readonly class UpdateUserAvatarDto extends Dto
     public static function fromRequest(UpdateUserAvatarRequest $request): UpdateUserAvatarDto
     {
         $dto = new self();
-        $dto->userId = (int)$request->route('userId');
+        $dto->userId = $request->getUserId();
         $dto->avatar = $request->validated('avatar');
         return $dto;
     }

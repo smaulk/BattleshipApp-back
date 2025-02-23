@@ -16,9 +16,8 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Contracts\Auth\MustVerifyEmail as MustVerifyEmailContract;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Notifications\Notifiable;
@@ -30,8 +29,10 @@ use Illuminate\Notifications\Notifiable;
  * @property string $email_verified_at
  * @property string|null $avatar_filename
  * @property string $password
+ * @property bool $is_online
  * @property DateTimeInterface $created_at
  * @property DateTimeInterface $updated_at
+ * @property UserStatistic $statistic
  */
 final class User extends Model implements
     AuthenticatableContract,
@@ -98,5 +99,10 @@ final class User extends Model implements
                         ->where('friendships.uid2', $userId);
                 });
         });
+    }
+
+    public function statistic(): HasOne
+    {
+        return $this->hasOne(UserStatistic::class, 'user_id');
     }
 }

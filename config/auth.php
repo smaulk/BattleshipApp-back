@@ -128,7 +128,7 @@ return [
         'secret'  => env('JWT_SECRET', ''),
         'ttl'     => env('JWT_TTL', 15), // Время жизни jwt токена (в минутах)
         'refresh' => [
-            'ttl' => env('REFRESH_TTL', 30), // Время жизни refresh токена (в днях)
+            'ttl' => env('REFRESH_TTL', 90), // Время жизни refresh токена (в днях)
         ]
     ]
 

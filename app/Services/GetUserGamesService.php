@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Dto\GetUserGamesDto;
 use App\Dto\PaginateDto;
 use App\Models\Game;
+use App\Services\Abstract\PaginateService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\JoinClause;
 

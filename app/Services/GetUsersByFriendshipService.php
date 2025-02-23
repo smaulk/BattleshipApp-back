@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Dto\GetUsersByFriendshipDto;
 use App\Dto\PaginateDto;
 use App\Models\User;
+use App\Services\Abstract\PaginateService;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\JoinClause;
 
@@ -33,6 +34,7 @@ final class GetUsersByFriendshipService extends PaginateService
                 'users.id',
                 'users.nickname',
                 'users.avatar_filename',
+                'users.is_online',
                 "friendships.id as {$this->getPaginateId()}"
             ]) // Выбираем поля из таблицы users и id записи friendships
             ->join('friendships', function (JoinClause $join) use ($dto, $status1, $status2) {

@@ -22,11 +22,11 @@ enum GameStatus: int
     public function toType(bool $isUid1): GameType
     {
         return match ($this) {
-            self::CREATED => GameType::CREATED,
+            self::CREATED   => GameType::CREATED,
             self::ABANDONED => GameType::ABANDONED,
-            self::WIN_UID1 => $isUid1 ? GameType::WIN : GameType::LOSE,
-            self::WIN_UID2 => $isUid1 ? GameType::LOSE : GameType::WIN,
-            self::DRAW => GameType::DRAW,
+            self::WIN_UID1  => $isUid1 ? GameType::WIN : GameType::LOSE,
+            self::WIN_UID2  => $isUid1 ? GameType::LOSE : GameType::WIN,
+            self::DRAW      => GameType::DRAW,
         };
     }
 }

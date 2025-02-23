@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Dto\GetUsersDto;
 use App\Dto\PaginateDto;
 use App\Models\User;
+use App\Services\Abstract\PaginateService;
 use Illuminate\Database\Eloquent\Collection;
 
 final class GetUsersService extends PaginateService
@@ -23,6 +24,7 @@ final class GetUsersService extends PaginateService
                 'users.id',
                 'users.nickname',
                 'users.avatar_filename',
+                'users.is_online',
                 'friendships.status'
             ])
             ->joinFriendships($dto->userId)

@@ -17,11 +17,12 @@ final readonly class UpdateUserPasswordDto extends Dto
     public static function fromRequest(UpdateUserPasswordRequest $request): self
     {
         $dto = new self();
-        $dto->userId = (int)$request->route('userId');
+        $dto->userId = $request->getUserId();
         $dto->currentPassword = $request->validated('currentPassword');
         $dto->newPassword = $request->validated('newPassword');
         $dto->ipAddress = $request->ip();
         $dto->userAgent = $request->userAgent();
+
         return $dto;
     }
 }

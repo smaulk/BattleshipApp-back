@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Services;
+namespace App\Services\Abstract;
 
 use App\Exceptions\HttpException;
 use App\Models\User;
@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 abstract class FriendshipService extends Service
 {
-    protected function checkIds(int $uid1, int $uid2): void
+    protected function validateUsers(int $uid1, int $uid2): void
     {
         if ($uid1 === $uid2) {
             throw new HttpException(400, 'Идентификаторы пользователей совпадают');

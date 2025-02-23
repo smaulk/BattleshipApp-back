@@ -25,7 +25,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'nickname'          => Str::substr($this->faker->userName(), 0, 18),
+            'nickname'          => Str::substr($this->faker->unique()->userName(), 0, 18),
             'email'             => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password'          => static::$password ??= Hash::make('password'),

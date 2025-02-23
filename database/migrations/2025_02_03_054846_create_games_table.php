@@ -16,12 +16,14 @@ return new class extends Migration
             $table->id();
             $table->foreignId('uid1')
                 ->index()
+                ->nullable()
                 ->constrained('users')
-                ->cascadeOnDelete();
+                ->nullOnDelete();
             $table->foreignId('uid2')
                 ->index()
+                ->nullable()
                 ->constrained('users')
-                ->cascadeOnDelete();
+                ->nullOnDelete();
             $table->enum('status', GameStatus::names())->default(GameStatus::CREATED->name);
             $table->timestamp('created_at')->nullable();
             $table->timestamp('ended_at')->nullable();

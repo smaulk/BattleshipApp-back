@@ -7,12 +7,13 @@ use App\Dto\FriendshipDto;
 use App\Enums\FriendshipStatus;
 use App\Exceptions\HttpException;
 use App\Models\Friendship;
+use App\Services\Abstract\FriendshipService;
 
 final class CreateFriendshipService extends FriendshipService
 {
     public function run(FriendshipDto $dto): void
     {
-        $this->checkIds($dto->userId, $dto->friendId);
+        $this->validateUsers($dto->userId, $dto->friendId);
         if ($this->isExistsFriendship($dto->userId, $dto->friendId)) {
             throw new HttpException(400, 'Запись уже существует');
         }

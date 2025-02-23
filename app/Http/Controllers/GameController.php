@@ -3,15 +3,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CreateGameRequest;
+use App\Http\Requests\FinishGameRequest;
 use App\Http\Requests\GetUserGamesRequest;
 use App\Http\Resources\UserGameResource;
-use App\Models\Game;
-use App\Models\User;
 use App\Parents\Controller;
 use App\Parents\Request;
-use App\Services\CreateGameService;
+use App\Services\FinishGameService;
 use App\Services\GetUserGamesService;
+use App\Services\StartGameService;
 use Illuminate\Http\JsonResponse;
 
 final class GameController extends Controller
@@ -27,12 +26,22 @@ final class GameController extends Controller
             ->response();
     }
 
-    public function create(CreateGameRequest $request): JsonResponse
+    public function start(Request $request): JsonResponse
     {
-        $game = (new CreateGameService())->run(
+        (new StartGameService())->run(
+            (int)$request->user()->getAuthIdentifier(),
+            $request->route('roomId')
+        );
+
+        return $this->json(status: 204);
+    }
+
+    public function finish(FinishGameRequest $request): JsonResponse
+    {
+        (new FinishGameService())->run(
             $request->toDto()
         );
 
-        return $this->json($game, 201);
+        return $this->json(status: 204);
     }
 }

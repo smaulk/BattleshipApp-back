@@ -9,24 +9,31 @@ use App\Parents\Request;
 
 final readonly class FriendshipDto extends Dto
 {
-    public function __construct(
-        public int $userId,
-        public int $friendId
-    ){}
+    public int $userId;
+    public int $friendId;
 
-    public static function fromRequest(Request $request): FriendshipDto
+    public static function fromArray(array $data): self
     {
-        return new self(
-            (int)$request->user()?->getAuthIdentifier(),
-            (int)$request->route('friendId')
-        );
+        $dto = new self();
+        $dto->userId = (int)$data['userId'];
+        $dto->friendId = (int)$data['friendId'];
+
+        return $dto;
     }
 
-    public static function fromCreateRequest(CreateFriendshipRequest $request): FriendshipDto
+    public static function fromRequest(Request $request): self
     {
-        return new self(
-            (int)$request->user()?->getAuthIdentifier(),
-            (int)$request->validated('friendId')
-        );
+        return self::fromArray([
+            'userId'   => $request->user()?->getAuthIdentifier(),
+            'friendId' => $request->route('friendId')
+        ]);
+    }
+
+    public static function fromCreateRequest(CreateFriendshipRequest $request): self
+    {
+        return self::fromArray([
+            'userId'   => $request->user()?->getAuthIdentifier(),
+            'friendId' => $request->validated('friendId')
+        ]);
     }
 }

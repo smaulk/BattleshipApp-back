@@ -11,4 +11,9 @@ class AuthorizedRequest extends Request
         // Проверяем, что id авторизованного пользователя совпадает с переданным id пользователя
         return $this->user()?->getAuthIdentifier() === (int)$this->route('userId');
     }
+
+    public function getUserId(): int
+    {
+        return (int)$this->route('userId');
+    }
 }

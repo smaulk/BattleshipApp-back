@@ -12,6 +12,11 @@ final class FindUserService extends Service
     {
         return User::query()
             ->select('users.*')
+            ->with([
+                'statistic' => function ($query) {
+                    $query ->select(['user_id', 'games', 'wins', 'losses', 'draws', 'abandonments', 'points']);
+                }
+            ])
             ->when($currentUserId && $currentUserId !== $userId, function ($query) use ($currentUserId) {
                 $query->addSelect('friendships.status')->joinFriendships($currentUserId);
             })

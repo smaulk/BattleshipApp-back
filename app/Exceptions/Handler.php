@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Exceptions;
 
 use App\Parents\Model;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -28,7 +29,7 @@ final class Handler extends ExceptionHandler
         if($e instanceof HttpResponseException) {
             return parent::render($request, $e);
         }
-        if($e instanceof AccessDeniedHttpException){
+        if($e instanceof AccessDeniedHttpException || $e instanceof AuthorizationException){
             return $this->json(403, 'Доступ запрещен');
         }
         if($e instanceof ValidationException){
@@ -38,7 +39,6 @@ final class Handler extends ExceptionHandler
             ], 422);
         }
 
-        //return parent::render($request, $e);
         return $this->json(500, 'Ошибка сервера');
     }
 

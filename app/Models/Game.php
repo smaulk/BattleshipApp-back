@@ -16,12 +16,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property GameStatus $status
  * @property DateTimeInterface $created_at
  * @property DateTimeInterface $ended_at
+ * @property bool $is_ended
  */
 final class Game extends Model
 {
     use HasFactory, SoftDeletes;
 
-    const CREATED_AT = 'created_at';
     const UPDATED_AT = null;
 
     protected $table = 'games';
@@ -43,5 +43,10 @@ final class Game extends Model
     public static function getNotFoundMessage(): string
     {
         return 'Игра не найдена';
+    }
+
+    public function getIsEndedAttribute(): bool
+    {
+        return $this->status !== GameStatus::CREATED;
     }
 }

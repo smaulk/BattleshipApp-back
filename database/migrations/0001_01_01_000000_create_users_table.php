@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('avatar_filename', 63)->nullable();
             $table->string('password');
+            $table->boolean('is_online')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

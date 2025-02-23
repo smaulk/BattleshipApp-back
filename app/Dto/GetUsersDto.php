@@ -8,7 +8,6 @@ use App\Parents\Dto;
 
 final readonly class GetUsersDto extends Dto
 {
-
     public int $userId;
     public string $nickname;
     public ?int $startId;

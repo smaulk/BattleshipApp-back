@@ -42,12 +42,4 @@
 С уважением,<br>
 команда {{ config('app.name') }}
 @endif
-
-{{-- Subcopy --}}
-@isset($actionText)
-<x-slot:subcopy>
-{{"Если у вас возникли проблемы с нажатием кнопки \"$actionText\", скопируйте и вставьте в свой веб-браузер следущий URL:"}}
-    <span class="break-all">[{{ $displayableActionUrl }}]({{ $actionUrl }})</span>
-</x-slot:subcopy>
-@endisset
 </x-mail::message>

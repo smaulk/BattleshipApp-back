@@ -10,15 +10,11 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 
 class RouteServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap services.
-     */
     public function boot(): void
     {
         $this->configureRateLimiting();
         $this->loadApiRoutes();
     }
-
 
     protected function loadApiRoutes(): void
     {
@@ -26,7 +22,6 @@ class RouteServiceProvider extends ServiceProvider
             ->prefix('api/v1')
             ->group(base_path('routes/api_v1.php'));
     }
-
 
     protected function configureRateLimiting(): void
     {
