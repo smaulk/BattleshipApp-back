@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property DateTimeInterface $created_at
  * @property DateTimeInterface $ended_at
  * @property bool $is_ended
+ * @property bool $is_abandoned
  */
 final class Game extends Model
 {
@@ -48,5 +49,10 @@ final class Game extends Model
     public function getIsEndedAttribute(): bool
     {
         return $this->status !== GameStatus::CREATED;
+    }
+
+    public function getIsAbandonedAttribute(): bool
+    {
+        return $this->status === GameStatus::ABANDONED;
     }
 }

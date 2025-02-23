@@ -20,7 +20,7 @@ final class GameObserver extends Observer
 
     public function created(Game $game): void
     {
-        if ($game->is_ended) {
+        if ($game->is_ended && !$game->is_abandoned) {
             (new UpdateStatisticsService())->run($game);
         }
     }
@@ -35,7 +35,11 @@ final class GameObserver extends Observer
     public function updated(Game $game): void
     {
         //  Если игра завершена, то записываем в статистику
-        if ($game->isDirty('status') && $game->getOriginal('status') === GameStatus::CREATED) {
+        if (
+            $game->isDirty('status')
+            && $game->is_ended
+            && !$game->is_abandoned
+        ) {
             (new UpdateStatisticsService())->run($game);
         }
     }

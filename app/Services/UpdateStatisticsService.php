@@ -22,7 +22,7 @@ final class UpdateStatisticsService extends Service
 
     private function getQueryData(array $data): array
     {
-        $fields = ['wins', 'losses', 'draws', 'abandonments', 'points'];
+        $fields = ['wins', 'losses', 'draws'];
 
         return array_reduce($fields, function ($query, $field) use ($data) {
             $query[$field] = DB::raw("$field + CASE user_id 
@@ -50,7 +50,6 @@ final class UpdateStatisticsService extends Service
                 "wins$key"         => (int)($type === GameType::WIN),
                 "losses$key"       => (int)($type === GameType::LOSE),
                 "draws$key"        => (int)($type === GameType::DRAW),
-                "abandonments$key" => (int)($type === GameType::ABANDONED),
                 "points$key"       => UserStatistic::getPointValue($type),
             ];
         }

@@ -45,7 +45,6 @@ class UserResource extends JsonResource
                 'wins'         => $user->statistic->wins,
                 'losses'       => $user->statistic->losses,
                 'draws'        => $user->statistic->draws,
-                'abandonments' => $user->statistic->abandonments,
                 'points'       => $user->statistic->points,
             ]),
         ];

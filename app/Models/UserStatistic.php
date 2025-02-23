@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $wins
  * @property int $losses
  * @property int $draws
- * @property int $abandonments
  * @property int $points
  * @property User $user
  */
@@ -38,10 +37,9 @@ final class UserStatistic extends Model
     protected $fillable = [
         'user_id',
         'games',
-        'win',
-        'lose',
-        'draw',
-        'abandoned',
+        'wins',
+        'losses',
+        'draws',
         'points',
     ];
 
