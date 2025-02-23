@@ -27,7 +27,6 @@ Route::get('/users/{userId}/statistic', [UserStatisticController::class, 'get'])
 Route::get('/leaderboard', [UserStatisticController::class, 'getLeaderBoard']);
 
 Route::group(['middleware' => 'auth:api'], function () {
-
     Route::get('/users', [UserController::class, 'get']);
     Route::put('/users/{userId}', [UserController::class, 'update']);
 
@@ -38,9 +37,9 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('/users/{userId}/email-verification/send', [EmailVerificationController::class, 'resend'])
         ->middleware('throttle:2,1'); // Не более 2 запросов в минуту
-
 });
 // endregion
+
 // region Friendship
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/users/{userId}/friends', [FriendshipsController::class, 'getFriends']);
