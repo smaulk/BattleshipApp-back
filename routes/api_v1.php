@@ -57,6 +57,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::get('/users/{userId}/out-invites', [GameInvitationController::class, 'getOutgoing']);
     Route::get('/users/{userId}/in-invites', [GameInvitationController::class, 'getIncoming']);
+    Route::delete('/users/{userId}/invites', [GameInvitationController::class, 'deleteAll']);
     Route::post('/invites', [GameInvitationController::class, 'create']);
     Route::put('/invites/{friendId}', [GameInvitationController::class, 'accept']);
     Route::delete('/invites/{friendId}', [GameInvitationController::class, 'delete']);

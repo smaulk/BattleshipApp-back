@@ -11,6 +11,7 @@ use App\Parents\Controller;
 use App\Parents\Request;
 use App\Services\AcceptGameInvitationService;
 use App\Services\CreateGameInvitationService;
+use App\Services\DeleteAllInvitesService;
 use App\Services\DeleteGameInvitationService;
 use Illuminate\Http\JsonResponse;
 
@@ -58,6 +59,15 @@ final class GameInvitationController extends Controller
     {
         (new DeleteGameInvitationService())->run(
             FriendshipDto::fromRequest($request)
+        );
+
+        return $this->json(status: 204);
+    }
+
+    public function deleteAll(AuthorizedRequest $request): JsonResponse
+    {
+        (new DeleteAllInvitesService())->run(
+            [$request->getUserId()]
         );
 
         return $this->json(status: 204);

@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Classes\WebSocket\Handlers;
 
 use App\Classes\WebSocket\Requests\WebHookRequest;
-use App\Models\GameInvitation;
+use App\Services\DeleteAllInvitesService;
 use App\Services\RoomQueueService;
 use App\Services\SaveOnlineService;
 
@@ -33,9 +33,7 @@ class OnlineHandler extends Handler
 
         if (count($userIds)) {
             (new SaveOnlineService())->run($userIds, false);
-            GameInvitation::query()
-                ->whereIn('sender_id', $userIds)
-                ->delete();
+            (new DeleteAllInvitesService())->run($userIds);
         }
     }
 
