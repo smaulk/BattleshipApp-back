@@ -6,9 +6,9 @@ namespace App\Services;
 use App\Dto\FriendshipDto;
 use App\Exceptions\HttpException;
 use App\Models\Friendship;
-use App\Services\Abstract\FriendshipService;
+use App\Services\Abstract\UsersService;
 
-final class DeleteFriendshipService extends FriendshipService
+final class DeleteFriendshipService extends UsersService
 {
     public function run(FriendshipDto $dto): void
     {

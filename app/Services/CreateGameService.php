@@ -6,10 +6,10 @@ namespace App\Services;
 use App\Dto\CreateGameDto;
 use App\Enums\GameStatus;
 use App\Models\Game;
-use App\Services\Abstract\FriendshipService;
+use App\Services\Abstract\UsersService;
 use Throwable;
 
-final class CreateGameService extends FriendshipService
+final class CreateGameService extends UsersService
 {
     /**
      * @throws Throwable

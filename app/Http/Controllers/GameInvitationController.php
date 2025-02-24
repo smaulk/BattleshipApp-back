@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 use App\Dto\FriendshipDto;
 use App\Http\Requests\AuthorizedRequest;
 use App\Http\Requests\CreateFriendshipRequest;
+use App\Http\Requests\GetGameInvitationsRequest;
+use App\Http\Resources\GameInvitationResource;
 use App\Parents\Controller;
 use App\Parents\Request;
 use App\Services\AcceptGameInvitationService;
@@ -17,22 +19,26 @@ use Illuminate\Http\JsonResponse;
 
 final class GameInvitationController extends Controller
 {
-    public function getOutgoing(AuthorizedRequest $request): JsonResponse
+    public function getOutgoing(GetGameInvitationsRequest $request): JsonResponse
     {
-        $invitations = (new GetGameInvitationsService())->run(
-            $request->getUserId(), 1
+        $dto = (new GetGameInvitationsService())->run(
+            $request->toDto(1)
         );
 
-        return $this->json($invitations);
+        return $this
+            ->paginate($dto, GameInvitationResource::class)
+            ->response();
     }
 
-    public function getIncoming(AuthorizedRequest $request): JsonResponse
+    public function getIncoming(GetGameInvitationsRequest $request): JsonResponse
     {
-        $invitations = (new GetGameInvitationsService())->run(
-            $request->getUserId(), 2
+        $dto = (new GetGameInvitationsService())->run(
+            $request->toDto(2)
         );
 
-        return $this->json($invitations);
+        return $this
+            ->paginate($dto, GameInvitationResource::class)
+            ->response();
     }
 
     public function create(CreateFriendshipRequest $request): JsonResponse

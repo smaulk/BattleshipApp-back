@@ -8,9 +8,9 @@ use App\Dto\SendNotifyDto;
 use App\Events\SendNotify;
 use App\Models\GameInvitation;
 use App\Models\User;
-use App\Services\Abstract\FriendshipService;
+use App\Services\Abstract\UsersService;
 
-final class CreateGameInvitationService extends FriendshipService
+final class CreateGameInvitationService extends UsersService
 {
     public function run(FriendshipDto $dto): void
     {

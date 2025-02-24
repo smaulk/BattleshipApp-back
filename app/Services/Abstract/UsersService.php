@@ -8,7 +8,7 @@ use App\Models\User;
 use App\Parents\Service;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-abstract class FriendshipService extends Service
+abstract class UsersService extends Service
 {
     protected function validateUsers(int $uid1, int $uid2): void
     {

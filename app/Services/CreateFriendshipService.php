@@ -10,9 +10,9 @@ use App\Events\SendNotify;
 use App\Exceptions\HttpException;
 use App\Models\Friendship;
 use App\Models\User;
-use App\Services\Abstract\FriendshipService;
+use App\Services\Abstract\UsersService;
 
-final class CreateFriendshipService extends FriendshipService
+final class CreateFriendshipService extends UsersService
 {
     public function run(FriendshipDto $dto): void
     {

@@ -18,8 +18,8 @@ class UserGameResource extends JsonResource
             'type'          => $game->status->toType($game->uid1 !== $game->rivalId),
             'rivalId'       => $game->rivalId,
             'rivalNickname' => $game->nickname,
-            'created_at'    => $game->created_at,
-            'ended_at'      => $game->ended_at,
+            'createdAt'    => $game->created_at,
+            'endedAt'      => $game->ended_at,
         ];
     }
 }

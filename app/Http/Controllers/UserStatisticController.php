@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserStatisticResource;
 use App\Models\UserStatistic;
 use App\Parents\Controller;
 use App\Parents\Request;
@@ -17,13 +18,17 @@ final class UserStatisticController extends Controller
             (int)$request->route('userId')
         );
 
-        return $this->json($statistic);
+        return $this
+            ->resource($statistic, UserStatisticResource::class)
+            ->response();
     }
 
     public function getLeaderBoard(Request $request): JsonResponse
     {
         $leaders = (new GetLeaderBoardService())->run();
 
-        return $this->json($leaders);
+        return $this
+            ->collection($leaders, UserStatisticResource::class)
+            ->response();
     }
 }

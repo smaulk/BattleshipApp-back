@@ -3,26 +3,43 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Dto\GetGameInvitationsDto;
+use App\Dto\PaginateDto;
 use App\Models\GameInvitation;
-use App\Parents\Service;
+use App\Services\Abstract\PaginateService;
 use Illuminate\Support\Collection;
 
-final class GetGameInvitationsService extends Service
+final class GetGameInvitationsService extends PaginateService
 {
-    public function run(int $userId, ?int $type = null): Collection
+    public function run(GetGameInvitationsDto $dto): PaginateDto
+    {
+        $invites = $this->fetchInvites($dto);
+        return $this->paginate($invites);
+    }
+
+    private function fetchInvites(GetGameInvitationsDto $dto): Collection
     {
         return GameInvitation::query()
-            ->when(is_null($type), function ($query) use ($userId) {
-                $query->where('sender_id', $userId)
-                    ->orWhere('receiver_id', $userId);
+            ->when(is_null($dto->type), function ($query) use ($dto) {
+                $query->where('sender_id', $dto->userId)
+                    ->orWhere('receiver_id', $dto->userId);
             })
-            ->when($type === 1, function ($query) use ($userId) {
-                $query->where('sender_id', $userId);
+            ->when($dto->type === 1, function ($query) use ($dto) {
+                $query->where('sender_id', $dto->userId);
             })
-            ->when($type === 2, function ($query) use ($userId) {
-                $query->where('receiver_id', $userId);
+            ->when($dto->type === 2, function ($query) use ($dto) {
+                $query->where('receiver_id', $dto->userId);
             })
-            ->orderByDesc('invited_at')
+            ->when(!empty($dto->startId), function ($query) use ($dto) {
+                $query->where('users.id', '>', $dto->startId); // Фильтруем по ID
+            })
+            ->orderByDesc($this->getPaginateId())
+            ->limit($this->getLimit())
             ->get();
+    }
+
+    protected function getPaginateId(): string
+    {
+        return 'invited_at';
     }
 }

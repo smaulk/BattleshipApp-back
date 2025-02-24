@@ -28,10 +28,7 @@ class UserResource extends JsonResource
                 'email'      => $user->email,
                 'isVerified' => $user->hasVerifiedEmail(),
             ]),
-            'is_online' => $this->when(
-                !$isCurrentUser && isset($user->is_online),
-                $user->is_online
-            ),
+            'isOnline' => $this->whenNotNull($user->is_online),
 
             'friendshipType' => $this->when(
                 !$isFriendshipRoute && !$isCurrentUser && $currentUserId,

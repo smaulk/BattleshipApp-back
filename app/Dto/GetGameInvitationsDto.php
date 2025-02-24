@@ -3,26 +3,23 @@ declare(strict_types=1);
 
 namespace App\Dto;
 
-use App\Enums\GameType;
-use App\Http\Requests\GetUserGamesRequest;
+use App\Http\Requests\GetGameInvitationsRequest;
 use App\Parents\Dto;
 
-final readonly class GetUserGamesDto extends Dto
+final readonly class GetGameInvitationsDto extends Dto
 {
     public int $userId;
     public ?int $startId;
-    public ?GameType $type;
+    public ?int $type;
 
-    public static function fromRequest(GetUserGamesRequest $request): self
+    public static function fromRequest(GetGameInvitationsRequest $request, ?int $type = null): GetGameInvitationsDto
     {
         $startId = $request->validated('startId');
-        $type = $request->validated('type');
 
         $dto = new self();
         $dto->userId = $request->getUserId();
         $dto->startId = $startId ? (int)$startId : null;
-        $dto->type = $type ? GameType::from((int)$type): null;
-
+        $dto->type = $type;
         return $dto;
     }
 }
