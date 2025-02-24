@@ -14,7 +14,7 @@ final class ForgotPasswordService extends Service
      */
     public function run(string $email): void
     {
-        // Создает новый токен для сброса пароля и отправляет письмо с ссылкой на почту
+        // Создает новый токен для сброса пароля и отправляет письмо со ссылкой на почту
         $status = Password::sendResetLink(['email' => $email]);
 
         if ($status === Password::INVALID_USER) {
