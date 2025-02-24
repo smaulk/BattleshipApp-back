@@ -40,7 +40,7 @@ final class Friendship extends Model
 
     public static function getNotFoundMessage(): string
     {
-        return 'Не существует такой заявки или дружбы';
+        return 'Заявка в друзья или дружба не найдена';
     }
 
     public function scopeFindByUsers(Builder $query, int $uid1, int $uid2): Builder
