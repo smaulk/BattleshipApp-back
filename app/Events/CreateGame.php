@@ -3,7 +3,7 @@
 namespace App\Events;
 
 use App\Parents\BroadcastEvent;
-use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Broadcasting\PresenceChannel;
 
 final class CreateGame extends BroadcastEvent
 {
@@ -16,9 +16,9 @@ final class CreateGame extends BroadcastEvent
         $this->roomId = $roomId;
     }
 
-    public function broadcastOn(): PrivateChannel
+    public function broadcastOn(): PresenceChannel
     {
-        return new PrivateChannel("rooms.$this->roomId");
+        return new PresenceChannel("rooms.$this->roomId");
     }
 
     public function broadcastAs(): string
