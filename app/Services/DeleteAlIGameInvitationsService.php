@@ -4,8 +4,9 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\GameInvitation;
+use App\Parents\Service;
 
-class DeleteAllInvitesService
+final class DeleteAlIGameInvitationsService extends Service
 {
     public function run(array $userIds): void
     {

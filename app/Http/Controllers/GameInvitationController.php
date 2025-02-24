@@ -6,33 +6,31 @@ namespace App\Http\Controllers;
 use App\Dto\FriendshipDto;
 use App\Http\Requests\AuthorizedRequest;
 use App\Http\Requests\CreateFriendshipRequest;
-use App\Models\GameInvitation;
 use App\Parents\Controller;
 use App\Parents\Request;
 use App\Services\AcceptGameInvitationService;
 use App\Services\CreateGameInvitationService;
-use App\Services\DeleteAllInvitesService;
+use App\Services\DeleteAlIGameInvitationsService;
 use App\Services\DeleteGameInvitationService;
+use App\Services\GetGameInvitationsService;
 use Illuminate\Http\JsonResponse;
 
 final class GameInvitationController extends Controller
 {
     public function getOutgoing(AuthorizedRequest $request): JsonResponse
     {
-        $invitations = GameInvitation::query()
-            ->where('sender_id', $request->getUserId())
-            ->orderByDesc('invited_at')
-            ->get();
+        $invitations = (new GetGameInvitationsService())->run(
+            $request->getUserId(), 1
+        );
 
         return $this->json($invitations);
     }
 
     public function getIncoming(AuthorizedRequest $request): JsonResponse
     {
-        $invitations = GameInvitation::query()
-            ->where('receiver_id', $request->getUserId())
-            ->orderByDesc('invited_at')
-            ->get();
+        $invitations = (new GetGameInvitationsService())->run(
+            $request->getUserId(), 2
+        );
 
         return $this->json($invitations);
     }
@@ -66,7 +64,7 @@ final class GameInvitationController extends Controller
 
     public function deleteAll(AuthorizedRequest $request): JsonResponse
     {
-        (new DeleteAllInvitesService())->run(
+        (new DeleteAlIGameInvitationsService())->run(
             [$request->getUserId()]
         );
 
