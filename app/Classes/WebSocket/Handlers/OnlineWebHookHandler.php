@@ -4,11 +4,12 @@ declare(strict_types=1);
 namespace App\Classes\WebSocket\Handlers;
 
 use App\Classes\WebSocket\Requests\WebHookRequest;
+use App\Parents\WebHookHandler;
 use App\Services\DeleteAlIGameInvitationsService;
 use App\Services\RoomQueueService;
 use App\Services\SaveOnlineService;
 
-class OnlineHandler extends Handler
+class OnlineWebHookHandler extends WebHookHandler
 {
     private const DISCONNECT_EVENT = 'channel_vacated';
 

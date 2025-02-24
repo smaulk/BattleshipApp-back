@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace App\Classes\WebSocket\Handlers;
 
 use App\Classes\WebSocket\Requests\WebHookRequest;
+use App\Parents\WebHookHandler;
 use App\Services\SetLoseUserGameService;
 
-class GameHandler extends Handler
+class GameWebHookHandler extends WebHookHandler
 {
     private const DISCONNECT_EVENT = 'member_removed';
 

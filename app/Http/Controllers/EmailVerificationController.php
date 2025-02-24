@@ -10,7 +10,6 @@ use App\Services\SendEmailVerificationService;
 use App\Services\VerifyEmailService;
 use Illuminate\Http\JsonResponse;
 
-
 final class EmailVerificationController extends Controller
 {
     public function verify(VerifyEmailRequest $request): JsonResponse
