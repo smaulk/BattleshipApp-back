@@ -11,10 +11,10 @@ final class SaveOnlineService extends Service
     /**
      * Устанавливает онлайн пользователя
      */
-    public function run(array $user_ids, bool $is_online): void
+    public function run(array $userIds, bool $isOnline): void
     {
         User::query()
-            ->whereIn('id', $user_ids)
-            ->update(['is_online' => $is_online]);
+            ->whereIn('id', $userIds)
+            ->update(['is_online' => $isOnline]);
     }
 }

@@ -12,7 +12,7 @@ final class GetUsersByFriendshipRequest extends AuthorizedRequest
         return [
             'startId'   => 'nullable|integer',
             'nickname'  => 'nullable|string',
-            'is_online' => 'nullable|boolean',
+            'isOnline' => 'nullable|boolean',
         ];
     }
 

@@ -10,7 +10,7 @@ use App\Parents\Service;
 final class SendEmailVerificationService extends Service
 {
     /**
-     * Отправляет письмо на почту пользователя с ссылкой на подтверждение почты
+     * Отправляет письмо на почту пользователя со ссылкой на подтверждение почты
      */
     public function run(int $userId): void
     {

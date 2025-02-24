@@ -14,19 +14,19 @@ final readonly class GetUsersByFriendshipDto extends Dto
     public FriendshipType $type;
     public ?int $startId;
     public ?string $nickname;
-    public ?bool $is_online;
+    public ?bool $isOnline;
 
     public static function fromRequest(GetUsersByFriendshipRequest $request, FriendshipType $type): GetUsersByFriendshipDto
     {
         $startId = $request->validated('startId');
-        $is_online = $request->validated('is_online');
+        $isOnline = $request->validated('isOnline');
 
         $dto = new self();
         $dto->userId = $request->getUserId();
         $dto->type = $type;
         $dto->startId = $startId ? (int)$startId : null;
         $dto->nickname = $request->validated('nickname');
-        $dto->is_online = !is_null($is_online) ? (bool)$is_online : null;
+        $dto->isOnline = !is_null($isOnline) ? (bool)$isOnline : null;
 
         return $dto;
     }

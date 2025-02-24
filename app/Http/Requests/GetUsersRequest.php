@@ -13,7 +13,7 @@ final class GetUsersRequest extends Request
         return [
             'nickname'  => ['required', 'string', 'min:1', 'max:18'],
             'startId'   => ['nullable', 'integer'],
-            'is_online' => ['nullable', 'boolean'],
+            'isOnline' => ['nullable', 'boolean'],
         ];
     }
 
