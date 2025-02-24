@@ -31,7 +31,7 @@ final class GetGameInvitationsService extends PaginateService
                 $query->where('receiver_id', $dto->userId);
             })
             ->when(!empty($dto->startId), function ($query) use ($dto) {
-                $query->where('users.id', '>', $dto->startId); // Фильтруем по ID
+                $query->whereRaw('UNIX_TIMESTAMP(invited_at) < ?', [$dto->startId]);
             })
             ->orderByDesc($this->getPaginateId())
             ->limit($this->getLimit())

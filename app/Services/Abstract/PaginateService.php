@@ -5,6 +5,7 @@ namespace App\Services\Abstract;
 
 use App\Dto\PaginateDto;
 use App\Parents\Service;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 abstract class PaginateService extends Service
@@ -45,6 +46,10 @@ abstract class PaginateService extends Service
         $lastId = $hasMore
             ? $items->last()?->{$this->getPaginateId()}
             : null;
+
+        if($lastId instanceof Carbon) {
+            $lastId = $lastId->getTimestamp();
+        }
 
         return new PaginateDto($items, $lastId);
     }
