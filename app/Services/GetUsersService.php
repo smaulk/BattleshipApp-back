@@ -13,8 +13,7 @@ final class GetUsersService extends PaginateService
 {
     public function run(GetUsersDto $dto): PaginateDto
     {
-        $users = $this->fetchUsers($dto);
-        return $this->paginate($users);
+        return $this->paginate($this->fetchUsers($dto));
     }
 
     private function fetchUsers(GetUsersDto $dto): Collection

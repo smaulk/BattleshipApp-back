@@ -13,8 +13,7 @@ final class GetGameInvitationsService extends PaginateService
 {
     public function run(GetGameInvitationsDto $dto): PaginateDto
     {
-        $invites = $this->fetchInvites($dto);
-        return $this->paginate($invites);
+        return $this->paginate($this->fetchInvites($dto));
     }
 
     private function fetchInvites(GetGameInvitationsDto $dto): Collection
