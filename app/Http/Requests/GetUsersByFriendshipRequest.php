@@ -10,8 +10,9 @@ final class GetUsersByFriendshipRequest extends AuthorizedRequest
     public function rules(): array
     {
         return [
-            'startId'  => 'nullable|integer',
-            'nickname' => 'nullable|string',
+            'startId'   => 'nullable|integer',
+            'nickname'  => 'nullable|string',
+            'is_online' => 'nullable|boolean',
         ];
     }
 

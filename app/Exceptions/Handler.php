@@ -12,6 +12,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 final class Handler extends ExceptionHandler
@@ -37,6 +38,9 @@ final class Handler extends ExceptionHandler
                 'message' => "Ошибка валидации данных",
                 'errors' => $e->errors()
             ], 422);
+        }
+        if ($e instanceof NotFoundHttpException) {
+            return $this->json(404, 'Запрос не найден');
         }
 
         return $this->json(500, 'Ошибка сервера');

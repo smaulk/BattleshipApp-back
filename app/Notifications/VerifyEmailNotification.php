@@ -2,7 +2,6 @@
 
 namespace App\Notifications;
 
-use App\Classes\Timestamp;
 use App\Classes\VerificationManager;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

@@ -20,6 +20,7 @@ final class GameInvitationController extends Controller
     {
         $invitations = GameInvitation::query()
             ->where('sender_id', $request->getUserId())
+            ->orderByDesc('invited_at')
             ->get();
 
         return $this->json($invitations);
@@ -29,6 +30,7 @@ final class GameInvitationController extends Controller
     {
         $invitations = GameInvitation::query()
             ->where('receiver_id', $request->getUserId())
+            ->orderByDesc('invited_at')
             ->get();
 
         return $this->json($invitations);

@@ -55,6 +55,9 @@ final class GetUsersByFriendshipService extends PaginateService
             ->when(!empty($dto->nickname), function ($query) use ($dto) {
                 $query->where('users.nickname', 'like', "$dto->nickname%");
             })
+            ->when(!is_null($dto->is_online), function ($query) use ($dto) {
+                $query->where('users.is_online', $dto->is_online);
+            })
             ->orderByDesc($this->getPaginateId())
             ->limit($this->getLimit())
             ->get();

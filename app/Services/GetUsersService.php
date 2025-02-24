@@ -33,6 +33,9 @@ final class GetUsersService extends PaginateService
                 $query->where('users.id', '>', $dto->startId); // Фильтруем по ID
             })
             ->where('users.nickname', 'like', "$dto->nickname%")
+            ->when(!is_null($dto->is_online), function ($query) use ($dto) {
+                $query->where('users.is_online', $dto->is_online);
+            })
             ->orderBy($this->getPaginateId())
             ->limit($this->getLimit())
             ->get();
