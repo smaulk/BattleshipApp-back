@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Classes\WebSocket\Handlers\GameHandler;
-use App\Classes\WebSocket\Handlers\OnlineHandler;
+use App\Classes\WebSocket\Handlers\GameWebHookHandler;
+use App\Classes\WebSocket\Handlers\OnlineWebHookHandler;
 use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -20,7 +20,7 @@ class BroadcastServiceProvider extends ServiceProvider
 
     private function loadWebhookHandlers(): void
     {
-        Route::post('/broadcasting/webhook-online', OnlineHandler::class)->middleware('api');
-        Route::post('/broadcasting/webhook-game', GameHandler::class)->middleware('api');
+        Route::post('/broadcasting/webhook-online', OnlineWebHookHandler::class)->middleware('api');
+        Route::post('/broadcasting/webhook-game', GameWebHookHandler::class)->middleware('api');
     }
 }

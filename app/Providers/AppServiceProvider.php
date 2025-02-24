@@ -2,13 +2,12 @@
 
 namespace App\Providers;
 
-use App\Classes\AvatarManager;
-use App\Exceptions\Handler;
+use App\Exceptions\ExceptionHandler;
 use App\Models\Game;
 use App\Models\User;
 use App\Observers\GameObserver;
 use App\Observers\UserObserver;
-use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,8 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //Переопределение Handler для обработки ошибок
-        $this->app->singleton(ExceptionHandler::class, Handler::class);
+        //Переопределение ExceptionHandler для обработки ошибок
+        $this->app->singleton(ExceptionHandlerContract::class, ExceptionHandler::class);
 
         $this->registerObservers();
     }

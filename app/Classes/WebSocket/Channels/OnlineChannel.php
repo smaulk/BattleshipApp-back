@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace App\Classes\WebSocket\Channels;
 
 use App\Models\User;
+use App\Parents\Channel;
 use App\Services\SaveOnlineService;
 
-class OnlineChannel
+class OnlineChannel extends Channel
 {
     public function join(User $user, int $userId): bool
     {

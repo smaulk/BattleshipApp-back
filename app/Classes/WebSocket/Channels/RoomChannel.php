@@ -4,9 +4,10 @@ declare(strict_types=1);
 namespace App\Classes\WebSocket\Channels;
 
 use App\Models\User;
+use App\Parents\Channel;
 use Illuminate\Support\Facades\Redis;
 
-class RoomChannel
+class RoomChannel extends Channel
 {
     public function join(User $user, string $roomId): bool
     {

@@ -6,9 +6,10 @@ namespace App\Classes\WebSocket\Channels;
 use App\Enums\GameStatus;
 use App\Models\Game;
 use App\Models\User;
+use App\Parents\Channel;
 use Illuminate\Database\Eloquent\Builder;
 
-class GameChannel
+class GameChannel extends Channel
 {
     public function join(User $user, int $gameId): bool
     {
