@@ -4,9 +4,12 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Dto\FriendshipDto;
+use App\Dto\SendNotifyDto;
 use App\Enums\FriendshipStatus;
+use App\Events\SendNotify;
 use App\Exceptions\HttpException;
 use App\Models\Friendship;
+use App\Models\User;
 use App\Services\Abstract\FriendshipService;
 
 final class AcceptFriendshipService extends FriendshipService
@@ -15,6 +18,7 @@ final class AcceptFriendshipService extends FriendshipService
     {
         $this->validateUsers($dto->userId, $dto->friendId);
         $this->acceptFriendship($dto->userId, $dto->friendId);
+        $this->sendNotify($dto);
     }
 
     private function acceptFriendship(int $userId, int $friendId): void
@@ -43,5 +47,19 @@ final class AcceptFriendshipService extends FriendshipService
             : FriendshipStatus::REQ_UID1;
 
         return $friendship->status === $expectedStatus;
+    }
+
+
+    private function sendNotify(FriendshipDto $dto): void
+    {
+        $sender = User::select(['id', 'nickname'])->find($dto->userId);
+        if ($sender) {
+            SendNotify::broadcast(SendNotifyDto::fromArray([
+                'senderId'   => $sender->id,
+                'receiverId' => $dto->friendId,
+                'message'    => "{$sender->nickname} принял вашу заявку в друзья!",
+                'event'      => 'accept.request',
+            ]));
+        }
     }
 }

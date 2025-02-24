@@ -1,22 +1,25 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Events;
 
-use App\Models\User;
+use App\Dto\SendNotifyDto;
 use App\Parents\BroadcastEvent;
 use Illuminate\Broadcasting\PrivateChannel;
 
-final class InviteGame extends BroadcastEvent
+final class SendNotify extends BroadcastEvent
 {
     public int $senderId;
-    public string $senderNickname;
     public int $receiverId;
+    public string $event;
+    public ?string $message;
 
-    public function __construct(User $sender, int $receiverId)
+    public function __construct(SendNotifyDto $dto)
     {
-        $this->senderId = $sender->id;
-        $this->senderNickname = $sender->nickname;
-        $this->receiverId = $receiverId;
+        $this->senderId = $dto->senderId;
+        $this->receiverId = $dto->receiverId;
+        $this->event = $dto->event;
+        $this->message = $dto->message;
     }
 
     public function broadcastOn(): PrivateChannel
@@ -26,13 +29,13 @@ final class InviteGame extends BroadcastEvent
 
     public function broadcastAs(): string
     {
-        return 'get.invite';
+        return $this->event;
     }
 
     public function broadcastWith(): array
     {
         return [
-            'message' => "{$this->senderNickname} приглашает вас в игру!",
+            'message'  => $this->message,
             'senderId' => $this->senderId,
         ];
     }

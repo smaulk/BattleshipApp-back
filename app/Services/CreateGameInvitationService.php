@@ -4,7 +4,8 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Dto\FriendshipDto;
-use App\Events\InviteGame;
+use App\Dto\SendNotifyDto;
+use App\Events\SendNotify;
 use App\Models\GameInvitation;
 use App\Models\User;
 use App\Services\Abstract\FriendshipService;
@@ -20,13 +21,21 @@ final class CreateGameInvitationService extends FriendshipService
             ['invited_at' => now()]
         );
 
-        if (!$result) {
-            return;
+        if ($result) {
+            $this->sendNotify($dto);
         }
+    }
 
+    private function sendNotify(FriendshipDto $dto): void
+    {
         $sender = User::select(['id', 'nickname'])->find($dto->userId);
         if ($sender) {
-            InviteGame::broadcast($sender, $dto->friendId);
+            SendNotify::broadcast(SendNotifyDto::fromArray([
+                'senderId' => $sender->id,
+                'receiverId' => $dto->friendId,
+                'message' => "{$sender->nickname} приглашает вас в игру!",
+                'event' => 'create.invite',
+            ]));
         }
     }
 }
