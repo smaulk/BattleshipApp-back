@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Models\UserStatistic;
 use App\Parents\Test;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
@@ -42,6 +43,7 @@ final class CreateUserTest extends Test
             'email'    => $email,
         ]);
 
+        $this->assertDatabaseCount(UserStatistic::class,1);
         Notification::assertCount(1);
     }
 

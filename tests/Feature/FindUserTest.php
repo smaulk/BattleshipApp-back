@@ -17,6 +17,7 @@ final class FindUserTest extends Test
         // Получаем данные пользователя
         $this
             ->get("/api/v1/users/$user->id")
+            ->assertOk()
             ->assertJsonStructure([
                 'data' => [
                     'id',
@@ -29,8 +30,7 @@ final class FindUserTest extends Test
                 ->where('data.id', $user->id)
                 ->where('data.nickname', $user->nickname)
                 ->where('data.avatarUrl', null)
-            )
-            ->assertOk();
+            );
     }
 
     public function testFindNonExistentUser(): void
