@@ -31,10 +31,10 @@ final class RefreshTest extends Test
             ->assertDatabaseCount(RefreshToken::class, 1);
 
         // Делаем рефреш, обновляем токен
-        $response = $this->postJson('api/v1/refresh', [
-            'refreshToken' => $refreshToken,
-        ]);
-        $response
+        $response = $this
+            ->postJson('api/v1/refresh', [
+                'refreshToken' => $refreshToken,
+            ])
             ->assertOk()
             ->assertJsonStructure([
                 'accessToken',

@@ -17,7 +17,7 @@ final class CreateUserTest extends Test
         $this->fakeEventWithModel();
 
         // Создаем нового пользователя
-        $this
+        $response = $this
             ->postJson('api/v1/users', [
                 'nickname'             => $nickname = Str::random(),
                 'email'                => $email = Str::random() . '@example.com',
@@ -38,12 +38,17 @@ final class CreateUserTest extends Test
                 ->where('data.avatarUrl', null)
             );
 
+        $userId = $response->json('data.id');
+
         $this->assertDatabaseHas(User::class, [
+            'id'       => $userId,
             'nickname' => $nickname,
             'email'    => $email,
         ]);
 
-        $this->assertDatabaseCount(UserStatistic::class,1);
+        $this->assertDatabaseHas(UserStatistic::class, [
+            'user_id' => $userId,
+        ]);
         Notification::assertCount(1);
     }
 
