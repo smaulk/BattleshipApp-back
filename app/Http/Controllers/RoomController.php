@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\JoinRoomRequest;
 use App\Parents\Controller;
 use App\Parents\Request;
 use App\Services\CreateRoomService;
@@ -19,10 +18,10 @@ final class RoomController extends Controller
             (int)$request->user()->getAuthIdentifier()
         );
 
-        return $this->json(['roomId' => $roomId]);
+        return $this->json(['roomId' => $roomId], 201);
     }
 
-    public function join(JoinRoomRequest $request): JsonResponse
+    public function join(Request $request): JsonResponse
     {
         (new JoinRoomService())->run(
             $request->route('roomId'),

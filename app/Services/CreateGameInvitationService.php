@@ -5,16 +5,19 @@ namespace App\Services;
 
 use App\Dto\FriendshipDto;
 use App\Dto\SendNotifyDto;
+use App\Enums\FriendshipStatus;
 use App\Events\SendNotify;
+use App\Exceptions\HttpException;
+use App\Models\Friendship;
 use App\Models\GameInvitation;
 use App\Models\User;
-use App\Services\Abstract\UsersService;
+use App\Parents\Service;
 
-final class CreateGameInvitationService extends UsersService
+final class CreateGameInvitationService extends Service
 {
     public function run(FriendshipDto $dto): void
     {
-        $this->validateUsers($dto->userId, $dto->friendId);
+        $this->validate($dto);
 
         $result = GameInvitation::updateOrInsert(
             ['sender_id' => $dto->userId, 'receiver_id' => $dto->friendId],
@@ -26,15 +29,26 @@ final class CreateGameInvitationService extends UsersService
         }
     }
 
+    private function validate(FriendshipDto $dto): void
+    {
+        if (!Friendship::query()
+            ->findByUsers($dto->userId, $dto->friendId)
+            ->where('status', FriendshipStatus::FRIEND)
+            ->exists()
+        ) {
+            throw new HttpException(403, "Пригласить в игру можно только друга");
+        }
+    }
+
     private function sendNotify(FriendshipDto $dto): void
     {
         $sender = User::select(['id', 'nickname'])->find($dto->userId);
         if ($sender) {
             SendNotify::broadcast(SendNotifyDto::fromArray([
-                'senderId' => $sender->id,
+                'senderId'   => $sender->id,
                 'receiverId' => $dto->friendId,
-                'message' => "{$sender->nickname} приглашает вас в игру!",
-                'event' => 'create.invite',
+                'message'    => "{$sender->nickname} приглашает вас в игру!",
+                'event'      => 'create.invite',
             ]));
         }
     }

@@ -1,21 +1,23 @@
 <?php
+declare(strict_types=1);
 
 namespace Tests\Feature;
 
-use App\Enums\FriendshipStatus;
+use App\Events\SendNotify;
 use App\Models\User;
 use App\Parents\Test;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Event;
 
 final class CreateFriendshipTest extends Test
 {
     public function testCreateFriendship(): void
     {
+        $this->fakeEventWithModel();
+
         /** @var User $user1 */
-        $user1 = User::factory()->create();
-        $accessToken = $this->jwt->createToken($user1);
         /** @var User $user2 */
-        $user2 = User::factory()->create();
+        [$user1, $user2] = [User::factory()->create(), User::factory()->create()];
+        $accessToken = $this->jwt->createToken($user1);
 
         // Создаем дружбу между пользователями
         $this
@@ -39,6 +41,18 @@ final class CreateFriendshipTest extends Test
                 'message' => 'Запись уже существует'
             ]);
 
+        Event::assertDispatched(SendNotify::class);
+    }
+
+    public function testCreateFriendshipError(): void
+    {
+        $this->fakeEventWithModel();
+
+        /** @var User $user1 */
+        /** @var User $user2 */
+        [$user1, $user2] = [User::factory()->create(), User::factory()->create()];
+        $accessToken = $this->jwt->createToken($user1);
+
         // Пробуем создать дружбу пользователя с самим собой
         $this
             ->postJson('/api/v1/friendships', [
@@ -51,7 +65,6 @@ final class CreateFriendshipTest extends Test
                 'message' => 'Идентификаторы пользователей совпадают'
             ]);
 
-
         // Пробуем создать дружбу с несуществующим пользователем
         $this
             ->postJson('/api/v1/friendships', [
@@ -63,5 +76,7 @@ final class CreateFriendshipTest extends Test
             ->assertJson([
                 'message' => 'Пользователь не найден'
             ]);
+
+        Event::assertNotDispatched(SendNotify::class);
     }
 }

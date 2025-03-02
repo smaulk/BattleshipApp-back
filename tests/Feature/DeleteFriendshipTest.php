@@ -27,7 +27,7 @@ final class DeleteFriendshipTest extends Test
 
         // Отклоняем полученную заявку в друзья
         $this
-            ->deleteJson('/api/v1/friendships/' . $user1->getKey(), [], [
+            ->deleteJson("/api/v1/friendships/{$user1->id}", [], [
                 'Authorization' => "Bearer $accessToken2",
             ])
             ->assertNoContent();
@@ -53,7 +53,7 @@ final class DeleteFriendshipTest extends Test
 
         // Отменяем отправленную заявку в друзья
         $this
-            ->deleteJson('/api/v1/friendships/' . $user2->getKey(), [], [
+            ->deleteJson("/api/v1/friendships/{$user2->id}", [], [
                 'Authorization' => "Bearer $accessToken1",
             ])
             ->assertNoContent();
@@ -79,7 +79,7 @@ final class DeleteFriendshipTest extends Test
 
         // Удаляем пользователя из друзей
         $this
-            ->deleteJson('/api/v1/friendships/' . $user2->getKey(), [], [
+            ->deleteJson("/api/v1/friendships/{$user2->id}", [], [
                 'Authorization' => "Bearer $accessToken1",
             ])
             ->assertNoContent();

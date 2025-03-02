@@ -5,6 +5,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use App\Parents\Test;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Illuminate\Testing\Fluent\AssertableJson;
 
@@ -12,6 +13,8 @@ final class CreateUserTest extends Test
 {
     public function testCreateUser(): void
     {
+        $this->fakeEventWithModel();
+
         // Создаем нового пользователя
         $this
             ->postJson('api/v1/users', [
@@ -39,13 +42,14 @@ final class CreateUserTest extends Test
             'email'    => $email,
         ]);
 
-
+        Notification::assertCount(1);
     }
 
     public function testCreateUserWithNonUniqueData()
     {
         /** @var User $user */
         $user = User::factory()->create();
+        $this->fakeEventWithModel();
 
         // Пробуем создать пользователя с такими же данными
         $this
@@ -59,5 +63,7 @@ final class CreateUserTest extends Test
             ->assertJson([
                 'message' => 'Имя пользователя уже используется'
             ]);
+
+        Notification::assertNothingSent();
     }
 }

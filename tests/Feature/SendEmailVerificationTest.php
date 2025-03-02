@@ -16,7 +16,7 @@ final class SendEmailVerificationTest extends Test
         /** @var User $user */
         $user = User::factory()->unverified()->create();
         $accessToken = $this->jwt->createToken($user);
-        Notification::fake();
+        $this->fakeEventWithModel();
 
         // Проверяем, что почта не подтверждена
         $this->assertNull($user->email_verified_at);
@@ -38,7 +38,7 @@ final class SendEmailVerificationTest extends Test
         /** @var User $user */
         $user = User::factory()->create();
         $accessToken = $this->jwt->createToken($user);
-        Notification::fake();
+        $this->fakeEventWithModel();
 
         // Отправляем запрос, на отправку письма для подтверждения почты
         $this

@@ -21,14 +21,16 @@ final class FindUserTest extends Test
                 'data' => [
                     'id',
                     'nickname',
-                    'avatarUrl'
+                    'avatarUrl',
+                    'statistic'
                 ],
             ])
             ->assertJson(fn(AssertableJson $json) => $json
                 ->where('data.id', $user->id)
                 ->where('data.nickname', $user->nickname)
                 ->where('data.avatarUrl', null)
-            );
+            )
+            ->assertOk();
     }
 
     public function testFindNonExistentUser(): void

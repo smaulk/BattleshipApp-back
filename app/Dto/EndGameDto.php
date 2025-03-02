@@ -13,13 +13,22 @@ final readonly class EndGameDto extends Dto
     public int $userId;
     public GameType $type;
 
-    public static function fromRequest(FinishGameRequest $request): self
+    public static function fromArray(array $data): self
     {
         $dto = new self();
-        $dto->gameId = (int)$request->route('gameId');
-        $dto->userId = (int)$request->user()->getAuthIdentifier();
-        $dto->type = GameType::from((int)$request->validated('type'));
+        $dto->gameId = (int)$data['gameId'];
+        $dto->userId = (int)$data['userId'];
+        $dto->type = GameType::from((int)$data['type']);
 
         return $dto;
+    }
+
+    public static function fromRequest(FinishGameRequest $request): self
+    {
+        return self::fromArray([
+            'gameId' => $request->route('gameId'),
+            'userId' => $request->user()->getAuthIdentifier(),
+            'type'   => $request->validated('type')
+        ]);
     }
 }

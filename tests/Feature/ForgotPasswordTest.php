@@ -12,9 +12,9 @@ final class ForgotPasswordTest extends Test
 {
     public function testForgotPassword(): void
     {
+        $this->fakeEventWithModel();
         /** @var User $user */
         $user = User::factory()->create();
-        Notification::fake();
 
         // Отправляем запрос, на отправку письма для сброса пароля
         $this
@@ -42,7 +42,7 @@ final class ForgotPasswordTest extends Test
 
     public function testForgotPasswordWithWrongEmail(): void
     {
-        Notification::fake();
+        $this->fakeEventWithModel();
         // Отправляем запрос, на отправку письма для сброса пароля, с несуществующей почтой
         $this
             ->post('/api/v1/password/forgot', [
