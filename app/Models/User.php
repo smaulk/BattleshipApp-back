@@ -28,6 +28,7 @@ use Illuminate\Notifications\Notifiable;
  * @property string $email
  * @property string $email_verified_at
  * @property string|null $avatar_filename
+ * @property string|null $avatar_url
  * @property string $password
  * @property bool $is_online
  * @property DateTimeInterface $created_at

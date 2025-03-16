@@ -31,9 +31,10 @@ class Jwt
             'type' => 'JWT'
         ]);
         $this->payload->setDecodedPayload([
-            'id'       => $user->getAuthIdentifier(),
-            'nickname' => $user->nickname,
-            'exp'      => Timestamp::now()->addMinutes($this->getTtl())->get(),
+            'id'        => $user->getAuthIdentifier(),
+            'nickname'  => $user->nickname,
+            'avatarUrl' => $user->avatar_url,
+            'exp'       => Timestamp::now()->addMinutes($this->getTtl())->get(),
         ]);
 
         $key = $this->getSecret();
