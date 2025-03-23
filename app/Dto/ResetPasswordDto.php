@@ -24,8 +24,8 @@ final readonly class ResetPasswordDto extends Dto
     public function toArray(): array
     {
         return [
-            'token' => $this->token,
-            'email' => $this->email,
+            'token'    => $this->token,
+            'email'    => $this->email,
             'password' => $this->password,
         ];
     }
