@@ -16,7 +16,7 @@ final class UpdateUserAvatarService extends Service
     /**
      * Обновляет аватар пользователя, сохраняет файл в хранилище и обновляет имя файла
      */
-    public function run(UpdateUserAvatarDto $dto): User
+    public function run(UpdateUserAvatarDto $dto): void
     {
         $avatarManager = new AvatarManager();
         $user = User::query()->findOrFail($dto->userId);
@@ -38,7 +38,5 @@ final class UpdateUserAvatarService extends Service
         if ($oldFilename) {
             $avatarManager->delete($oldFilename);
         }
-
-        return $user;
     }
 }

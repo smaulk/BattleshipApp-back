@@ -15,13 +15,11 @@ final class UserAvatarController extends Controller
 {
     public function update(UpdateUserAvatarRequest $request): JsonResponse
     {
-        $user = (new UpdateUserAvatarService())->run(
+        (new UpdateUserAvatarService())->run(
             $request->toDto()
         );
 
-        return $this
-            ->resource($user, UserResource::class)
-            ->response();
+        return $this->json(status: 204);
     }
 
     public function delete(AuthorizedRequest $request): JsonResponse
