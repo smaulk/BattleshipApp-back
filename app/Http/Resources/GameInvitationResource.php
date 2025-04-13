@@ -13,12 +13,19 @@ class GameInvitationResource extends JsonResource
     {
         /** @var GameInvitation $invitation */
         $invitation = $this->resource;
-        $currentUserId = $request->user()?->getKey();
+
+        if ($invitation->relationLoaded('sender')) {
+            $user = $invitation->sender;
+        } elseif ($invitation->relationLoaded('receiver')) {
+            $user = $invitation->receiver;
+        } else {
+            return [];
+        }
 
         return [
-            'friendId'  => $currentUserId == $invitation->sender_id
-                ? $invitation->receiver_id
-                : $invitation->sender_id,
+            'friendId'  => $user->id,
+            'nickname'  => $user->nickname,
+            'avatarUrl' => $user->avatar_url,
             'invitedAt' => $invitation->invited_at,
         ];
     }

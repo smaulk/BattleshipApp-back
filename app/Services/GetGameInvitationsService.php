@@ -24,10 +24,16 @@ final class GetGameInvitationsService extends PaginateService
                     ->orWhere('receiver_id', $dto->userId);
             })
             ->when($dto->type === 1, function ($query) use ($dto) {
-                $query->where('sender_id', $dto->userId);
+                $query->where('sender_id', $dto->userId)
+                    ->with(['receiver' => function ($query) {
+                        $query->select('id', 'nickname', 'avatar_filename');
+                    }]);
             })
             ->when($dto->type === 2, function ($query) use ($dto) {
-                $query->where('receiver_id', $dto->userId);
+                $query->where('receiver_id', $dto->userId)
+                    ->with(['sender' => function ($query) {
+                        $query->select('id', 'nickname', 'avatar_filename');
+                    }]);
             })
             ->when(!empty($dto->startId), function ($query) use ($dto) {
                 $query->whereRaw('UNIX_TIMESTAMP(invited_at) < ?', [$dto->startId]);
