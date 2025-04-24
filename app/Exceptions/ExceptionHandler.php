@@ -8,6 +8,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +42,9 @@ final class ExceptionHandler extends Handler
         }
         if ($e instanceof NotFoundHttpException) {
             return $this->json(404, 'Запрос не найден');
+        }
+        if ($e instanceof ThrottleRequestsException) {
+            return $this->json(429, 'Слишком много запросов');
         }
 
         return $this->json(500, 'Ошибка сервера');
