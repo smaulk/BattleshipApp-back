@@ -22,7 +22,9 @@ final class CreateRoomTest extends Test
                 'Authorization' => "Bearer $accessToken1",
             ])
             ->assertJsonStructure([
-                'roomId'
+                'data' => [
+                    'roomId'
+                ],
             ])
             ->assertCreated();
 

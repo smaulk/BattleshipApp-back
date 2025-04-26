@@ -24,7 +24,7 @@ final class StopSearchRoomTest extends Test
         $this->assertTrue(Redis::llen(self::QUEUE) === 1);
 
         $this
-            ->deleteJson('/api/v1/rooms/search', [], [
+            ->deleteJson('/api/v1/room-queue', [], [
                 'Authorization' => 'Bearer ' . $accessToken1,
             ])
             ->assertNoContent();
@@ -41,7 +41,7 @@ final class StopSearchRoomTest extends Test
         $accessToken1 = $this->jwt->createToken($user1);
 
         $this
-            ->deleteJson('/api/v1/rooms/search', [], [
+            ->deleteJson('/api/v1/room-queue', [], [
                 'Authorization' => 'Bearer ' . $accessToken1,
             ])
             ->assertNoContent();

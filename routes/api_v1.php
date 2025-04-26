@@ -67,7 +67,7 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     Route::post('/rooms', [RoomController::class, 'create']);
     Route::post('/rooms/{roomId}/join', [RoomController::class, 'join']);
-    Route::post('/rooms/search', [RoomController::class, 'startSearch']);
-    Route::delete('/rooms/search', [RoomController::class, 'stopSearch']);
+    Route::post('/room-queue', [RoomController::class, 'startSearch']);
+    Route::delete('/room-queue', [RoomController::class, 'stopSearch']);
 });
 // endregion

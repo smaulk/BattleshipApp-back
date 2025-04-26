@@ -23,14 +23,14 @@ final class StartSearchRoomTest extends Test
         $accessToken1 = $this->jwt->createToken($user1);
 
         $this
-            ->postJson('/api/v1/rooms/search', [], [
+            ->postJson('/api/v1/room-queue', [], [
                 'Authorization' => 'Bearer ' . $accessToken1,
             ])
             ->assertNoContent();
 
         // Второй раз запускаем поиск
         $this
-            ->postJson('/api/v1/rooms/search', [], [
+            ->postJson('/api/v1/room-queue', [], [
                 'Authorization' => 'Bearer ' . $accessToken1,
             ])
             ->assertNoContent();
@@ -55,7 +55,7 @@ final class StartSearchRoomTest extends Test
         $this->assertTrue(Redis::llen(self::QUEUE) === 1);
 
         $this
-            ->postJson('/api/v1/rooms/search', [], [
+            ->postJson('/api/v1/room-queue', [], [
                 'Authorization' => 'Bearer ' . $accessToken2,
             ])
             ->assertNoContent();
