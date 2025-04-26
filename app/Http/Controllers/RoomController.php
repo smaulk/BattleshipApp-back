@@ -18,7 +18,7 @@ final class RoomController extends Controller
             (int)$request->user()->getAuthIdentifier()
         );
 
-        return $this->json(['roomId' => $roomId], 201);
+        return $this->json(['data' => ['roomId' => $roomId]], 201);
     }
 
     public function join(Request $request): JsonResponse
