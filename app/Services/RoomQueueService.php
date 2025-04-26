@@ -17,7 +17,7 @@ final class RoomQueueService extends Service
     public function enqueue(int $userId): void
     {
         $playerId = Redis::lpop(self::QUEUE);
-        if (!$playerId || $playerId == $userId) {
+        if (!$playerId || (int)$playerId === $userId) {
             Redis::rpush(self::QUEUE, $userId);
             return;
         }
