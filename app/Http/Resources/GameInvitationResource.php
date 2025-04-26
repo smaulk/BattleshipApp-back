@@ -26,7 +26,7 @@ class GameInvitationResource extends JsonResource
             'friendId'  => $user->id,
             'nickname'  => $user->nickname,
             'avatarUrl' => $user->avatar_url,
-            'invitedAt' => $invitation->invited_at->getTimestamp(),
+            'invitedAt' => $invitation->invited_at?->getTimestamp(),
         ];
     }
 }
