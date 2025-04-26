@@ -24,7 +24,8 @@ class UserStatisticResource extends JsonResource
             'user' => $this->whenLoaded('user', fn() => [
                 'id'        => $statistic->user->id,
                 'nickname'  => $statistic->user->nickname,
-                'avatarUrl' => $statistic->user->avatarUrl,
+                'avatarUrl' => $statistic->user->avatar_url,
+                'isOnline'  => $statistic->user->is_online,
             ]),
         ];
     }
