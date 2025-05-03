@@ -20,7 +20,7 @@ final class CreateGameInvitationService extends Service
         $this->validate($dto);
 
         if ($this->checkInviteFromFriendExists($dto)) {
-            (new AcceptGameInvitationService())->run($dto);
+            (new AcceptGameInvitationService())->run($dto, false);
             return;
         }
 
@@ -47,10 +47,7 @@ final class CreateGameInvitationService extends Service
 
     private function checkInviteFromFriendExists(FriendshipDto $dto): bool
     {
-        return GameInvitation::query()
-            ->where('sender_id', $dto->friendId)
-            ->where('receiver_id', $dto->userId)
-            ->exists();
+        return GameInvitation::findByUsers($dto->friendId, $dto->userId)->exists();
     }
 
     private function sendNotify(FriendshipDto $dto): void

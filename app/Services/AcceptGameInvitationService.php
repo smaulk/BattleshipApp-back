@@ -11,10 +11,12 @@ use Illuminate\Support\Facades\DB;
 
 final class AcceptGameInvitationService extends Service
 {
-    public function run(FriendshipDto $dto): void
+    public function run(FriendshipDto $dto, bool $checkInviteExists = true): void
     {
         // Проверка, что приглашение существует
-        GameInvitation::findByUsers($dto->friendId, $dto->userId)->firstOrFail();
+        if ($checkInviteExists) {
+            GameInvitation::findByUsers($dto->friendId, $dto->userId)->firstOrFail();
+        }
 
         DB::transaction(function () use ($dto) {
             $roomId = (new CreateRoomService())->run($dto->userId, $dto->friendId);
