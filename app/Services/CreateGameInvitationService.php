@@ -19,6 +19,11 @@ final class CreateGameInvitationService extends Service
     {
         $this->validate($dto);
 
+        if ($this->checkInviteFromFriendExists($dto)) {
+            (new AcceptGameInvitationService())->run($dto);
+            return;
+        }
+
         $result = GameInvitation::updateOrInsert(
             ['sender_id' => $dto->userId, 'receiver_id' => $dto->friendId],
             ['invited_at' => now()]
@@ -38,6 +43,14 @@ final class CreateGameInvitationService extends Service
         ) {
             throw new HttpException(403, "Пригласить в игру можно только друга");
         }
+    }
+
+    private function checkInviteFromFriendExists(FriendshipDto $dto): bool
+    {
+        return GameInvitation::query()
+            ->where('sender_id', $dto->friendId)
+            ->where('receiver_id', $dto->userId)
+            ->exists();
     }
 
     private function sendNotify(FriendshipDto $dto): void
