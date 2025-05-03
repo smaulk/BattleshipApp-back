@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\ConvertBooleanQueryParams;
 use App\Http\Middleware\MeToIdMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -10,6 +11,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->api(prepend: [
             MeToIdMiddleware::class,
+            ConvertBooleanQueryParams::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
