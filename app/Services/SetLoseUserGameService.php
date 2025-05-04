@@ -17,6 +17,10 @@ final class SetLoseUserGameService extends Service
         $game = Game::query()
             ->where('id', $gameId)
             ->where('status', GameStatus::CREATED)
+            ->where(function ($query) use ($userId) {
+                $query->where('uid1', $userId)
+                    ->orWhere('uid2', $userId);
+            })
             ->first();
 
         if (!$game) {

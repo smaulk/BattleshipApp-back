@@ -8,17 +8,15 @@ use App\Events\EndGame;
 use App\Exceptions\HttpException;
 use App\Models\Game;
 use App\Parents\Service;
+use App\Services\Abstract\GameService;
 use Illuminate\Support\Facades\Redis;
 
-final class FinishGameService extends Service
+final class FinishGameService extends GameService
 {
     public function run(EndGameDto $dto): void
     {
-        $game = Game::query()->findOrFail($dto->gameId);
-
-        if(!in_array($dto->userId, [$game->uid1, $game->uid2], true)) {
-            throw new HttpException(403, "Вы не можете завершить данную игру");
-        }
+        $game = $this->getGame($dto->gameId);
+        $this->validate($dto->userId, $game);
 
         $status = $dto->type->toStatus($game->uid1 === $dto->userId);
         $key = "games:$dto->gameId";
