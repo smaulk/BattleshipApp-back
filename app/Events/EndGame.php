@@ -31,14 +31,6 @@ final class EndGame extends BroadcastEvent
     {
         return [
             'status'  => $this->isSuccess,
-            'message' => $this->getMessage(),
         ];
-    }
-
-    private function getMessage(): string
-    {
-        return $this->isSuccess
-            ? "Игра успешно завершена!"
-            : "Ошибка при завершении игры.";
     }
 }
