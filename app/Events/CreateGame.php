@@ -23,7 +23,7 @@ final class CreateGame extends BroadcastEvent
 
     public function broadcastAs(): string
     {
-        return 'game.create';
+        return 'create.game';
     }
 
     public function broadcastWith(): array

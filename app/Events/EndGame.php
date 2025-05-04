@@ -24,7 +24,7 @@ final class EndGame extends BroadcastEvent
 
     public function broadcastAs(): string
     {
-        return 'game.end';
+        return 'end.game';
     }
 
     public function broadcastWith(): array
