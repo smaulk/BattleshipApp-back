@@ -63,8 +63,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::delete('/invites/{friendId}', [GameInvitationController::class, 'delete']);
 
     Route::put('/games/{gameId}', [GameController::class, 'finish']);
-    Route::post('/games/{gameId}/send-move-data', [GameController::class, 'sendMoveData']);
-    Route::post('/games/{gameId}/send-move-result', [GameController::class, 'sendMoveResult']);
     Route::put('/rooms/{roomId}', [GameController::class, 'start']);
 
     Route::post('/rooms', [RoomController::class, 'create']);
