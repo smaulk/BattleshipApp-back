@@ -7,13 +7,15 @@ use Illuminate\Broadcasting\PresenceChannel;
 
 final class CreateGame extends BroadcastEvent
 {
-    public int $gameId;
     public string $roomId;
+    public int $gameId;
+    public int $firstPlayerId;
 
-    public function __construct(int $gameId, string $roomId)
+    public function __construct(string $roomId, int $gameId, int $firstPlayerId)
     {
-        $this->gameId = $gameId;
         $this->roomId = $roomId;
+        $this->gameId = $gameId;
+        $this->firstPlayerId = $firstPlayerId;
     }
 
     public function broadcastOn(): PresenceChannel
@@ -29,7 +31,8 @@ final class CreateGame extends BroadcastEvent
     public function broadcastWith(): array
     {
         return [
-            'gameId' => $this->gameId,
+            'gameId'        => $this->gameId,
+            'firstPlayerId' => $this->firstPlayerId,
         ];
     }
 }

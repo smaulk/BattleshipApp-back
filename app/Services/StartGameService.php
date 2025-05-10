@@ -32,7 +32,7 @@ final class StartGameService extends Service
         $game = $this->createGame($userId, $uid2);
         Redis::del($roomKey);
 
-        CreateGame::broadcast($game->id, $roomId);
+        CreateGame::broadcast($roomId, $game->id, $this->getFirstPlayerId($game));
     }
 
     private function validate(array $members, int $userId): void
@@ -53,5 +53,10 @@ final class StartGameService extends Service
                 'uid2' => $uid2
             ])
         );
+    }
+
+    private function getFirstPlayerId(Game $game): int
+    {
+        return rand(0, 1) ? $game->uid1 : $game->uid2;
     }
 }
