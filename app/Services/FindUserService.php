@@ -14,7 +14,7 @@ final class FindUserService extends Service
             ->select('users.*')
             ->with([
                 'statistic' => function ($query) {
-                    $query ->select(['user_id', 'games', 'wins', 'losses', 'draws', 'points']);
+                    $query ->select(['user_id', 'games', 'wins', 'losses', 'points']);
                 }
             ])
             ->when($currentUserId && $currentUserId !== $userId, function ($query) use ($currentUserId) {

@@ -18,7 +18,6 @@ class UserStatisticResource extends JsonResource
             'games'  => $statistic->games,
             'wins'   => $statistic->wins,
             'losses' => $statistic->losses,
-            'draws'  => $statistic->draws,
             'points' => $statistic->points,
 
             'user' => $this->whenLoaded('user', fn() => [

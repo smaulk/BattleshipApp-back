@@ -13,7 +13,7 @@ final class GetLeaderBoardService extends Service
     public function run(): Collection
     {
         return UserStatistic::query()
-            ->select(['user_id', 'games', 'wins', 'losses', 'draws', 'points'])
+            ->select(['user_id', 'games', 'wins', 'losses', 'points'])
             ->with([
                 'user' => function (BelongsTo $query) {
                     $query->select(['id', 'nickname', 'avatar_filename']);

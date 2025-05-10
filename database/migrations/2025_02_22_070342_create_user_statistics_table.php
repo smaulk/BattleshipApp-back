@@ -20,7 +20,6 @@ return new class extends Migration
             $table->unsignedInteger('games')->default(0);
             $table->unsignedInteger('wins')->default(0);
             $table->unsignedInteger('losses')->default(0);
-            $table->unsignedInteger('draws')->default(0);
             $table->integer('points')->default(0);
             $table->timestamps();
             $table->softDeletes();

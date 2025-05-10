@@ -27,13 +27,12 @@ final class GetUserStatisticTest extends Test
             ->getJson("/api/v1/users/{$user1->id}/statistic")
             ->assertOk()
             ->assertJsonStructure([
-                'data' => ['games', 'wins', 'losses', 'draws', 'points',]
+                'data' => ['games', 'wins', 'losses', 'points',]
             ])
             ->assertJson(fn(AssertableJson $json) => $json
                 ->where('data.games', 1)
                 ->where('data.wins', 1)
                 ->where('data.losses', 0)
-                ->where('data.draws', 0)
                 ->where('data.points', 10)
             );
 
@@ -41,13 +40,12 @@ final class GetUserStatisticTest extends Test
             ->getJson("/api/v1/users/{$user2->id}/statistic")
             ->assertOk()
             ->assertJsonStructure([
-                'data' => ['games', 'wins', 'losses', 'draws', 'points',]
+                'data' => ['games', 'wins', 'losses', 'points',]
             ])
             ->assertJson(fn(AssertableJson $json) => $json
                 ->where('data.games', 1)
                 ->where('data.wins', 0)
                 ->where('data.losses', 1)
-                ->where('data.draws', 0)
                 ->where('data.points', 0)
             );
     }

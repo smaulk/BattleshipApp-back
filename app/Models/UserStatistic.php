@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $games
  * @property int $wins
  * @property int $losses
- * @property int $draws
  * @property int $points
  * @property User $user
  */
@@ -24,7 +23,6 @@ final class UserStatistic extends Model
     public const POINT_VALUES = [
         GameType::WIN->value  => 10,
         GameType::LOSE->value => -5,
-        GameType::DRAW->value => 5,
     ];
 
     public const LEADERBOARD_COUNT = 20;
@@ -39,7 +37,6 @@ final class UserStatistic extends Model
         'games',
         'wins',
         'losses',
-        'draws',
         'points',
     ];
 

@@ -13,7 +13,6 @@ enum GameStatus: int
     case ABANDONED = 2; // Игра прервана
     case WIN_UID1  = 3; // Победил 1 игрок
     case WIN_UID2  = 4; // Победил 2 игрок
-    case DRAW      = 5; // Ничья
 
     /**
      * @param bool $isUid1 текущий пользователь является uid1
@@ -26,7 +25,6 @@ enum GameStatus: int
             self::ABANDONED => GameType::ABANDONED,
             self::WIN_UID1  => $isUid1 ? GameType::WIN : GameType::LOSE,
             self::WIN_UID2  => $isUid1 ? GameType::LOSE : GameType::WIN,
-            self::DRAW      => GameType::DRAW,
         };
     }
 }
