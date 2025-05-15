@@ -30,7 +30,8 @@ final class GetUserGamesService extends PaginateService
                 'games.created_at',
                 'games.ended_at',
                 'users.id as rivalId',
-                'users.nickname'
+                'users.nickname',
+                'users.avatar_filename',
             ])
             ->join('users', function (JoinClause $join) use ($dto, $status1, $status2) {
                 $join->on('games.uid2', '=', 'users.id')
