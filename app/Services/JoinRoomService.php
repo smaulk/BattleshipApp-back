@@ -13,32 +13,28 @@ final class JoinRoomService extends Service
     {
         $roomKey = "rooms:$roomId";
         $members = Redis::hkeys($roomKey);
-
-        if ($this->validate($members, $userId)) {
-            Redis::hset($roomKey, $userId, 0);
-        }
+        $this->validate($members, $userId);
+        Redis::hset($roomKey, $userId, 0);
 
         return $this->getRoomCurrentTtl($roomKey);
     }
 
-    private function validate(array $members, int $userId): bool
+    private function validate(array $members, int $userId): void
     {
         if (empty($members)) {
             throw new HttpException(404, "Комната не найдена");
         }
         if (in_array($userId, $members)) {
-            return false;
+            return;
         }
         if (count($members) > 1) {
             throw new HttpException(403, "Комната уже заполнена");
         }
-
-        return true;
     }
 
     private function getRoomCurrentTtl(string $roomKey): int
     {
-        $ttl =  Redis::ttl($roomKey);
+        $ttl = Redis::ttl($roomKey);
         if ($ttl < 0) {
             throw new HttpException(404, "Комната не найдена");
         }
