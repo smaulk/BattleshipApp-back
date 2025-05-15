@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Redis;
 
 final class JoinRoomService extends Service
 {
-    public function run(string $roomId, int $userId): void
+    public function run(string $roomId, int $userId): int
     {
         $roomKey = "rooms:$roomId";
         $members = Redis::hkeys($roomKey);
@@ -17,6 +17,8 @@ final class JoinRoomService extends Service
         if ($this->validate($members, $userId)) {
             Redis::hset($roomKey, $userId, 0);
         }
+
+        return $this->getRoomCurrentTtl($roomKey);
     }
 
     private function validate(array $members, int $userId): bool
@@ -32,5 +34,15 @@ final class JoinRoomService extends Service
         }
 
         return true;
+    }
+
+    private function getRoomCurrentTtl(string $roomKey): int
+    {
+        $ttl =  Redis::ttl($roomKey);
+        if ($ttl < 0) {
+            throw new HttpException(404, "Комната не найдена");
+        }
+
+        return $ttl;
     }
 }

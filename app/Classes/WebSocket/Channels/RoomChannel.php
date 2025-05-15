@@ -9,14 +9,18 @@ use Illuminate\Support\Facades\Redis;
 
 class RoomChannel extends Channel
 {
-    public function join(User $user, string $roomId): bool
+    public function join(User $user, string $roomId): array|false
     {
         $roomKey = "rooms:$roomId";
         $members = Redis::hkeys($roomKey);
-        if(empty($members) || !in_array($user->id, $members)) {
+        if (empty($members) || !in_array($user->id, $members)) {
             return false;
         }
 
-        return true;
+        return [
+            'id' => $user->id,
+            'nickname' => $user->nickname,
+            'avatarUrl' => $user->avatar_url
+        ];
     }
 }

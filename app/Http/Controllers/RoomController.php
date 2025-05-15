@@ -23,12 +23,12 @@ final class RoomController extends Controller
 
     public function join(Request $request): JsonResponse
     {
-        (new JoinRoomService())->run(
+        $roomTtl = (new JoinRoomService())->run(
             $request->route('roomId'),
             (int)$request->user()->getAuthIdentifier()
         );
 
-        return $this->json(status: 204);
+        return $this->json(['data' => ['roomTtl' => $roomTtl]], 200);
     }
 
     public function startSearch(Request $request): JsonResponse

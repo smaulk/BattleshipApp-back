@@ -9,6 +9,7 @@
       "authEndpoint": "/broadcasting/auth",
       "enable_statistics": false,
       "enableClientMessages": true,
+      "publishClientEvents": true,
       "webhooks": [
         {
           "url": "http://backend:80/broadcasting/webhook-online",
