@@ -9,7 +9,6 @@ use App\Http\Controllers\RoomController;
 use App\Http\Controllers\UserAvatarController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PasswordController;
-use App\Http\Controllers\UserStatisticController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -23,8 +22,7 @@ Route::post('/users', [UserController::class, 'create']);
 Route::get('/users/{userId}', [UserController::class, 'find']);
 Route::put('/users/{userId}/email-verification', [EmailVerificationController::class, 'verify']);
 
-Route::get('/users/{userId}/statistic', [UserStatisticController::class, 'get']);
-Route::get('/leaderboard', [UserStatisticController::class, 'getLeaderBoard']);
+Route::get('/leaderboard', [UserController::class, 'getLeaderBoard']);
 
 Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/users', [UserController::class, 'get']);

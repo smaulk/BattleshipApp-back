@@ -7,10 +7,12 @@ use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\GetUsersRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\UserStatisticResource;
 use App\Parents\Controller;
 use App\Parents\Request;
 use App\Services\CreateUserService;
 use App\Services\FindUserService;
+use App\Services\GetLeaderBoardService;
 use App\Services\GetUsersService;
 use App\Services\UpdateUserService;
 use Illuminate\Http\JsonResponse;
@@ -60,6 +62,15 @@ final class UserController extends Controller
 
         return $this
             ->resource($user, UserResource::class)
+            ->response();
+    }
+
+    public function getLeaderBoard(Request $request): JsonResponse
+    {
+        $leaders = (new GetLeaderBoardService())->run();
+
+        return $this
+            ->collection($leaders, UserStatisticResource::class)
             ->response();
     }
 }
