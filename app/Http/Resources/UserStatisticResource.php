@@ -15,17 +15,16 @@ class UserStatisticResource extends JsonResource
         $statistic = $this->resource;
 
         return [
-            'games'  => $statistic->games,
-            'wins'   => $statistic->wins,
-            'losses' => $statistic->losses,
-            'points' => $statistic->points,
+            'id'        => $statistic->user->id,
+            'nickname'  => $statistic->user->nickname,
+            'avatarUrl' => $statistic->user->avatar_url,
 
-            'user' => $this->whenLoaded('user', fn() => [
-                'id'        => $statistic->user->id,
-                'nickname'  => $statistic->user->nickname,
-                'avatarUrl' => $statistic->user->avatar_url,
-                'isOnline'  => $statistic->user->is_online,
-            ]),
+            'statistic' => [
+                'games'  => $statistic->games,
+                'wins'   => $statistic->wins,
+                'losses' => $statistic->losses,
+                'points' => $statistic->points,
+            ],
         ];
     }
 }
