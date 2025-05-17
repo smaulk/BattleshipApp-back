@@ -5,6 +5,7 @@ namespace App\Exceptions;
 
 use App\Parents\Model;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -30,6 +31,9 @@ final class ExceptionHandler extends Handler
 
         if($e instanceof HttpResponseException) {
             return parent::render($request, $e);
+        }
+        if($e instanceof AuthenticationException) {
+            return $this->json(401, 'Ошибка аутентификации');
         }
         if($e instanceof AccessDeniedHttpException || $e instanceof AuthorizationException){
             return $this->json(403, 'Доступ запрещен');
