@@ -25,7 +25,12 @@ final class JoinRoomTest extends Test
             ->postJson("/api/v1/rooms/{$roomId}/join", [], [
                 'Authorization' => 'Bearer ' . $accessToken2,
             ])
-            ->assertNoContent();
+            ->assertJsonStructure([
+                'data' => [
+                    'roomTtl',
+                ],
+            ])
+            ->assertOk();
 
         $roomKey = "rooms:$roomId";
         $members = Redis::hkeys($roomKey);
