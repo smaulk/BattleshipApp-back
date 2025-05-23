@@ -11,9 +11,9 @@ use App\Exceptions\HttpException;
 use App\Models\Friendship;
 use App\Models\GameInvitation;
 use App\Models\User;
-use App\Parents\Service;
+use App\Services\Abstract\UsersService;
 
-final class CreateGameInvitationService extends Service
+final class CreateGameInvitationService extends UsersService
 {
     public function run(FriendshipDto $dto): void
     {
@@ -36,6 +36,7 @@ final class CreateGameInvitationService extends Service
 
     private function validate(FriendshipDto $dto): void
     {
+        $this->validateUsers($dto->userId, $dto->friendId);
         if (!Friendship::query()
             ->findByUsers($dto->userId, $dto->friendId)
             ->where('status', FriendshipStatus::FRIEND)
