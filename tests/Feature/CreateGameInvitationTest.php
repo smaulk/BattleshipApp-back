@@ -74,7 +74,7 @@ final class CreateGameInvitationTest extends Test
             ], [
                 'Authorization' => "Bearer $accessToken1",
             ])
-            ->assertForbidden();
+            ->assertBadRequest();
 
         $this->assertDatabaseEmpty(GameInvitation::class);
 

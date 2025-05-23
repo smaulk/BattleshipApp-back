@@ -41,7 +41,7 @@ final class CreateGameInvitationService extends Service
             ->where('status', FriendshipStatus::FRIEND)
             ->exists()
         ) {
-            throw new HttpException(403, "Пригласить в игру можно только друга");
+            throw new HttpException(400, "Пригласить в игру можно только друга");
         }
     }
 
