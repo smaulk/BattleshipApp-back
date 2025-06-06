@@ -36,7 +36,7 @@ final class RefreshToken extends Model
     }
 
     /**
-     * Блокирировка токена
+     * Блокировка токена
      */
     public function block(): void
     {
